@@ -32,7 +32,7 @@ foreach($timetable as $key => $round)
 	//}
 	
 	$timetable[$key]['routename'] = get_text("route", $round['route'], get_language_id());
-	$timetable[$key]['routecolor'] = $route->color;
+	$timetable[$key]['routecolor'] = $route->Color;
 	
 	array_push($page_result, $timetable[$key]);
 }

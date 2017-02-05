@@ -1,80 +1,96 @@
 <?php
 
-###############################
-## REQUIRES mysql connection ##
-## REQUIRES calendar.inc.php ##
-###############################
-
+/**
+ * Class Stop
+ */
 class Stop
 {
-	private $id;
-	private $name;
-	private $busstop;
-	private $location_lat;
-	private $location_lon;
-	private $connections = array();
-	private $wait_time = null;
-	
-	public function __get($v)
+	private $ID;
+	private $Name;
+	private $BusStop;
+	/** @var Location */
+	private $Location;
+	private $Connections = array();
+	private $WaitTime = null;
+
+    /**
+     * @param $v
+     * @return mixed
+     */
+    public function __get($v)
 	{
 		return $this->$v;
 	}
-	
-	public function __construct($ID)
+
+    /**
+     * Stop constructor.
+     * @param $ID
+     */
+    public function __construct($ID)
 	{
-		$this->id = $ID;
+		$this->ID = $ID;
 	}
-	
-	public function GetInfo()
+
+    /**
+     * Get Bus Stop Information
+     */
+    public function GetInfo()
 	{
-		global $connection;
-		$sql = "SELECT `id`, `name`, `busstop`, `location_lat`, `location_lon` FROM `stops` WHERE `id` = {$this->id}";
-		$result = mysqli_query($connection, $sql);
-		$stopdata = mysqli_fetch_array($result);
-		
-		foreach($stopdata as $key => $value)
-		{
-			$this->$key = $value;
-		}
-	}
-	
-	public function WaitTime($route, $datetime = false)
+		$result = sql_query("SELECT `name`, `id`, `busstop`, `location_lat`, `location_lon` FROM `stops` WHERE `id` = ?", "i", array($this->ID));
+		$stopData = mysqli_fetch_array($result);
+
+        $this->Name = $stopData['name'];
+        $this->BusStop = $stopData['busstop'];
+        $this->Location = new Location($stopData['location_lat'], $stopData['location_lon']);
+    }
+
+    /**
+     * Get approximated waiting time at the bus stop at the specified time
+     * @param $route
+     * @param int|bool $datetime
+     * @return float|null
+     */
+    public function WaitTime($route, $datetime = false)
 	{
-		if($this->wait_time == null)
+		if($this->WaitTime == null)
 		{
-			$this->wait_time = wait_time_at($this->id, $route, $datetime);
-			return $this->wait_time;
+			$this->WaitTime = wait_time_at($this->ID, $route, $datetime);
+			return $this->WaitTime;
 		}
 		else
 		{
-			return $this->wait_time;
+			return $this->WaitTime;
 		}
 	}
-	
-	public function Connections($datetime = false, $bus = true, $walk = true)
+
+    /**
+     * Get the connections (walkable path) from this bus stop
+     * @param int|bool $datetime
+     * @param bool $bus
+     * @param bool $walk
+     * @return array
+     */
+    public function Connections($datetime = false, $bus = true, $walk = true)
 	{
-		if(count($this->connections) == 0)
+		if(count($this->Connections) == 0)
 		{
-			$this->connections = get_single_path_at($this->id, $datetime, $bus, $walk);
-			return $this->connections;
+			$this->Connections = get_single_path_at($this->ID, $datetime, $bus, $walk);
+			return $this->Connections;
 		}
 		else
 		{
-			return $this->connections;
+			return $this->Connections;
 		}
 	}
-	
-	public function Translate($language = false)
-	{
-		if($language == false)
-		{
-			$language = get_language_id();
-		}
-		
-		return get_text("stop", $this->id, $language);
-	}
-	
-	public function FindPathsTo($destination, $datetime = false, $mode = "totalTime", $max_result = 2)
+
+    /**
+     * Find the best path to specified bus stop or place
+     * @param $destinationID
+     * @param int|bool $datetime
+     * @param int $max_result
+     * @return mixed
+     */
+    public function FindPathsTo($destinationID, $datetime = false, $max_result = 2)
 	{
 		global $connection;
 		
@@ -83,77 +99,76 @@ class Stop
 			$datetime = mktime();
 		}
 		
-		$destination_stop = new Stop($destination);
+		$destination_stop = new Stop($destinationID);
 		$destination_stop->GetInfo();
-		$destination_location = new Location($destination_stop->location_lat, $destination_stop->location_lon);
-		
-		$this->GetInfo();
-		$departure_location = new Location($this->location_lat, $this->location_lon);
+		$destination_location = $destination_stop->Location;
 		
 		// Prepare nodes to be an array which key is its id
 		$nodes = array();
+        /**
+         * @var $nodes Node[]
+         */
 		
 		$sql = "SELECT `id` FROM `stops`";
 		$results = mysqli_query($connection, $sql);
-		while($stopiddata = mysqli_fetch_array($results))
+		while($StopIDData = mysqli_fetch_array($results))
 		{
-			$nodes[$stopiddata['id']] = new Node($stopiddata['id'], $max_result);
+			$nodes[$StopIDData['id']] = new Node($StopIDData['id'], $max_result);
 		}
 		
 		// Start node
-		$currentid = $this->id;
-		$currentpath = new Path($this->id, $datetime);
-		$nodes[$currentid]->CompareAndAdd($currentpath);
-		$dt = $datetime;
+		$currentID = $this->ID;
+		$currentPath = new Path($this->ID, $datetime);
+		$nodes[$currentID]->CompareAndAdd($currentPath);
 		
 		$connected_ids = array();
 		
 		while(!Node::AllMarked($nodes))
 		{
-			$lasttimestamp = $nodes[$currentid]->LastTimeStamp();
-			if($lasttimestamp == null)
+			$lastTimeStamp = $nodes[$currentID]->LastTimeStamp();
+			if($lastTimeStamp == null)
 			{
 				$dt = $datetime;
 			}
 			else
 			{
-				$dt = $lasttimestamp;
+				$dt = $lastTimeStamp;
 			}
 			
 			$walk = true;
-			if($nodes[$currentid]->paths[0] != null
-				&& $nodes[$currentid]->paths[0]->hopCount > 0
-				&& $nodes[$currentid]->paths[0]->LastSequence()['route'] == null)
+			if($nodes[$currentID]->Paths[0] != null
+				&& $nodes[$currentID]->Paths[0]->hopCount > 0
+				&& $nodes[$currentID]->Paths[0]->LastSequence()['route'] == null)
 			{
 				$walk = false;
 			}
 			
-			$nextid = null;
-			$connected_nodes = $nodes[$currentid]->stop->Connections($dt, true, $walk);
+			$nextID = null;
+			$connected_nodes = $nodes[$currentID]->Stop->Connections($dt, true, $walk);
 			foreach($connected_nodes as $connected_node)
 			{				
-				$newdt = $dt;
+				$newTimestamp = $dt;
 				if($connected_node['time'] > 0)
 				{
-					$newdt += ceil($connected_node['time']);
+					$newTimestamp += ceil($connected_node['time']);
 				}				
 				if($connected_node['waittime'] > 0)
 				{
-					$newdt += ceil($connected_node['waittime']);
+					$newTimestamp += ceil($connected_node['waittime']);
 				}
 				
-				$currentpath = clone($nodes[$currentid]->paths[0]);
-				$currentpath->AddSequence($connected_node['to'], $connected_node['route'], $newdt, ceil($connected_node['waittime']));
+				$currentPath = clone($nodes[$currentID]->Paths[0]);
+				$currentPath->AddSequence($connected_node['to'], $connected_node['route'], $newTimestamp, ceil($connected_node['waittime']));
 				
-				$nodes[$connected_node['to']]->CompareAndAdd($currentpath);
+				$nodes[$connected_node['to']]->CompareAndAdd($currentPath);
 				
 				// Put Connected Ids
 				array_push($connected_ids, $connected_node['to']);
 			}
 			
-			$nodes[$currentid]->marked = true;
+			$nodes[$currentID]->Marked = true;
 			
-			if($nodes[$destination]->touched >= $max_result)
+			if($nodes[$destinationID]->Touched >= $max_result)
 			{
 				break;
 			}
@@ -162,15 +177,14 @@ class Stop
 			
 			$connected_stops = array();
 			// Calculate Distance
-			$nodes[$currentid]->stop->GetInfo();
-			$current_location = new Location($nodes[$currentid]->stop->location_lat, $nodes[$currentid]->stop->location_lon);
+			$nodes[$currentID]->Stop->GetInfo();
+            $connect_location = $this->Location;
 			foreach($connected_ids as $connected_id)
 			{
 				// Find Distance				
 				
 				$connect_stop = new Stop($connected_id);
 				$connect_stop->GetInfo();
-				$connect_location = new Location($connect_stop->location_lat, $connect_stop->location_lon);
 				
 				array_push($connected_stops,
 					array("id" => $connected_id,
@@ -182,46 +196,51 @@ class Stop
 			$connected_stops = sort_by($connected_stops, "distance", SORT_ASC);
 						
 			// Find next node
-			$nextid = null;
+			$nextID = null;
 			foreach($connected_stops as $connected_stop)
 			{
 				$connected_id = $connected_stop['id'];
 				
-				if($connected_id == $destination)
+				if($connected_id == $destinationID)
 				{
 					continue;
 				}
 				
-				if($nodes[$connected_id]->marked == false)
+				if($nodes[$connected_id]->Marked == false)
 				{
-					$nextid = $connected_id;
+					$nextID = $connected_id;
 					break;
 				}
 			}
 						
-			if($nextid == null)
+			if($nextID == null)
 			{
 				break;
 			}
 			
-			$currentid = $nextid;			
+			$currentID = $nextID;
 		}
 		
-		return $nodes[$destination]->paths;
+		return $nodes[$destinationID]->Paths;
 	}
 
+    /**
+     * Get the bus stop timetable
+     * [{busno, route, remaining_distance, estimated_time, estimated_time_readable, remaining_time, last_stopid, last_update, session, origin}]
+     * @return array
+     */
 	public function TimeTable()
 	{
 		global $connection;
 		
 		$function_result = array();
 		
-		if($this->busstop == null)
+		if($this->BusStop == null)
 		{
 			$this->GetInfo();
 		}
 		
-		if($this->busstop == 0) // This is not a bus stop!!!
+		if($this->BusStop == 0) // This is not a bus stop!!!
 		{
 			return $function_result;
 		}
@@ -243,8 +262,8 @@ class Stop
 		{
 			$count = 0;
 			
-			$sql = "SELECT `distance_from_start` FROM `route_paths` WHERE `stop` = {$this->id} AND `route` = {$route['id']} ORDER BY `distance_from_start` DESC";
-			$results = mysqli_query($connection, $sql);
+			$sql = "SELECT `distance_from_start` FROM `route_paths` WHERE `stop` = ? AND `route` = ? ORDER BY `distance_from_start` DESC";
+			$results = sql_query($sql, "ii", array($this->ID, $route['id']));
 			$num_in_route_paths = mysqli_num_rows($results);
 			if($num_in_route_paths > 0)
 			{
@@ -252,134 +271,109 @@ class Stop
 				
 				$stop_distance_data = mysqli_fetch_array($results);
 				
-				$sql = "SELECT `id`, `last_distance`, `last_update`, `session` FROM `buses` WHERE `session` > 0 AND `route` = {$route['id']} AND `last_distance` < {$stop_distance_data['distance_from_start']} AND $now - `last_update` < 60";
-				$busresults = mysqli_query($connection, $sql);
-				while($busdata = mysqli_fetch_array($busresults))
+				$sql = "SELECT `id`, `last_distance`, `last_update`, `session` FROM `buses` WHERE `session` > 0 AND `route` = ? AND `last_distance` < ? AND ? - `last_update` < 60";
+				$busResults = sql_query($sql, "idi", array($route['id'], $stop_distance_data['distance_from_start'], $now));
+				while($busData = mysqli_fetch_array($busResults))
 				{
-					$estimatedtime = null;
+					$estimatedTime = null;
 					$last_stopid = null;
 					
-					$sql = "SELECT `start_datetime` FROM `sessions` WHERE `id` = {$busdata['session']}";
-					$result = mysqli_query($connection, $sql);
-					$sessiondata = mysqli_fetch_array($result);
+					$sql = "SELECT `start_datetime` FROM `sessions` WHERE `id` = ?";
+					$result = sql_query($sql, "i", array($busData['session']));
+					$sessionData = mysqli_fetch_array($result);
 					
-					$sql = "SELECT `datetime`, `stop` FROM `records` WHERE `session` = {$busdata['session']} ORDER BY `datetime` DESC";
-					$lastrecord_result = mysqli_query($connection, $sql);
-						
-					$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$route['id']} AND `stop` = {$this->id} AND ({$sessiondata['start_datetime']} BETWEEN `start_time` AND `end_time`)";
-					$estimation_result = mysqli_query($connection, $sql);
+					$sql = "SELECT `datetime`, `stop` FROM `records` WHERE `session` = ? ORDER BY `datetime` DESC";
+                    $lastRecordResult = sql_query($sql, "i", array($busData['session']));
 					
-					if(mysqli_num_rows($lastrecord_result) > 0)
+					if(mysqli_num_rows($lastRecordResult) > 0)
 					{
-						$last_recorddata = mysqli_fetch_array($lastrecord_result);
-						$last_stopid = $last_recorddata['stop'];
-					}
-					
-					if(mysqli_num_rows($estimation_result) > 0)
-					{
-						$estimateddata = mysqli_fetch_array($estimation_result);
-					}
-					else
-					{
-						continue;
-					}
-					
-					if(mysqli_num_rows($lastrecord_result) > 0 && mysqli_num_rows($estimation_result) > 0)
-					{
-						$sql = "SELECT COUNT(*) AS 'count' FROM `route_paths` WHERE `route` = {$route['id']} AND `stop` = {$last_recorddata['stop']}";
-						$result = mysqli_query($connection, $sql);
-						$last_stop_num_in_route_paths_data = mysqli_fetch_array($result);
-						
-						$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$route['id']} AND `stop` = {$last_recorddata['stop']} AND ({$sessiondata['start_datetime']} BETWEEN `start_time` AND `end_time`)";
-						$result = mysqli_query($connection, $sql);
-						if(mysqli_num_rows($result) > 0 && $last_stop_num_in_route_paths_data['count'] == 1)
-						{
-							$last_record_estimateddata = mysqli_fetch_array($result);
-							
-							$estimatedtime = $last_recorddata['datetime'] + ($estimateddata['estimated_time'] - $last_record_estimateddata['estimated_time']);
-						}
-						else
-						{
-							$estimatedtime = $sessiondata['start_datetime'] + $estimateddata['estimated_time'];
-						}
+						$lastRecordData = mysqli_fetch_array($lastRecordResult);
+						$last_stopid = $lastRecordData['stop'];
+
+						$estimatedTimeBetweenStops = estimated_time($route['id'], $last_stopid, $this->ID, $sessionData['start_datetime']);
+						if($estimatedTimeBetweenStops == null)
+                        {
+                            continue;
+                        }
+						$estimatedTime = $lastRecordData['datetime'] + $estimatedTimeBetweenStops;
 					}
 					else
-					{
-						$estimatedtime = $sessiondata['start_datetime'] + $estimateddata['estimated_time'];
-					}
-					
-					array_push($function_result,
-						array(
-							"busno" => $busdata['id'],
-							"route" => $route['id'],
-							"remaining_distance" => $stop_distance_data['distance_from_start'] - $busdata['last_distance'],
-							"estimated_time" => $estimatedtime,
-							"estimated_time_readable" => date("H:i", $estimatedtime),
-							"remaining_time" => $estimatedtime - $now,
-							"last_stopid" => $last_stopid,
-							"last_update" => $busdata['last_update'],
-							"session" => $busdata['session'],
-							"origin" => false
-						)
-					);
-					$count++;
+                    {
+                        $estimatedTimeAtThisStop = estimated_time($route['id'], $this->ID, $sessionData['start_datetime']);
+                        if($estimatedTimeAtThisStop == null)
+                        {
+                            continue;
+                        }
+                        $estimatedTime = $sessionData['start_datetime'] + $estimatedTimeAtThisStop;
+                    }
+
+                    array_push($function_result,
+                        array(
+                            "busno" => $busData['id'],
+                            "route" => $route['id'],
+                            "remaining_distance" => $stop_distance_data['distance_from_start'] - $busData['last_distance'],
+                            "estimated_time" => $estimatedTime,
+                            "estimated_time_readable" => date("H:i", $estimatedTime),
+                            "remaining_time" => $estimatedTime - $now,
+                            "last_stopid" => $last_stopid,
+                            "last_update" => $busData['last_update'],
+                            "session" => $busData['session'],
+                            "origin" => false
+                        )
+                    );
+                    $count++;
 				}
 				
 				if($num_in_route_paths == 1 && $count == 0)
-				{					
-					$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$route['id']} AND `stop` = {$this->id} AND ($now BETWEEN `start_time` AND `end_time`)";
-					$result = mysqli_query($connection, $sql);
-					
-					if(mysqli_num_rows($result) == 0)
+				{
+				    $estimatedTimeAtThisStop = estimated_time($route['id'], $this->ID, $now);
+					if($estimatedTimeAtThisStop == null)
 					{
 						$dt = mktime(7, 1);
-						$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$route['id']} AND `stop` = {$this->id} AND ($dt BETWEEN `start_time` AND `end_time`)";
-						$result = mysqli_query($connection, $sql);
+						$estimatedTimeAtThisStop = estimated_time($route['id'], $this->ID, $dt);
 					}
 					
-					if(mysqli_num_rows($result) > 0)
+					if($estimatedTimeAtThisStop != null)
 					{
-						$estimateddata = mysqli_fetch_array($result);
-						$approximated_time_from_start = $estimateddata['estimated_time'];
-
-						
-						$sql = "SELECT `start_datetime` FROM `sessions` WHERE `route` = {$route['id']} ORDER BY `start_datetime` DESC LIMIT 1";
-						$result = mysqli_query($connection, $sql);
+						$sql = "SELECT `start_datetime` FROM `sessions` WHERE `route` = ? ORDER BY `start_datetime` DESC LIMIT 1";
+						$result = sql_query($sql, "i", array($route['id']));
 						if(mysqli_num_rows($result) > 0)
 						{
-							$lastsessiondata = mysqli_fetch_array($result);
-							$wait_time = ceil(wait_time_at($this->id, $route['id'], $now));
-							$estimatedtime = $lastsessiondata['start_datetime'] + $wait_time + $approximated_time_from_start;
+							$lastSessionData = mysqli_fetch_array($result);
+							$wait_time = ceil(wait_time_at($this->ID, $route['id'], $now));
+							$estimatedTime = $lastSessionData['start_datetime'] + $wait_time + $estimatedTimeAtThisStop;
 							
-							if($estimatedtime - $now < $approximated_time_from_start)
+							if($estimatedTime - $now < $estimatedTimeAtThisStop)
 							{
-								$estimatedtime = $now + floor($wait_time / 2) + $approximated_time_from_start;
+								$estimatedTime = $now + $estimatedTimeAtThisStop;
 							}
 							
 							foreach($info as $info_route)
 							{
 								if($info_route['route'] == $route['id'])
 								{
-									if($estimatedtime > $info_route['estimated_last'])
+									if($estimatedTime > $info_route['estimated_last'])
 									{
-										$estimatedtime = $info_route['estimated_first'] + 86400;;
+										$estimatedTime = $info_route['estimated_first'] + 86400;;
 									}
-									if($estimatedtime < $info_route['estimated_first'])
+
+									if($estimatedTime < $info_route['estimated_first'])
 									{
-										$estimatedtime = $info_route['estimated_first'];
+										$estimatedTime = $info_route['estimated_first'];
 									}
 									
 									break;
 								}
 							}
+
 							array_push($function_result,
 								array(
 									"busno" => null,
 									"route" => $route['id'],
 									"remaining_distance" => null,
-									"estimated_time" => $estimatedtime,
-									"estimated_time_readable" => date("H:i", $estimatedtime),
-									"remaining_time" => $estimatedtime - $now,
+									"estimated_time" => $estimatedTime,
+									"estimated_time_readable" => date("H:i", $estimatedTime),
+									"remaining_time" => $estimatedTime - $now,
 									"last_stopid" => null,
 									"last_update" => null,
 									"session" => null,
@@ -389,91 +383,87 @@ class Stop
 						}
 					}
 				}
-				else if($num_in_route_paths == 2 && $count == 0)
-				{
-					$sql = "SELECT `start_datetime` FROM `sessions` WHERE `route` = {$route['id']} ORDER BY `start_datetime` DESC LIMIT 1";
-					$result = mysqli_query($connection, $sql);
-					if(mysqli_num_rows($result) > 0)
-					{
-						$lastsessiondata = mysqli_fetch_array($result);
-						$wait_time = ceil(wait_time_at($this->id, $route['id'], $now));
-						$estimatedtime = $lastsessiondata['start_datetime'] + $wait_time;
-						if($estimatedtime - $now < $wait_time)
-						{
-							$estimatedtime = $now + $wait_time;
-						}
-						
-						foreach($info as $info_route)
-						{
-							if($info_route['route'] == $route['id'])
-							{
-								//if($estimatedtime > $info_route['estimated_last'] || $estimatedtime < $info_route['estimated_first'])
-								//{
-								//	$estimatedtime = $info_route['estimated_first'];
-								//	
-								//	if(date("H") > 12)
-								//	{
-								//		$estimatedtime += 86400;
-								//	}
-								//}
-								
-								
-								if($estimatedtime > $info_route['estimated_last'])
-								{
-									$estimatedtime = $info_route['estimated_first'] + 86400;;
-								}
-								if($estimatedtime < $info_route['estimated_first'])
-								{
-									$estimatedtime = $info_route['estimated_first'];
-								}
-								
-								break;
-							}
-						}
-						
-						array_push($function_result,
-							array(
-								"busno" => null,
-								"route" => $route['id'],
-								"remaining_distance" => null,
-								"estimated_time" => $estimatedtime,
-								"estimated_time_readable" => date("H:i", $estimatedtime),
-								"remaining_time" => $estimatedtime - $now,
-								"last_stopid" => null,
-								"last_update" => null,
-								"session" => null,
-								"origin" => true
-							)
-						);
-					}
-				}
+				//else if($num_in_route_paths == 2 && $count == 0)
+				//{
+				//	$sql = "SELECT `start_datetime` FROM `sessions` WHERE `route` = ? ORDER BY `start_datetime` DESC LIMIT 1";
+				//	$result = sql_query($sql, "i", array($route['id']));
+				//	if(mysqli_num_rows($result) > 0)
+				//	{
+				//		$lastSessionData = mysqli_fetch_array($result);
+				//		$wait_time = ceil(wait_time_at($this->ID, $route['id'], $now));
+				//		$estimatedTime = $lastSessionData['start_datetime'] + $wait_time;
+				//		if($estimatedTime - $now < $wait_time)
+				//		{
+				//			$estimatedTime = $now + $wait_time;
+				//		}
+				//
+				//		foreach($info as $info_route)
+				//		{
+				//			if($info_route['route'] == $route['id'])
+				//			{
+				//				if($estimatedTime > $info_route['estimated_last'])
+				//				{
+				//					$estimatedTime = $info_route['estimated_first'] + 86400;;
+				//				}
+				//				if($estimatedTime < $info_route['estimated_first'])
+				//				{
+				//					$estimatedTime = $info_route['estimated_first'];
+				//				}
+				//
+				//				break;
+				//			}
+				//		}
+				//
+				//		array_push($function_result,
+				//			array(
+				//				"busno" => null,
+				//				"route" => $route['id'],
+				//				"remaining_distance" => null,
+				//				"estimated_time" => $estimatedTime,
+				//				"estimated_time_readable" => date("H:i", $estimatedTime),
+				//				"remaining_time" => $estimatedTime - $now,
+				//				"last_stopid" => null,
+				//				"last_update" => null,
+				//				"session" => null,
+				//				"origin" => true
+				//			)
+				//		);
+				//	}
+				//}
 			}
 		}
 		
 		return $function_result;
 	}
-	
+
+    /**
+     * Get the passed buses
+     * [{session, datetime, datetime_readable, route, routename, routecolor, busno}]
+     * @param int $max_result
+     * @return array
+     */
 	public function PassedTimetable($max_result = 10)
 	{
 		global $connection;
 		
 		$function_result = array();
-		
-		$sql = "SELECT `session`, `datetime` FROM `records` WHERE `stop` = {$this->id} ORDER BY `datetime` DESC LIMIT $max_result";
-		$results = mysqli_query($connection, $sql);
-		while($recorddata = mysqli_fetch_array($results))
+
+
+		$sql = "SELECT `session`, `datetime` FROM `records` WHERE `stop` = ? ORDER BY `datetime` DESC LIMIT ?";
+		$results = sql_query($sql, "ii", array($this->ID, $max_result));
+		while($recordData = mysqli_fetch_array($results))
 		{
-			$session = new Session($recorddata['session']);
-			$route = new Route($session->route);
+			$session = new Session($recordData['session']);
+			$route = new Route($session->Route);
 			
 			$item = array(
-				"session" => $recorddata['session'],
-				"datetime" => $recorddata['datetime'],
-				"datetime_readable" => date("H:i", $recorddata['datetime']),
-				"route" => $session->route,
-				"routename" => get_text("route", $session->route, get_language_id()),
-				"routecolor" => $route->color,
-				"busno" => $session->busno
+				"session" => $recordData['session'],
+				"datetime" => $recordData['datetime'],
+				"datetime_readable" => date("H:i", $recordData['datetime']),
+				"route" => $session->Route,
+				"routename" => get_text("route", $session->Route, get_language_id()),
+				"routecolor" => $route->Color,
+				"busno" => $session->BusNo
 			);
 			
 			array_push($function_result, $item);
@@ -481,35 +471,40 @@ class Stop
 		
 		return $function_result;
 	}
-	
+
+    /**
+     * Get bus stop daily time table (approximated first round, approximated last round and approximated waiting time from each route)
+     * [{route, routename, routecolor, estimated_first, estimated_first_readable, estimated_last, estimated_last_readable, waittime}]
+     * @return array
+     */
 	public function DailyTimeTable()
 	{
 		global $connection;
 		
 		$function_result = array();
 		
-		if($this->busstop == null)
+		if($this->BusStop == null)
 		{
 			$this->GetInfo();
 		}
 		
-		if($this->busstop == 0) // This is not a bus stop!!!
+		if($this->BusStop == 0) // This is not a bus stop!!!
 		{
 			return $function_result;
 		}
 		
-		$day_to_calculate = 10;
+		$day_to_calculate = 5;
 		$today = new Day(mktime(0, 0, 0));
 		
 		$timezone = date("Z");
 		
 		$days = array();
 		
-		$sql = "SELECT `date` FROM `days` WHERE type = {$today->type} AND `date` < {$today->timestamp} ORDER BY `date` DESC LIMIT $day_to_calculate";
+		$sql = "SELECT `date` FROM `days` WHERE type = {$today->Type} AND `date` < {$today->Timestamp} ORDER BY `date` DESC LIMIT $day_to_calculate";
 		$results = mysqli_query($connection, $sql);
-		while($daydata = mysqli_fetch_array($results))
+		while($dayData = mysqli_fetch_array($results))
 		{
-			array_push($days, $daydata['date']);
+			array_push($days, $dayData['date']);
 		}
 		
 		foreach($this->PassingRoutes() as $route) if($route['available'] == 1)
@@ -527,7 +522,7 @@ class Stop
 			foreach($days as $day)
 			{				
 				$sql = "SELECT MIN(`start_datetime`) AS 'min_dt', MAX(`start_datetime`) AS 'max_dt' FROM `sessions` WHERE `route` = {$route['id']} AND (`start_datetime` BETWEEN {$day} AND " . ($day + 86399) . ")";
-				$result = mysqli_query($connection, $sql);
+				$result = sql_query($sql, "iii", array($route['id'], $day, $day));
 				$data = mysqli_fetch_array($result);
 				
 				if($data['min_dt'] != null)
@@ -546,41 +541,40 @@ class Stop
 			if($first_count > 0)
 			{
 				$avg_first = $first_sum / $first_count;
-				$estimated_first = $today->timestamp + ceil($avg_first);
+				$estimated_first = $today->Timestamp + ceil($avg_first);
 			}
 			
 			if($last_count > 0)
 			{
 				$avg_last = $last_sum / $last_count;
-				$estimated_last = $today->timestamp + ceil($avg_last);
+				$estimated_last = $today->Timestamp + ceil($avg_last);
 			}
-			
-			if($route['count'] == 1)
-			{
-				$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$route['id']} AND `stop` = {$this->id} AND ($estimated_first BETWEEN `start_time` AND `end_time`)";
-				$result = mysqli_query($connection, $sql);
-				if(mysqli_num_rows($result) > 0)
-				{
-					$estimateddata = mysqli_fetch_array($result);
-					$estimated_first += $estimateddata['estimated_time'];
-				}
-				
-				$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$route['id']} AND `stop` = {$this->id} AND ($estimated_last BETWEEN `start_time` AND `end_time`)";
-				$result = mysqli_query($connection, $sql);
-				if(mysqli_num_rows($result) > 0)
-				{
-					$estimateddata = mysqli_fetch_array($result);
-					$estimated_last += $estimateddata['estimated_time'];
-				}
-			}
+
+			$sql = "SELECT COUNT(*) AS `route_count` FROM `route_paths` WHERE `route` = ? AND `stop` = ?";
+			$result = sql_query($sql, "ii", array($route['id'], $this->ID));
+			$countData = mysqli_fetch_array($result);
+			if($countData['route_count'] == 1)
+            {
+                $estimatedTimeToThisStopOnFirstRound = estimated_time($route, $this->ID, $estimated_first);
+                if($estimatedTimeToThisStopOnFirstRound != null)
+                {
+                    $estimated_first += $estimatedTimeToThisStopOnFirstRound;
+                }
+
+                $estimatedTimeToThisStopOnLastRound = estimated_time($route, $this->ID, $estimated_last);
+                if($estimatedTimeToThisStopOnLastRound != null)
+                {
+                    $estimated_last += $estimatedTimeToThisStopOnLastRound;
+                }
+            }
 			
 			if(date("H") < 7 || date("H") > 21)
 			{
-				$waittime = wait_time_at($this->id, $route['id'], mktime(12, 0, 0));
+				$waittime = wait_time_at($this->ID, $route['id'], mktime(12, 0, 0));
 			}
 			else
 			{
-				$waittime = wait_time_at($this->id, $route['id'], mktime());
+				$waittime = wait_time_at($this->ID, $route['id'], mktime());
 			}
 			
 			$item = array(
@@ -593,13 +587,18 @@ class Stop
 				"estimated_last_readable" => date("H:i", $estimated_last),
 				"waittime" => $waittime
 			);
-			
+
 			array_push($function_result, $item);
 		}
 		
 		return $function_result;
 	}
-	
+
+    /**
+     * Get list of available routes that pass this bus stop
+     * @param bool $datetime
+     * @return array
+     */
 	public function PassingRoutes($datetime = false)
 	{
 		global $connection;
@@ -611,89 +610,90 @@ class Stop
 			$datetime = mktime();
 		}
 		
-		foreach(get_routes_at($datetime) as $routedata) if($routedata['available'] == 1)
+		foreach(get_routes_at($datetime) as $routeData) if($routeData['available'] == 1)
 		{
-			$sql = "SELECT COUNT(*) AS 'count' FROM `route_paths` WHERE `route` = {$routedata['id']} AND `stop` = {$this->id}";
-			$result = mysqli_query($connection, $sql);
-			$data = mysqli_fetch_array($result);
-			if($data['count'] > 0)
-			{
-				$routedata['count'] = $data['count'];
-				array_push($routes, $routedata);
-			}
+            array_push($routes, $routeData);
 		}
 		
 		return $routes;
 	}
-	
-	public static function Search($keyword, $language = false, $max_result = 10)
-	{
-		if($language == false)
-		{
-			$language = get_language_id();
-		}
-		
-		return search($leyword, $language, $max_result);
-	}
 }
 
+/**
+ * Class Session (Bus Round)
+ */
 class Session
 {
-	private $id;
-	private $busno;
-	private $route;
-	private $start_datetime;
-	
-	public function __get($v)
+	private $ID;
+	private $BusNo;
+	private $Route;
+	private $StartTimeStamp;
+
+    /**
+     * @param $v
+     * @return mixed
+     */
+    public function __get($v)
 	{
 		return $this->$v;
 	}
-	
-	public function __construct($ID)
+
+    /**
+     * Session constructor.
+     * @param $ID
+     */
+    public function __construct($ID)
 	{
-		global $connection;
-		
-		$this->id = $ID;
-		
-		$sql = "SELECT `busno`, `route`, `start_datetime` FROM `sessions` WHERE `id` = $ID";
-		$result = mysqli_query($connection, $sql);
-		$sessiondata = mysqli_fetch_array($result);
-		$this->busno = $sessiondata['busno'];
-		$this->route = $sessiondata['route'];
-		$this->start_datetime = $sessiondata['start_datetime'];
+		$this->ID = $ID;
+
+        $sql = "SELECT `busno`, `route`, `start_datetime` FROM `sessions` WHERE `id` = ?";
+        $result = sql_query($sql, "i", array($ID));
+		$sessionData = mysqli_fetch_array($result);
+		$this->BusNo = $sessionData['busno'];
+		$this->Route = $sessionData['route'];
+		$this->StartTimeStamp = $sessionData['start_datetime'];
 	}
-	
-	public function LastRecord()
+
+    /**
+     * Get the last time record from the session
+     * return {stop, datetime}
+     * @return array|null
+     */
+    public function LastRecord()
 	{
-		global $connection;
-		
-		$sql = "SELECT `stop`, `datetime` FROM `records` WHERE `session` = {$this->id} ORDER BY `datetime` DESC LIMIT 1";
-		$result = mysqli_query($connection, $sql);
+		$sql = "SELECT `stop`, `datetime` FROM `records` WHERE `session` = ? ORDER BY `datetime` DESC LIMIT 1";
+		$result = sql_query($sql, "i", array($this->ID));
 		
 		if(mysqli_num_rows($result) == 1)
 		{
-			$recorddata = mysqli_fetch_array($result);
+			$recordData = mysqli_fetch_array($result);
 		
 			return array(
-				"stop" => $recorddata['stop'],
-				"datetime" => $recorddata['datetime']
+				"stop" => $recordData['stop'],
+				"datetime" => $recordData['datetime']
 			);
 		}
 		
 		return null;
 	}
-	
-	public function GetStatus()
+
+    /**
+     * Get recorded time and estimated arrival time of each bus stop in the bus session
+     * return {busno, route, routename, routecolor, start_datetime, start_datetime_readable, online, time_sequences*}
+     *   ->time_sequences [{stop, stopname, datetime, datetime_readable, remaining_time, remaining_distance, bool estimated}]
+     * @return array
+     */
+    public function GetStatus()
 	{
 		global $connection;
 		
 		$function_result = array();
 		
 		$online = false;
-		$sql = "SELECT `session`, `last_distance` FROM `buses` WHERE `id` = {$this->busno}";
-		$result = mysqli_query($connection, $sql);
-		$busdata = mysqli_fetch_array($result);
-		if($busdata['session'] == $this->id)
+		$sql = "SELECT `session`, `last_distance` FROM `buses` WHERE `id` = ?";
+		$result = sql_query($sql, "i", array($this->BusNo));
+		$busData = mysqli_fetch_array($result);
+		if($busData['session'] == $this->ID)
 		{
 			$online = true;
 		}
@@ -705,31 +705,18 @@ class Session
 			"datetime" => null,
 			"estimated_time" => 0
 		);
-		
-		$sql = "SELECT `stop`, `datetime` FROM `records` WHERE `session` = {$this->id} ORDER BY `datetime` ASC";
-		$results = mysqli_query($connection, $sql);
-		while($recorddata = mysqli_fetch_array($results))
+
+		$recordData = null;
+
+		$sql = "SELECT `stop`, `datetime` FROM `records` WHERE `session` = ? ORDER BY `datetime` ASC";
+		$results = sql_query($sql, "i", array($this->ID));
+		while($recordData = mysqli_fetch_array($results))
 		{
-			$last_record['stop'] = $recorddata['stop'];
-			$last_record['datetime'] = $recorddata['datetime'];
-			
-			if(count($time_sequences) > 0)
-			{
-				$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$this->route} AND `stop` = {$recorddata['stop']} AND ({$this->start_datetime} BETWEEN `start_time` AND `end_time`)";
-				$result = mysqli_query($connection, $sql);
-				
-				if(mysqli_num_rows($result) > 0)
-				{
-					$estimateddata = mysqli_fetch_array($result);
-					$last_record['estimated_time'] = $estimateddata['estimated_time'];
-				}
-			}
-			
 			$item = array(
-				"stop" => $recorddata['stop'],
-				"stopname" => get_text("stop", $recorddata['stop'], get_language_id()),
-				"datetime" => $recorddata['datetime'],
-				"datetime_readable" => date("H:i", $recorddata['datetime']),
+				"stop" => $recordData['stop'],
+				"stopname" => get_text("stop", $recordData['stop'], get_language_id()),
+				"datetime" => $recordData['datetime'],
+				"datetime_readable" => date("H:i", $recordData['datetime']),
 				"remaining_time" => null,
 				"remaining_distance" => null,
 				"estimated" => false
@@ -737,33 +724,48 @@ class Session
 			
 			array_push($time_sequences, $item);
 		}
+
+        if(count($time_sequences) > 0)
+        {
+            $last_record['stop'] = $recordData['stop'];
+            $last_record['datetime'] = $recordData['datetime'];
+
+            $sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
+            $result = sql_query($sql, "iii", array($this->Route, $recordData['stop'], $this->StartTimeStamp));
+
+            if(mysqli_num_rows($result) > 0)
+            {
+                $estimatedData = mysqli_fetch_array($result);
+                $last_record['estimated_time'] = $estimatedData['estimated_time'];
+            }
+        }
 		
 		if($online == true)
 		{
 			$now = mktime();
-			
-			$sql = "SELECT `stop`, `distance_from_start` FROM `route_paths` WHERE `route` = {$this->route} AND `stop` IS NOT NULL AND `distance_from_start` > {$busdata['last_distance']}";
-			$results = mysqli_query($connection, $sql);
-			while($nextstopdata = mysqli_fetch_array($results))
+
+			$sql = "SELECT `stop`, `distance_from_start` FROM `route_paths` WHERE `route` = ? AND `stop` IS NOT NULL AND `distance_from_start` > ?";
+			$results = sql_query($sql, "id", array($this->Route, $busData['last_distance']));
+			while($nextStopData = mysqli_fetch_array($results))
 			{
-				$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$this->route} AND `stop` = {$nextstopdata['stop']} AND ({$this->start_datetime} BETWEEN `start_time` AND `end_time`)";
+				$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$this->Route} AND `stop` = {$nextStopData['stop']} AND ({$this->StartTimeStamp} BETWEEN `start_time` AND `end_time`)";
 				$result = mysqli_query($connection, $sql);
 				
 				$dt = null;
 				if(mysqli_num_rows($result) > 0)
 				{
-					$estimateddata = mysqli_fetch_array($result);
+					$estimatedData = mysqli_fetch_array($result);
 					
-					$dt = $last_record['datetime'] + ($estimateddata['estimated_time'] - $last_record['estimated_time']);
+					$dt = $last_record['datetime'] + ($estimatedData['estimated_time'] - $last_record['estimated_time']);
 				}
 				
 				$item = array(
-					"stop" => $nextstopdata['stop'],
-					"stopname" => get_text("stop", $nextstopdata['stop'], get_language_id()),
+					"stop" => $nextStopData['stop'],
+					"stopname" => get_text("stop", $nextStopData['stop'], get_language_id()),
 					"datetime" => $dt,
 					"datetime_readable" => date("H:i", $dt),
 					"remaining_time" => $dt - $now,
-					"remaining_distance" => $nextstopdata['distance_from_start'] - $busdata['last_distance'],
+					"remaining_distance" => $nextStopData['distance_from_start'] - $busData['last_distance'],
 					"estimated" => true
 				);
 			
@@ -771,13 +773,13 @@ class Session
 			}
 		}
 
-		$route = new Route($this->route);
-		$function_result['busno'] = $this->busno;
-		$function_result['route'] = $this->route;
-		$function_result['routename'] = get_text("route", $this->route, get_language_id());
-		$function_result['routecolor'] = $route->color;
-		$function_result['start_datetime'] = $this->start_datetime;
-		$function_result['start_datetime_readable'] = date("H:i", $this->start_datetime);
+		$route = new Route($this->Route);
+		$function_result['busno'] = $this->BusNo;
+		$function_result['route'] = $this->Route;
+		$function_result['routename'] = get_text("route", $this->Route, get_language_id());
+		$function_result['routecolor'] = $route->Color;
+		$function_result['start_datetime'] = $this->StartTimeStamp;
+		$function_result['start_datetime_readable'] = date("H:i", $this->StartTimeStamp);
 		$function_result['online'] = $online;
 		$function_result['time_sequences'] = $time_sequences;
 		
@@ -785,88 +787,139 @@ class Session
 	}
 }
 
+/**
+ * Class Route
+ */
 class Route
 {
-	private $id;
-	private $name;
-	private $color;
-	private $path;
-	
-	public function __get($v)
+	private $ID;
+	private $Name;
+	private $Color;
+    /**
+     * [{stop (obj), distance_from_start}]
+     * @var array
+     */
+	private $Path;
+
+    /**
+     * @param $v
+     * @return mixed
+     */
+    public function __get($v)
 	{
 		return $this->$v;
 	}
-	
-	public function __construct($ID)
+
+    /**
+     * Route constructor.
+     * @param $ID
+     */
+    public function __construct($ID)
 	{
 		global $connection;
 		
-		$this->id = $ID;
+		$this->ID = $ID;
+
+        $sql = "SELECT `name`, `color` FROM `routes` WHERE `id` = ?";
+        $result = sql_query($sql, "i", array($ID));
+
+		$routeData = mysqli_fetch_array($result);
 		
-		$sql = "SELECT `name`, `color` FROM `routes` WHERE `id` = $ID";
-		$result = mysqli_query($connection, $sql);
-		$routedata = mysqli_fetch_array($result);
+		$this->Name = $routeData['name'];
+		$this->Color = $routeData['color'];
 		
-		$this->name = $routedata['name'];
-		$this->color = $routedata['color'];
+		$this->Path = array();
 		
-		$this->path = array();
-		
-		$sql = "SELECT `stop`, `distance_from_start` FROM `route_paths` WHERE `route` = {$this->id} AND `stop` IS NOT NULL ORDER BY `distance_from_start` ASC";
-		$results = mysqli_query($connection, $sql);
+		$sql = "SELECT `stop`, `distance_from_start` FROM `route_paths` WHERE `route` = ? AND `stop` IS NOT NULL ORDER BY `distance_from_start` ASC";
+		$results = sql_query($sql, "i", array($this->ID));
 		while($stopdata = mysqli_fetch_array($results))
 		{
-			array_push($this->path, array("stop" => new Stop($stopdata['stop']), "distance_from_start" => $stopdata['distance_from_start']));
+			array_push($this->Path, array("stop" => new Stop($stopdata['stop']), "distance_from_start" => $stopdata['distance_from_start']));
 		}
 	}
 }
 
+/**
+ * Class Node
+ */
 class Node
 {
-	private $stop;
-	private $maxPaths;	
-	private $paths;	
-	
-	public $marked = false;
-	public $touched = 0;
-	
+    /** @var Stop  */
+	private $Stop;
+	/** @var Path[] */
+    private $Paths;
+
+    public $MaxPath = 2;
+    public $Marked = false;
+    public $Touched = 0;
+
+    /**
+     * @param $v
+     * @return mixed
+     */
 	public function __get($v)
 	{
 		return $this->$v;
 	}
-	
-	public function __construct($stopid, $max_path)
+
+    /**
+     * Node constructor.
+     * @param $stopID
+     * @param int $max_path
+     */
+	public function __construct($stopID, $max_path = 2)
 	{
-		$this->stop = new Stop($stopid);
-		$this->maxPaths = $max_path;
+		$this->Stop = new Stop($stopID);
+		$this->MaxPath = $max_path;
 	}
-	
-	public function CompareAndAdd($path, $mode = "totalTime")
+
+    /**
+     * Compare introduced path with current path in this node and add to the node if the path is better
+     * @param $path
+     * @param string $mode
+     */
+	public function CompareAndAdd(Path $path)
 	{
-		for($i = 0; $i < $this->maxPaths; $i++)
+		for($i = 0; $i < $this->MaxPath; $i++)
 		{
-			if($path->IsBetterThan($this->paths[$i], $mode) == true)
+			if($path->IsBetterThan($this->Paths[$i]) == true)
 			{
-				$this->touched++;
-				$this->paths[$i] = $path;
+                for($j = $this->MaxPath - 2; $j <= $i; $j--)
+                {
+                    $this->Paths[$j + 1] = $this->Paths[$j];
+                }
+
+                $this->Touched++;
+                $this->Paths[$i] = $path;
+
 				break;
 			}
 		}
 	}
-	
+
+    /**
+     * Get the last node time stamp from best path
+     * @return null
+     */
 	public function LastTimeStamp()
 	{
-		if(count($this->paths[0]) == null)
+		if(count($this->Paths[0]) == null)
 		{
 			return null;
 		}
-		return $this->paths[0]->LastSequence()['timestamp'];
+		return $this->Paths[0]->LastSequence()['timestamp'];
 	}
-	
+
+    /**
+     * Check if all nodes in given array are marked as traveled
+     * @param $nodes
+     * @return bool
+     */
 	public static function AllMarked($nodes)
 	{
 		foreach($nodes as $node)
 		{
+		    /** @var $node Node */
 			if($node->marked == false)
 			{
 				return false;
@@ -877,134 +930,155 @@ class Node
 	}
 }
 
+/**
+ * Class Path
+ */
 class Path
 {
-	private $sequences;
-	private $startID;
-	private $startTime;
-	private $totalTime = 0;
-	private $hopCount = 0;
-	
+    /**
+     * [{stopid, stopname, stoplocation: {lat, lon}, route, routename, routecolor, timestamp, traveltime, waittime, time]
+     * @var array
+     */
+    private $Sequences;
+    private $StartID;
+    private $StartTime;
+	private $TotalTime = 0;
+	private $HopCount = 0;
+
+    /**
+     * @param $v
+     * @return mixed
+     */
 	public function __get($v)
 	{
 		return $this->$v;
 	}
-	
+
+    /**
+     * Path constructor.
+     * @param $start_id
+     * @param $start_time
+     */
 	public function __construct($start_id, $start_time)
 	{
-		$this->sequences = array();
-		$this->startID = $start_id;
-		$this->startTime = $start_time;
+		$this->Sequences = array();
+		$this->StartID = $start_id;
+		$this->StartTime = $start_time;
 	}
-	
+
+    /**
+     * Get the last sequence of the path
+     * @return mixed|null
+     */
 	public function LastSequence()
 	{
-		if(count($this->sequences) > 0)
+		if(count($this->Sequences) > 0)
 		{
-			return end($this->sequences);
+			return end($this->Sequences);
 		}
 		
 		return null;
 	}
-	
-	public function AddSequence($stop, $route, $timestamp = null, $waittime = 0)
+
+    /**
+     * Add a new sequence to this path
+     * @param $stop
+     * @param $route
+     * @param null|int $timestamp
+     * @param int $waitTime
+     */
+	public function AddSequence($stop, $route, $timestamp = null, $waitTime = 0)
 	{
 		if($timestamp == null)
 		{
 			$timestamp = mktime();
 		}
 		
-		array_push($this->sequences, array("to" => $stop, "route" => $route, "timestamp" => $timestamp, "waittime" => $waittime));
-		$this->totalTime = ($timestamp - $this->startTime);
-		$this->hopCount++;
+		array_push($this->Sequences, array("to" => $stop, "route" => $route, "timestamp" => $timestamp, "waittime" => $waitTime));
+		$this->TotalTime = ($timestamp - $this->StartTime);
+		$this->HopCount++;
 	}
-	
-	public function IsBetterThan(&$path, $mode = "totalTime")
+
+    /**
+     * Check if the current path is better than parameterized path
+     * @param $path
+     * @return bool
+     */
+	public function IsBetterThan(&$path)
 	{
 		if($path == null)
 		{
 			return true;
 		}
-		
-		if($mode == "totalTime")
+
+		if($this->TotalTime < $path->totalTime)
 		{
-			if($this->totalTime < $path->totalTime)
-			{
-				return true;
-			}
-			else if($this->totalTime == $path->totalTime && $this->hopCount < $path->hopCount)
-			{
-				return true;
-			}
-			return false;
+			return true;
 		}
-		else if($mode == "hopCount")
+		else if($this->TotalTime == $path->totalTime && $this->HopCount < $path->hopCount)
 		{
-			if($this->hopCount < $path->hopCount)
-			{
-				return true;
-			}
-			else if($this-> hopCount == $path->hopCount && $this->totalTime < $path->totalTime)
-			{
-				return true;
-			}
-			return false;
+			return true;
 		}
-		
-		return null;
+
+		return false;
 	}
-	
+
+    /**
+     * Check path format to be easier to read from API
+     * FORMAT: [{stopid, stopname, stoplocation: {lat, lon}, route, routename, routecolor, timestamp, traveltime, waittime, time}]
+     * @return array
+     */
 	public function Readable()
 	{
 		$function_result = array();
-		$stop = new Stop($this->startID);
+		$stop = new Stop($this->StartID);
 		$stop->GetInfo();
 		
 		array_push($function_result,
 			array(
-				"stopid" => $stop->id,
-				"stopname" => $stop->Translate(get_language_id()),
+				"stopid" => $stop->ID,
+				"stopname" => get_text("stop", $stop->ID, get_language_id()),
 				"stoplocation" => array(
-					"lat" => $stop->location_lat,
-					"lon" => $stop->location_lon
+					"lat" => $stop->Location->lat,
+					"lon" => $stop->Location->lon
 				),
 				"route" => null,
 				"routename" => null,
 				"routecolor" => "cdcdcd",
-				"timestamp" => $this->startTime,
+				"timestamp" => $this->StartTime,
 				"traveltime" => 0,
 				"waittime" => 0,
-				"time" => date("H:i", $this->startTime)
+				"time" => date("H:i", $this->StartTime)
 			)
 		);
 		
-		$lasttimestamp = $this->startTime;
+		$lastTimestamp = $this->StartTime;
 		
-		foreach($this->sequences as $sequence)
+		foreach($this->Sequences as $sequence)
 		{
 			$stop = new Stop($sequence['to']);
 			$stop->GetInfo();
 			$route = $sequence['route'];
 			$timestamp = $sequence['timestamp'];
 			$waittime = $sequence['waittime'];
-			$traveltime = $sequence['timestamp'] - $lasttimestamp - $waittime;
+			$traveltime = $sequence['timestamp'] - $lastTimestamp - $waittime;
 			
 			$routename = null;
 			$routecolor = "cdcdcd";
 			if($route != null)
 			{
 				$r = new Route($route);
-				$routename = get_text("route", $r->id, get_language_id());
-				$routecolor = $r->color;
+				$routename = get_text("route", $r->ID, get_language_id());
+				$routecolor = $r->Color;
 			}
 			
 			array_push($function_result,
 				array(
-					"stopid" => $stop->id,
+					"stopid" => $stop->ID,
 					"stopname" => $stop->Translate(get_language_id()),
 					"stoplocation" => array(
-						"lat" => $stop->location_lat,
-						"lon" => $stop->location_lon
+						"lat" => $stop->Location->lat,
+						"lon" => $stop->Location->lon
 					),
 					"route" => $route,
 					"routename" => $routename,
@@ -1016,15 +1090,93 @@ class Path
 				)
 			);
 			
-			$lasttimestamp = $timestamp;
+			$lastTimestamp = $timestamp;
 		}
-		
 		return($function_result);
 	}
 }
 
-## Function Wait Time At
-#### Return approximated waiting time at specificed route, busstop and time
+/**
+ * Query estimated time from origin from database with specified route, bus stop and time
+ * @param $route
+ * @param $stop
+ * @param $timestamp
+ * @return mixed
+ */
+function estimated_time($route, $stop, $timestamp)
+{
+    $sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
+    $result = sql_query($sql, "iii", array($route, $stop, $timestamp));
+    $estimatedData = mysqli_fetch_array($result);
+
+    if(mysqli_num_rows($result) == 0)
+    {
+        return null;
+    }
+
+    return $estimatedData['estimated_time'];
+}
+
+/**
+ * Get estimated time between specified bus stops in specified route and time
+ * @param $route
+ * @param $stop1
+ * @param $stop2
+ * @param $timestamp
+ * @return mixed
+ */
+function estimated_time_between($route, $stop1, $stop2, $timestamp)
+{
+    $sql = "SELECT `distance_from_start` FROM `route_paths` WHERE `route` = ? AND `stop` = ? ORDER BY `distance_from_start` ASC";
+    $result = sql_query($sql, "ii", array($route, $stop1));
+    $stop1DistanceData = mysqli_fetch_array($result);
+
+    if($stop1DistanceData['distance_form_start'] == 0)
+    {
+        return estimated_time($route, $stop2, $timestamp);
+    }
+
+    $stop2EstimatedTime = estimated_time($route, $stop2, $timestamp);
+    if($stop2EstimatedTime == null)
+    {
+        return null;
+    }
+
+    $stop1EstimatedTime = estimated_time($route, $stop1, $timestamp);
+    if($stop1EstimatedTime == null)
+    {
+        return null;
+    }
+
+    return $stop2EstimatedTime - $stop1EstimatedTime;
+}
+
+/**
+ * Make SQL query with stmt bind parameter
+ * @param $sqlParseText
+ * @param string $variableTypes
+ * @param array $variableValuesArray
+ * @return bool|mysqli_result
+ */
+function sql_query($sqlParseText, $variableTypes = "", $variableValuesArray = array())
+{
+    global $connection;
+
+    $stmtObj = $connection->prepare($sqlParseText);
+    call_user_func_array(array($stmtObj, "bind_param"), array_merge(array($variableTypes), $variableValuesArray));
+
+    $stmtObj->execute();
+
+    return $stmtObj->get_result();
+}
+
+/**
+ * Return approximated waiting time at specified route, busstop and time
+ * @param $stop
+ * @param $route
+ * @param bool $datetime
+ * @return mixed
+ */
 function wait_time_at($stop, $route, $datetime = false)
 {	
 	global $connection;	
@@ -1034,23 +1186,30 @@ function wait_time_at($stop, $route, $datetime = false)
 	{
 		$datetime = mktime();
 	}
-	
-	$sql = "SELECT `waittime` FROM `time_estimation` WHERE `stop` = $stop AND `route` = $route AND $datetime BETWEEN `start_time` AND `end_time`";
-	$result = mysqli_query($connection, $sql);
+
+	$sql = "SELECT `waittime` FROM `time_estimation` WHERE `stop` = ? AND `route` = ? AND ? BETWEEN `start_time` AND `end_time`";
+	$result = sql_query($sql, "iii", array($stop, $route, $datetime));
 	if(mysqli_num_rows($result) > 0)
 	{
-		$waittimedata = mysqli_fetch_array($result);
+		$waitTimeData = mysqli_fetch_array($result);
 	}
 	else
 	{
 		return wait_time_at($stop, $route, mktime(12, 0, 0));
 	}
 	
-	return $waittimedata['waittime'];
+	return $waitTimeData['waittime'];
 }
 
-## Function Get Path at
-#### Get available path at specificed stop
+/**
+ * Get available path at specified stop
+ * [{to, time, waittime, route=int|null}]
+ * @param $stop
+ * @param bool $datetime
+ * @param bool $bus
+ * @param bool $walk
+ * @return array
+ */
 function get_single_path_at($stop, $datetime = false, $bus = true, $walk = true)
 {
 	global $connection;
@@ -1061,30 +1220,30 @@ function get_single_path_at($stop, $datetime = false, $bus = true, $walk = true)
 	}
 	
 	$function_result = array();
-	
+
 	if($walk == true)
 	{
-		$sql = "SELECT `stop1`, `stop2`, `connection_time` FROM `connections` WHERE `stop1` = $stop OR `stop2` = $stop";
-		$results = mysqli_query($connection, $sql);
-		while($connectiondata = mysqli_fetch_array($results))
+		$sql = "SELECT `stop1`, `stop2`, `connection_time` FROM `connections` WHERE `stop1` = ? OR `stop2` = ?";
+		$results = sql_query($sql, "ii", array($stop, $stop));
+		while($connectionData = mysqli_fetch_array($results))
 		{
-			if($connectiondata['stop1'] == $stop)
+			if($connectionData['stop1'] == $stop)
 			{
 				array_push($function_result,
 					array(
-						"to" => $connectiondata['stop2'],
-						"time" => $connectiondata['connection_time'] * 1,
+						"to" => $connectionData['stop2'],
+						"time" => $connectionData['connection_time'] * 1,
 						"waittime" => null,
 						"route" => null
 					)
 				);
 			}
-			else if($connectiondata['stop2'] == $stop)
+			else if($connectionData['stop2'] == $stop)
 			{
 				array_push($function_result,
 					array(
-						"to" => $connectiondata['stop1'],
-						"time" => $connectiondata['connection_time'] * 1,
+						"to" => $connectionData['stop1'],
+						"time" => $connectionData['connection_time'] * 1,
 						"waittime" => null,
 						"route" => null
 					)
@@ -1095,52 +1254,52 @@ function get_single_path_at($stop, $datetime = false, $bus = true, $walk = true)
 	
 	if($bus == true)
 	{
-		foreach(get_routes_at($datetime) as $routedata) if($routedata['available'] == 1)
+		foreach(get_routes_at($datetime) as $routeData) if($routeData['available'] == 1)
 		{			
-			$sql = "SELECT `distance_from_start` FROM `route_paths` WHERE `route` = {$routedata['id']} AND `stop` = $stop ORDER BY `distance_from_start` ASC LIMIT 1";
-			$result = mysqli_query($connection, $sql);
+			$sql = "SELECT `distance_from_start` FROM `route_paths` WHERE `route` = ? AND `stop` = ? ORDER BY `distance_from_start` ASC LIMIT 1";
+			$result = sql_query($sql, "ii", array($routeData['id'], $stop));
 			if(mysqli_num_rows($result) == 1)
 			{
-				$waittime = wait_time_at($stop, $routedata['id'], $datetime);
+				$waittime = wait_time_at($stop, $routeData['id'], $datetime);
 				$datetime += $waittime;
 			
-				$distancedata = mysqli_fetch_array($result);
-				$stop_distance = $distancedata['distance_from_start'];
+				$distanceData = mysqli_fetch_array($result);
+				$stop_distance = $distanceData['distance_from_start'];
 				
 				$time_to_stop = 0;
 				if($stop_distance > 0)
 				{
-					$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$routedata['id']} AND `stop` = $stop AND ($datetime BETWEEN `start_time` AND `end_time`)";
-					$result = mysqli_query($connection, $sql);
+					$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
+					$result = sql_query($sql, "iii", array($routeData['id'], $stop, $datetime));
 					if(mysqli_num_rows($result) > 0)
 					{
-						$estimateddata = mysqli_fetch_array($result);
-						$time_to_stop = $estimateddata['estimated_time'];
+						$estimatedData = mysqli_fetch_array($result);
+						$time_to_stop = $estimatedData['estimated_time'];
 					}
 				}
 				
-				$sql = "SELECT `stop` FROM `route_paths` WHERE `route` = {$routedata['id']} AND `stop` IS NOT NULL AND `distance_from_start` > $stop_distance";
-				$results = mysqli_query($connection, $sql);
-				while($stopdata = mysqli_fetch_array($results))
+				$sql = "SELECT `stop` FROM `route_paths` WHERE `route` = ? AND `stop` IS NOT NULL AND `distance_from_start` > ?";
+				$results = sql_query($sql, "id", array($routeData['id'], $stop_distance));
+				while($stopData = mysqli_fetch_array($results))
 				{
 					$time = 0;
 					
 					if($time_to_stop >= 0)
 					{
-						$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$routedata['id']} AND `stop` = {$stopdata['stop']} AND ($datetime BETWEEN `start_time` AND `end_time`)";
-						$result = mysqli_query($connection, $sql);
+						$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
+						$result = sql_query($sql, "iii", array($routeData, $stopData, $datetime));
 						if(mysqli_num_rows($result) > 0)
 						{
-							$estimateddata = mysqli_fetch_array($result);
-							$time = $estimateddata['estimated_time'] - $time_to_stop;
+							$estimatedData = mysqli_fetch_array($result);
+							$time = $estimatedData['estimated_time'] - $time_to_stop;
 						}
 					}
 					
 					array_push($function_result,
-						array(	"to" => $stopdata['stop'],
+						array(	"to" => $stopData['stop'],
 								"time" => $time,
 								"waittime" => $waittime,
-								"route" => $routedata['id']
+								"route" => $routeData['id']
 							)
 					);
 				}
@@ -1151,6 +1310,13 @@ function get_single_path_at($stop, $datetime = false, $bus = true, $walk = true)
 	return $function_result;
 }
 
+/**
+ * Sort array by given key
+ * @param $array
+ * @param $key
+ * @param int $sort_type
+ * @return mixed
+ */
 function sort_by($array, $key, $sort_type = SORT_ASC)
 {
 	$temp = array();

@@ -102,8 +102,8 @@ function estimate_on($day)
 		
 		$period = find_period($periods, $sessiondata['start_datetime']);
 		
-		$lower = changeday_savetime($period['lower'], $today);
-		$upper = changeday_savetime($period['upper'], $today);
+		$lower = shift_day($period['lower'], $today);
+		$upper = shift_day($period['upper'], $today);
 		
 		if(!isset($data[$sessiondata['route']][$lower][$upper][$recorddata['stop']]))
 		{
@@ -230,12 +230,12 @@ function wait_time_at($stop, $route, $datetime = false)
 	$days = array();	
 	$sqltxts = array();
 	
-	$sql = "SELECT `date` FROM `days` WHERE `type` = {$day->type} AND `date` < {$day->timestamp} ORDER BY `date` DESC LIMIT {$calculated_day_amount}";
+	$sql = "SELECT `date` FROM `days` WHERE `type` = {$day->Type} AND `date` < {$day->Timestamp} ORDER BY `date` DESC LIMIT {$calculated_day_amount}";
 	$results = mysqli_query($connection, $sql);
 	while($daydata = mysqli_fetch_array($results))
 	{
 		$day = new Day($daydata['date']);
-		array_push($sqltxts, "(`datetime` BETWEEN " . ($day->timestamp + $lower) . " AND " . ($day->timestamp + $upper) . ")");
+		array_push($sqltxts, "(`datetime` BETWEEN " . ($day->Timestamp + $lower) . " AND " . ($day->Timestamp + $upper) . ")");
 	}
 	
 	$sqltxt = implode(" OR ", $sqltxts);

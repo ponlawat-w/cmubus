@@ -21,14 +21,14 @@
 			$detail = $_POST['detail'];
 			$day->SetDetail($detail);
 			
-			header("location: admin.php?page=calendar&day={$day->timestamp}");
+			header("location: admin.php?page=calendar&day={$day->Timestamp}");
 		}
 		else if($_POST['action'] == "settype")
 		{
 			$type = $_POST['type'];
 			$day->SetTypeTo($type);
 				
-			header("location: admin.php?page=calendar&day={$day->timestamp}");
+			header("location: admin.php?page=calendar&day={$day->Timestamp}");
 		}
 		else if($_POST['action'] == "newswitcher")
 		{
@@ -68,7 +68,7 @@
 				}
 			}
 			
-			header("location: admin.php?page=calendar&day={$day->timestamp}");
+			header("location: admin.php?page=calendar&day={$day->Timestamp}");
 		}
 	}
 	else if(isset($_GET['removeswitcherid']))
@@ -78,7 +78,7 @@
 		$sql = "DELETE FROM `route_available_switchers` WHERE `id` = $removeid";
 		mysqli_query($connection, $sql);
 		
-		header("location: admin.php?page=calendar&day={$day->timestamp}");
+		header("location: admin.php?page=calendar&day={$day->Timestamp}");
 	}
 ?>
 
@@ -86,27 +86,27 @@
 	<h3><i class="fa fa-calendar"></i> ปฏิทินการเดินรถ</h3>
 	<div class="content-panel col-lg-12">
 		<?php
-			$previous_day = $day->timestamp - 86400;
-			$next_day = $day->timestamp + 86400;
+			$previous_day = $day->Timestamp - 86400;
+			$next_day = $day->Timestamp + 86400;
 		?>
 		<a href="admin.php?page=calendar&day=<?php echo $previous_day; ?>"><i class="fa fa-arrow-left"></i> วันก่อนหน้า</a>　
 		<a href="admin.php?page=calendar&day=<?php echo $next_day; ?>">วันถัดไป <i class="fa fa-arrow-right"></i></a>
 		
-		<h3><?php echo thaidate("฿วว ฿วท ฿ดด ฿ปปปป", $day->timestamp) . " (" . $day->TypeToString() . ")"; ?></h3>
+		<h3><?php echo thaidate("฿วว ฿วท ฿ดด ฿ปปปป", $day->Timestamp) . " (" . $day->TypeToString() . ")"; ?></h3>
 		<?php
-			if($day->detail != "")
+			if($day->Detail != "")
 			{
-				echo "<h4>{$day->detail}</h4>";
+				echo "<h4>{$day->Detail}</h4>";
 			}
 		?>
 		
-		<form action="admin.php?page=calendar&day=<?php echo $day->timestamp; ?>" method="post"><p>
-			คำอธิบายวัน: <input type="text" name="detail" value="<?php echo $day->detail; ?>">
+		<form action="admin.php?page=calendar&day=<?php echo $day->Timestamp; ?>" method="post"><p>
+			คำอธิบายวัน: <input type="text" name="detail" value="<?php echo $day->Detail; ?>">
 			<input type="hidden" name="action" value="setdetail">
 			<button type="submit" class="btn btn-primary btn-xs"><i class="fa fa-save"></i> บันทึก</button>
 		</p></form>
 		
-		<p><form action="admin.php?page=calendar&day=<?php echo $day->timestamp; ?>" method="post" class="display: inline-block">
+		<p><form action="admin.php?page=calendar&day=<?php echo $day->Timestamp; ?>" method="post" class="display: inline-block">
 			แก้ไขประเภทวัน: <select name="type">
 				<?php
 				$sql = "SELECT `id`, `name` FROM `day_types` ORDER BY `name` ASC";
@@ -114,7 +114,7 @@
 				while($typedata = mysqli_fetch_array($results))
 				{
 					echo "<option value='{$typedata['id']}'";
-					if($day->type == $typedata['id'])
+					if($day->Type == $typedata['id'])
 					{
 						echo " selected";
 					}
@@ -127,7 +127,7 @@
 		</form>
 		
 		<?php
-		if($day->timestamp == $today)
+		if($day->Timestamp == $today)
 		{
 			echo "<hr>";
 			
@@ -146,7 +146,7 @@
 			
 			echo "</ul>";
 		}
-		else if($day->timestamp > $today)
+		else if($day->Timestamp > $today)
 		{
 			echo "<hr>";
 			
@@ -154,7 +154,7 @@
 			
 			echo "<ul>";
 			
-			$routes = get_routes_at($day->timestamp);
+			$routes = get_routes_at($day->Timestamp);
 			foreach($routes as $routedata)
 			{
 				if($routedata['available'])
@@ -166,18 +166,18 @@
 			echo "</ul>";
 		}
 		
-		if($day->timestamp >= $today)
+		if($day->Timestamp >= $today)
 		{
-			if($day->timestamp == $today)
+			if($day->Timestamp == $today)
 			{
 				$start = mktime();
 			}
 			else
 			{
-				$start = $day->timestamp;
+				$start = $day->Timestamp;
 			}
 			
-			$end = $day->timestamp + 86399;
+			$end = $day->Timestamp + 86399;
 			
 			$sql = "SELECT `date` FROM `route_available_switchers` GROUP BY `date` HAVING `date` BETWEEN $start AND $end";
 			$results = mysqli_query($connection, $sql);
@@ -206,7 +206,7 @@
 					$result = mysqli_query($connection, $sql);
 					$routedata = mysqli_fetch_array($result);
 					
-					echo "<li><a href='admin.php?page=calendar&day={$day->timestamp}&removeswitcherid={$switcherdata['id']}' class='btn btn-default btn-xs' onclick='return confirm(\"แน่ใจหรือไม่\");'><i class='fa fa-trash'></i> ลบ</a> <span style='color:#{$routedata['color']};'>{$routedata['name']} ({$routedata['detail']})</span> ";
+					echo "<li><a href='admin.php?page=calendar&day={$day->Timestamp}&removeswitcherid={$switcherdata['id']}' class='btn btn-default btn-xs' onclick='return confirm(\"แน่ใจหรือไม่\");'><i class='fa fa-trash'></i> ลบ</a> <span style='color:#{$routedata['color']};'>{$routedata['name']} ({$routedata['detail']})</span> ";
 					
 					if($switcherdata['set_available_to'] == 1)
 					{
@@ -224,7 +224,7 @@
 			}
 			
 			?>
-			<form action="admin.php?page=calendar&day=<?php echo $day->timestamp; ?>" method="post">
+			<form action="admin.php?page=calendar&day=<?php echo $day->Timestamp; ?>" method="post">
 				<hr>
 				<h4>เพิ่มคำสั่งใหม่</h4>
 				เวลา
@@ -232,13 +232,13 @@
 					<?php
 					$now = mktime();
 					
-					$i = $day->timestamp;
+					$i = $day->Timestamp;
 					if($i > $now)
 					{
 						echo "<option value='$i'>" . date("H:i", $i) . "</option>";
 					}
 					
-					for($i = $day->timestamp + 21600; $i < $day->timestamp + 82801; $i += 1800)
+					for($i = $day->Timestamp + 21600; $i < $day->Timestamp + 82801; $i += 1800)
 					{
 						if($i < $now)
 						{

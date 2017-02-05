@@ -1,15 +1,27 @@
 <?php
+
+/**
+ * Class Day
+ */
 class Day
 {
-	private $timestamp;
-	private $type;
-	private $detail;
-		
+	private $Timestamp;
+	private $Type;
+	private $Detail;
+
+    /**
+     * @param $v
+     * @return mixed
+     */
 	public function __get($v)
 	{
 		return $this->$v;
 	}
-	
+
+    /**
+     * Day constructor.
+     * @param $day
+     */
 	public function __construct($day)
 	{
 		global $connection;
@@ -22,83 +34,115 @@ class Day
 		
 		$sql = "SELECT `type`, `detail` FROM `days` WHERE `date` = $day";
 		$result = mysqli_query($connection, $sql);
-		$numrows = mysqli_num_rows($result);
+		$numRows = mysqli_num_rows($result);
 		
-		if($numrows == 0)
+		if($numRows == 0)
 		{
 			if(date("N", $day) > 5) // วันหยุด
 			{
-				$this->type = -1;
+				$this->Type = -1;
 			}
 			else // วันธรรมดา
 			{
-				$this->type = 0;
+				$this->Type = 0;
 			}
 			
-			$sql = "INSERT INTO `days` (`date`, `type`, `detail`) VALUES ($day, {$this->type}, '')";
+			$sql = "INSERT INTO `days` (`date`, `type`, `detail`) VALUES ($day, {$this->Type}, '')";
 			mysqli_query($connection, $sql);
 			
-			$this->timestamp = $day;
-			$this->detail = "";
+			$this->Timestamp = $day;
+			$this->Detail = "";
 		}
 		else
 		{
-			$daydata = mysqli_fetch_array($result);
+			$dayData = mysqli_fetch_array($result);
 			
-			$this->timestamp = $day;
-			$this->type = $daydata['type'];
-			$this->detail = $daydata['detail'];
+			$this->Timestamp = $day;
+			$this->Type = $dayData['type'];
+			$this->Detail = $dayData['detail'];
 		}
 	}
-	
+
+    /**
+     * Return day type as string
+     * @return mixed
+     */
 	public function TypeToString()
 	{
 		global $connection;
 		
-		$sql = "SELECT `name` FROM `day_types` WHERE `id` = {$this->type}";
+		$sql = "SELECT `name` FROM `day_types` WHERE `id` = {$this->Type}";
 		$result = mysqli_query($connection, $sql);
 		$data = mysqli_fetch_array($result);
 		
 		return $data['name'];
 	}
-	
-	public function SetTypeTo($newtype)
+
+    /**
+     * Set day type
+     * @param $newType
+     */
+	public function SetTypeTo($newType)
 	{
 		global $connection;
 		
-		$sql = "UPDATE `days` SET `type` = $newtype WHERE `date` = {$this->timestamp}";
+		$sql = "UPDATE `days` SET `type` = $newType WHERE `date` = {$this->Timestamp}";
 		mysqli_query($connection, $sql);
 		
-		$this->type = $newtype;
+		$this->Type = $newType;
 	}
-	
-	public function SetDetail($newdetail)
+
+    /**
+     * Set day detail
+     * @param $newDetail
+     */
+	public function SetDetail($newDetail)
 	{
 		global $connection;
 		
-		$sql = "UPDATE `days` SET `detail` = '$newdetail' WHERE `date` = {$this->timestamp}";
+		$sql = "UPDATE `days` SET `detail` = '$newDetail' WHERE `date` = {$this->Timestamp}";
 		mysqli_query($connection, $sql);
 		
-		$this->detail = $newdetail;
+		$this->Detail = $newDetail;
 	}
-	
+
+    /**
+     * Get the last timestamp of this day (23:59:59)
+     * @return mixed
+     */
 	public function GetFinal()
 	{
-		return $this->timestamp + 86399;
+		return $this->Timestamp + 86399;
 	}
 }
 
-function changeday_savetime($timestamp, $day)
+/**
+ * Change timestamp to another day by remaining the time
+ * @param $timestamp
+ * @param Day $day
+ * @return mixed
+ */
+function shift_day($timestamp, $day)
 {
 	$time = ((date("H", $timestamp) * 3600) + (date("i", $timestamp) * 60) + date("s", $timestamp));
-	return $day->timestamp + $time;
+	return $day->Timestamp + $time;
 }
 
+/**
+ * Change timestamp to day object
+ * @param $timestamp
+ * @return Day
+ */
 function get_day_from_timestamp($timestamp)
 {
 	return new Day($timestamp - (date("H", $timestamp)*3600 + date("i", $timestamp)*60 + date("s", $timestamp)));
 }
 
+/**
+ * Get routes status at specified time
+ * @param $time
+ * @return array
+ */
 function get_routes_at($time)
 {
 	global $connection;
@@ -114,33 +158,36 @@ function get_routes_at($time)
 	$i = 0;
 	$sql = "SELECT `id`, `refid`, `color`, `name`, `available`, `detail` FROM `routes` ORDER BY `name` ASC, `detail` ASC";
 	$results = mysqli_query($connection, $sql);
-	while($routedata = mysqli_fetch_array($results))
+	while($routeData = mysqli_fetch_array($results))
 	{
-		$available = $routedata['available'];
+		$available = $routeData['available'];
+
+		if($time != $now)
+        {
+            $sql = "SELECT `set_available_to` FROM `route_available_switchers` WHERE `route` = {$routeData['id']} AND `date` BETWEEN $now AND $time ORDER BY `date` DESC LIMIT 1";
+            $result = mysqli_query($connection, $sql);
+            $numRows = mysqli_num_rows($result);
+
+            if($numRows == 1)
+            {
+                $data = mysqli_fetch_array($result);
+
+                $available = $data['set_available_to'];
+            }
+        }
 		
-		$sql = "SELECT `set_available_to` FROM `route_available_switchers` WHERE `route` = {$routedata['id']} AND `date` BETWEEN $now AND $time ORDER BY `date` DESC LIMIT 1";
-		$result = mysqli_query($connection, $sql);
-		$numrows = mysqli_num_rows($result);
-		
-		if($numrows == 1)
-		{
-			$data = mysqli_fetch_array($result);
-			
-			$available = $data['set_available_to'];
-		}
-		
-		$routename = $routedata['name'];
+		$routename = $routeData['name'];
 		if(function_exists("get_text"))
 		{
-			$routename = get_text("route", $routedata['id'], get_language_id());
+			$routename = get_text("route", $routeData['id'], get_language_id());
 		}
 		
 		$routes[$i] = array(
-			"id" => $routedata['id'],
-			"refid" => $routedata['refid'],
-			"color" => $routedata['color'],
+			"id" => $routeData['id'],
+			"refid" => $routeData['refid'],
+			"color" => $routeData['color'],
 			"name" => $routename,
-			"detail" => $routedata['detail'],
+			"detail" => $routeData['detail'],
 			"available" => $available
 		);
 		
