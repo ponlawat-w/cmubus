@@ -93,11 +93,13 @@ class Stop
     public function FindPathsTo($destinationID, $datetime = false, $max_result = 2)
 	{
 		global $connection;
-		
+
 		if($datetime == false)
 		{
 			$datetime = mktime();
 		}
+
+		$this->GetInfo();
 		
 		$destination_stop = new Stop($destinationID);
 		$destination_stop->GetInfo();
@@ -137,7 +139,7 @@ class Stop
 			
 			$walk = true;
 			if($nodes[$currentID]->Paths[0] != null
-				&& $nodes[$currentID]->Paths[0]->hopCount > 0
+				&& $nodes[$currentID]->Paths[0]->HopCount > 0
 				&& $nodes[$currentID]->Paths[0]->LastSequence()['route'] == null)
 			{
 				$walk = false;
@@ -232,7 +234,6 @@ class Stop
 	public function TimeTable()
 	{
 		global $connection;
-		
 		$function_result = array();
 		
 		if($this->BusStop == null)
@@ -256,9 +257,8 @@ class Stop
 		}
 		
 		$now = mktime();
-		$routes = get_routes_at($now);
 		
-		foreach($routes as $route) if($route['available'] == 1)
+		foreach($this->PassingRoutes($now) as $route)
 		{
 			$count = 0;
 			
@@ -290,14 +290,15 @@ class Stop
 						$lastRecordData = mysqli_fetch_array($lastRecordResult);
 						$last_stopid = $lastRecordData['stop'];
 
-						$estimatedTimeBetweenStops = estimated_time($route['id'], $last_stopid, $this->ID, $sessionData['start_datetime']);
-						if($estimatedTimeBetweenStops == null)
+						$estimatedTimeBetweenStops = estimated_time_between($route['id'], $last_stopid, $this->ID, $sessionData['start_datetime']);
+                        if($estimatedTimeBetweenStops == null)
                         {
                             continue;
                         }
-						$estimatedTime = $lastRecordData['datetime'] + $estimatedTimeBetweenStops;
-					}
-					else
+                        error_log("estimated time = last record {$lastRecordData['datetime']} + estimated $estimatedTimeBetweenStops");
+                        $estimatedTime = $lastRecordData['datetime'] + $estimatedTimeBetweenStops;
+                    }
+                    else
                     {
                         $estimatedTimeAtThisStop = estimated_time($route['id'], $this->ID, $sessionData['start_datetime']);
                         if($estimatedTimeAtThisStop == null)
@@ -432,7 +433,7 @@ class Stop
 				//}
 			}
 		}
-		
+
 		return $function_result;
 	}
 
@@ -609,10 +610,22 @@ class Stop
 		{
 			$datetime = mktime();
 		}
+
+		$passRoutes = array();
+
+		$sql = "SELECT DISTINCT `route` FROM `route_paths` WHERE `stop` = ?";
+		$result = sql_query($sql, "i", array($this->ID));
+		while($routeIDData = mysqli_fetch_array($result))
+        {
+            array_push($passRoutes, $routeIDData['route']);
+        }
 		
 		foreach(get_routes_at($datetime) as $routeData) if($routeData['available'] == 1)
 		{
-            array_push($routes, $routeData);
+		    if(in_array($routeData['id'], $passRoutes))
+            {
+                array_push($routes, $routeData);
+            }
 		}
 		
 		return $routes;
@@ -884,7 +897,7 @@ class Node
 		{
 			if($path->IsBetterThan($this->Paths[$i]) == true)
 			{
-                for($j = $this->MaxPath - 2; $j <= $i; $j--)
+                for($j = $this->MaxPath - 2; $j >= $i; $j--)
                 {
                     $this->Paths[$j + 1] = $this->Paths[$j];
                 }
@@ -920,7 +933,7 @@ class Node
 		foreach($nodes as $node)
 		{
 		    /** @var $node Node */
-			if($node->marked == false)
+			if($node->Marked == false)
 			{
 				return false;
 			}
@@ -1011,11 +1024,11 @@ class Path
 			return true;
 		}
 
-		if($this->TotalTime < $path->totalTime)
+		if($this->TotalTime < $path->TotalTime)
 		{
 			return true;
 		}
-		else if($this->TotalTime == $path->totalTime && $this->HopCount < $path->hopCount)
+		else if($this->TotalTime == $path->TotalTime && $this->HopCount < $path->HopCount)
 		{
 			return true;
 		}
@@ -1075,7 +1088,7 @@ class Path
 			array_push($function_result,
 				array(
 					"stopid" => $stop->ID,
-					"stopname" => $stop->Translate(get_language_id()),
+					"stopname" => get_text("stop", $stop->ID, get_language_id()),
 					"stoplocation" => array(
 						"lat" => $stop->Location->lat,
 						"lon" => $stop->Location->lon
@@ -1097,6 +1110,227 @@ class Path
 }
 
 /**
+ * Class Day
+ */
+class Day
+{
+    private $Timestamp;
+    private $Type;
+    private $Detail;
+
+    /**
+     * @param $v
+     * @return mixed
+     */
+    public function __get($v)
+    {
+        return $this->$v;
+    }
+
+    /**
+     * Day constructor.
+     * @param $day
+     */
+    public function __construct($day)
+    {
+        global $connection;
+
+        if(date("His", $day) != "000000")
+        {
+            unset($this);
+            return false;
+        }
+
+        $sql = "SELECT `type`, `detail` FROM `days` WHERE `date` = $day";
+        $result = mysqli_query($connection, $sql);
+        $numRows = mysqli_num_rows($result);
+
+        if($numRows == 0)
+        {
+            if(date("N", $day) > 5) // วันหยุด
+            {
+                $this->Type = -1;
+            }
+            else // วันธรรมดา
+            {
+                $this->Type = 0;
+            }
+
+            $sql = "INSERT INTO `days` (`date`, `type`, `detail`) VALUES ($day, {$this->Type}, '')";
+            mysqli_query($connection, $sql);
+
+            $this->Timestamp = $day;
+            $this->Detail = "";
+        }
+        else
+        {
+            $dayData = mysqli_fetch_array($result);
+
+            $this->Timestamp = $day;
+            $this->Type = $dayData['type'];
+            $this->Detail = $dayData['detail'];
+        }
+    }
+
+    /**
+     * Return day type as string
+     * @return mixed
+     */
+    public function TypeToString()
+    {
+        global $connection;
+
+        $sql = "SELECT `name` FROM `day_types` WHERE `id` = {$this->Type}";
+        $result = mysqli_query($connection, $sql);
+        $data = mysqli_fetch_array($result);
+
+        return $data['name'];
+    }
+
+    /**
+     * Set day type
+     * @param $newType
+     */
+    public function SetTypeTo($newType)
+    {
+        global $connection;
+
+        $sql = "UPDATE `days` SET `type` = $newType WHERE `date` = {$this->Timestamp}";
+        mysqli_query($connection, $sql);
+
+        $this->Type = $newType;
+    }
+
+    /**
+     * Set day detail
+     * @param $newDetail
+     */
+    public function SetDetail($newDetail)
+    {
+        global $connection;
+
+        $sql = "UPDATE `days` SET `detail` = '$newDetail' WHERE `date` = {$this->Timestamp}";
+        mysqli_query($connection, $sql);
+
+        $this->Detail = $newDetail;
+    }
+
+    /**
+     * Get the last timestamp of this day (23:59:59)
+     * @return mixed
+     */
+    public function GetFinal()
+    {
+        return $this->Timestamp + 86399;
+    }
+}
+
+/**
+ * Class Location
+ */
+class Location
+{
+    public $lat;
+    public $lon;
+
+    /**
+     * Location constructor.
+     * @param $latitude
+     * @param $longitude
+     */
+    public function __construct($latitude, $longitude)
+    {
+        $this->lat = $latitude;
+        $this->lon = $longitude;
+    }
+
+    /**
+     * Calculate distance in metres to specified location
+     * @param Location $location
+     * @return int
+     */
+    public function DistanceTo(Location $location)
+    {
+        $lat2 = $location->lat;
+        $lon2 = $location->lon;
+        return 6371000 * 2 * asin(sqrt(pow(sin(($this->lat - abs($lat2)) * pi() / 180 / 2), 2) + cos($this->lat * pi() / 180) * pow(sin(($this->lon - $lon2) * pi() / 180 / 2), 2)));
+    }
+
+    /**
+     * Calculate the shortest distance to specified segment which is formed by two points of Location object
+     * Algorithm from: https://www.sitepoint.com/community/t/distance-between-long-lat-point-and-line-segment/50583/2s
+     * @param Location $seg1
+     * @param Location $seg2
+     * @return float|int
+     */
+    public function DistanceToLine(Location $seg1, Location $seg2)
+    {
+        $ab = $seg1->DistanceTo($seg2);
+        $ac = $seg1->DistanceTo($this);
+        $bc = $seg2->DistanceTo($this);
+
+        $A = $bc;
+        $B = $ac;
+        $C = $ab;
+
+        $angle_A = rad2deg(acos((pow($B, 2) + pow($C, 2) - pow($A, 2)) / (2 * $B * $C)));
+        $angle_B = rad2deg(acos((pow($C, 2) + pow($A, 2) - pow($B, 2)) / (2 * $C * $A)));
+        $angle_C = rad2deg(acos((pow($A, 2) + pow($B, 2) - pow($C, 2)) / (2 * $A * $B)));
+
+        if($ab + $ac == $bc)
+        {
+            return 0;
+        }
+        else if($angle_A <= 90 && $angle_B <= 90)
+        {
+            $s = ($ab + $ac + $bc) / 2;
+            $area = sqrt($s * ($s - $ab) * ($s - $ac) * ($s - $bc));
+            $height = $area / (0.5 * $ab);
+            return $height;
+        }
+        else
+        {
+            return ($ac > $bc) ? $bc : $ac;
+        }
+    }
+
+    /**
+     * Calculate the angle to specified location, North is 0º, South is 180º
+     * @param Location $location
+     * @return float|int
+     */
+    public function DegreeTo(Location $location)
+    {
+        $lat2 = $location->lat;
+        $lon2 = $location->lon;
+
+        $dlon = $lon2 - $this->lon;
+
+        $y = sin($dlon) * cos($lat2);
+        $x = cos($this->lat) * sin($lat2) - sin($this->lat) * cos($lat2) * cos($dlon);
+
+        $result = atan2($y, $x);
+        $result = rad2deg($result);
+        $result = ($result + 360) % 360;
+        return $result;
+    }
+
+    /**
+     * Calculate the difference of two angles
+     * @param $deg1
+     * @param $deg2
+     * @return int
+     */
+    public static function DegreeDiff($deg1, $deg2)
+    {
+        $deg1 %= 360;
+        $deg2 %= 360;
+
+        return abs($deg1 - $deg2) % 360;
+    }
+}
+
+/**
  * Query estimated time from origin from database with specified route, bus stop and time
  * @param $route
  * @param $stop
@@ -1107,12 +1341,13 @@ function estimated_time($route, $stop, $timestamp)
 {
     $sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
     $result = sql_query($sql, "iii", array($route, $stop, $timestamp));
-    $estimatedData = mysqli_fetch_array($result);
 
     if(mysqli_num_rows($result) == 0)
     {
         return null;
     }
+
+    $estimatedData = mysqli_fetch_array($result);
 
     return $estimatedData['estimated_time'];
 }
@@ -1129,6 +1364,12 @@ function estimated_time_between($route, $stop1, $stop2, $timestamp)
 {
     $sql = "SELECT `distance_from_start` FROM `route_paths` WHERE `route` = ? AND `stop` = ? ORDER BY `distance_from_start` ASC";
     $result = sql_query($sql, "ii", array($route, $stop1));
+
+    if(mysqli_num_rows($result) == 0)
+    {
+        return null;
+    }
+
     $stop1DistanceData = mysqli_fetch_array($result);
 
     if($stop1DistanceData['distance_form_start'] == 0)
@@ -1162,8 +1403,18 @@ function sql_query($sqlParseText, $variableTypes = "", $variableValuesArray = ar
 {
     global $connection;
 
+    $variableReferencesArray = array();
+    foreach($variableValuesArray as $key => $value)
+    {
+        $variableReferencesArray[$key] = &$variableValuesArray[$key];
+    }
+
     $stmtObj = $connection->prepare($sqlParseText);
-    call_user_func_array(array($stmtObj, "bind_param"), array_merge(array($variableTypes), $variableValuesArray));
+    if($stmtObj == false)
+    {
+        return false;
+    }
+    call_user_func_array(array($stmtObj, "bind_param"), array_merge(array($variableTypes), $variableReferencesArray));
 
     $stmtObj->execute();
 
@@ -1327,5 +1578,860 @@ function sort_by($array, $key, $sort_type = SORT_ASC)
 	array_multisort($temp, $sort_type, $array);
 	
 	return $array;
+}
+
+/**
+ * Change timestamp to another day by remaining the time
+ * @param $timestamp
+ * @param Day $day
+ * @return mixed
+ */
+function shift_day($timestamp, $day)
+{
+    $time = ((date("H", $timestamp) * 3600) + (date("i", $timestamp) * 60) + date("s", $timestamp));
+    return $day->Timestamp + $time;
+}
+
+/**
+ * Change timestamp to day object
+ * @param $timestamp
+ * @return Day
+ */
+function get_day_from_timestamp($timestamp)
+{
+    return new Day($timestamp - (date("H", $timestamp)*3600 + date("i", $timestamp)*60 + date("s", $timestamp)));
+}
+
+/**
+ * Get routes status at specified time
+ * @param $time
+ * @return array
+ */
+function get_routes_at($time)
+{
+    global $connection;
+
+    $routes = array();
+    $now = mktime();
+
+    if($now > $time)
+    {
+        $time = $now;
+    }
+
+    $i = 0;
+    $sql = "SELECT `id`, `refid`, `color`, `name`, `available`, `detail` FROM `routes` ORDER BY `name` ASC, `detail` ASC";
+    $results = mysqli_query($connection, $sql);
+    while($routeData = mysqli_fetch_array($results))
+    {
+        $available = $routeData['available'];
+
+        if($time != $now)
+        {
+            $sql = "SELECT `set_available_to` FROM `route_available_switchers` WHERE `route` = {$routeData['id']} AND `date` BETWEEN $now AND $time ORDER BY `date` DESC LIMIT 1";
+            $result = mysqli_query($connection, $sql);
+            $numRows = mysqli_num_rows($result);
+
+            if($numRows == 1)
+            {
+                $data = mysqli_fetch_array($result);
+
+                $available = $data['set_available_to'];
+            }
+        }
+
+        $routename = $routeData['name'];
+        if(function_exists("get_text"))
+        {
+            $routename = get_text("route", $routeData['id'], get_language_id());
+        }
+
+        $routes[$i] = array(
+            "id" => $routeData['id'],
+            "refid" => $routeData['refid'],
+            "color" => $routeData['color'],
+            "name" => $routename,
+            "detail" => $routeData['detail'],
+            "available" => $available
+        );
+
+        $i++;
+    }
+
+    return $routes;
+}
+
+/**
+ * Thai date format
+ *  ฿วทวท		วันที่แบบมีเลขศูนย์นำหลักหน่วย
+ *  ฿วท		วันที่แบบไม่มีเลขศูนย์นำหลักหน่วย
+ *  ฿วว		วันแบบเต็ม
+ *  ฿ว		วันแบบย่อ
+ *  ฿ดด		เดือนแบบเต็ม
+ *  ฿ด		เดือนแบบย่อ
+ *  ฿ปปปป		ปี พ.ศ. แบบสี่หลัก
+ *  ฿ปป		ปี พ.ศ. แบบสองหลักหลัง
+ * @param $format
+ * @param bool $timestamp
+ * @return false|string
+ */
+function thaidate($format, $timestamp = false)
+{
+    // ให้เวลาเป็นเวลาปัจจุบัน ในกรณีที่ไม่มีอินพุตด้านเวลา
+    if($timestamp == false)
+    {
+        $timestamp = mktime();
+    }
+
+    // ชื่อเดือนแบบเต็มและแบบย่อเป็นภาษาไทย
+    $monthtext = array("",
+        "มกราคม",
+        "กุมภาพันธ์",
+        "มีนาคม",
+        "เมษายน",
+        "พฤษภาคม",
+        "มิถุนายน",
+        "กรกฎาคม",
+        "สิงหาคม",
+        "กันยายน",
+        "ตุลาคม",
+        "พฤศจิกายน",
+        "ธันวาคม");
+    $monthtext_short = array("",
+        "ม.ค.",
+        "ก.พ.",
+        "มี.ค.",
+        "เม.ย.",
+        "พ.ค.",
+        "มิ.ย.",
+        "ก.ค.",
+        "ส.ค.",
+        "ก.ย.",
+        "ต.ค.",
+        "พ.ย.",
+        "ธ.ค.");
+
+    // ชื่อวันแบบเต็มและแบบย่อเป็นภาษาไทย
+    $daytext = array(
+        "อาทิตย์",
+        "จันทร์",
+        "อังคาร",
+        "พุธ",
+        "พฤหัสบดี",
+        "ศุกร์",
+        "เสาร์");
+    $daytext_short = array(
+        "อา.",
+        "จ.",
+        "อ.",
+        "พ.",
+        "พฤ.",
+        "ศ.",
+        "ส.");
+
+    //สตริงสำหรับค้นหาและแทนที่วันที่ให้เป็นภาษาไทย โดยมีตัวเลือกดังนี้
+    ## ฿วทวท		วันที่แบบมีเลขศูนย์นำหลักหน่วย
+    ## ฿วท		วันที่แบบไม่มีเลขศูนย์นำหลักหน่วย
+    ## ฿วว		วันแบบเต็ม
+    ## ฿ว		วันแบบย่อ
+    ## ฿ดด		เดือนแบบเต็ม
+    ## ฿ด		เดือนแบบย่อ
+    ## ฿ปปปป		ปี พ.ศ. แบบสี่หลัก
+    ## ฿ปป		ปี พ.ศ. แบบสองหลักหลัง
+    $search = array(
+        "฿วทวท",
+        "฿วท",
+        "฿วว",
+        "฿ว",
+        "฿ดด",
+        "฿ด",
+        "฿ปปปป",
+        "฿ปป"
+    );
+    $replace = array(
+        "d",
+        "j",
+        $daytext[date("w", $timestamp)],
+        $daytext_short[date("w", $timestamp)],
+        $monthtext[date("n", $timestamp)],
+        $monthtext_short[date("n", $timestamp)],
+        date("Y", $timestamp) + 543,
+        substr(date("Y", $timestamp) + 543, strlen(date("Y", $timestamp) + 543) - 2, 2)
+    );
+
+    $format = str_replace($search, $replace, $format);
+
+    return date($format, $timestamp);
+}
+
+/**
+ * Get 0:00:00 timestamp
+ * @param $timestamp
+ * @return mixed
+ */
+function getday($timestamp)
+{
+    return $timestamp - ($timestamp % 86400);
+}
+
+/**
+ * Read session and return user language id (e.g. en, th)
+ * Create session if language session does not exist
+ * 	Default language is Thai (th)
+ * @return string
+ */
+function get_language_id()
+{
+    global $connection;
+
+    if(isset($_SESSION['user']) && isset($_SESSION['user']['language']))
+    {
+        return $_SESSION['user']['language'];
+    }
+
+    if(isset($_COOKIE['user_language']))
+    {
+        $sql = "SELECT COUNT(*) AS 'count' FROM `languages` WHERE `id` = '{$_COOKIE['user_language']}'";
+        $result = mysqli_query($connection, $sql);
+        $languagecountdata = mysqli_fetch_array($result);
+
+        if($languagecountdata['count'] == 1)
+        {
+            $_SESSION['user']['language'] = $_COOKIE['user_language'];
+            return $_SESSION['user']['language'];
+        }
+    }
+
+    $accepted_languages = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+    $accepted_languages_array = explode(",", $accepted_languages);
+
+    foreach($accepted_languages_array as $language)
+    {
+        $language_ = explode(";", $language);
+        $language_ = explode("-", $language_[0]);
+        $language = trim($language_[0]);
+
+        $sql = "SELECT `id` FROM `languages` WHERE `id` = '$language' AND `available` = 1";
+        $result = mysqli_query($connection, $sql);
+        if(mysqli_num_rows($result) == 1)
+        {
+            $_SESSION['user']['language'] = $language;
+            return $language;
+        }
+    }
+
+    $_SESSION['user']['language'] = "th";
+
+    return $_SESSION['user']['language'];
+}
+
+/**
+ * Set language ID to session
+ * @param $language_id
+ */
+function set_language_id($language_id)
+{
+    $_SESSION['user']['language'] = $language_id;
+}
+
+/**
+ * Get text from specified language
+ * @param string $ref_type
+ * @param int $ref_id
+ * @param string $language
+ * @return string|bool
+ */
+function get_text($ref_type, $ref_id, $language)
+{
+    global $connection;
+
+    $ref_type = urlencode($ref_type);
+    $ref_id = urlencode($ref_id);
+
+    if($ref_type == "stop_tag")
+    {
+        return false;
+    }
+
+    if($language == "th")
+    {
+        if($ref_type == "stop")
+        {
+            $sql = "SELECT `name` FROM `stops` WHERE `id` = $ref_id";//
+            $result = mysqli_query($connection, $sql);
+
+            if(mysqli_num_rows($result) == 1)
+            {
+                $stopdata = mysqli_fetch_array($result);
+
+                return $stopdata['name'];
+            }
+        }
+        else if($ref_type == "route")
+        {
+            $sql = "SELECT `name` FROM `routes` WHERE `id` = $ref_id";
+            $result = mysqli_query($connection, $sql);
+
+            if(mysqli_num_rows($result) == 1)
+            {
+                $routedata = mysqli_fetch_array($result);
+
+                return $routedata['name'];
+            }
+        }
+
+        return false;
+    }
+    else if($language == "en")
+    {
+        $sql = "SELECT `text` FROM `texts` WHERE `ref_type` = '$ref_type' AND `ref_id` = $ref_id AND `language` = '$language'";
+        $result = mysqli_query($connection, $sql);
+        if(mysqli_num_rows($result) == 0)
+        {
+            $text = get_text($ref_type, $ref_id, "th");
+        }
+        else
+        {
+            $textdata = mysqli_fetch_array($result);
+            $text = $textdata['text'];
+
+            if(trim($text) == "")
+            {
+                $text = get_text($ref_type, $ref_id, "th");
+            }
+        }
+
+        return $text;
+    }
+    else
+    {
+        $sql = "SELECT `text` FROM `texts` WHERE `ref_type` = '$ref_type' AND `ref_id` = $ref_id AND `language` = '$language'";
+        $result = mysqli_query($connection, $sql);
+        if(mysqli_num_rows($result) == 0)
+        {
+            $text = get_text($ref_type, $ref_id, "en");
+        }
+        else
+        {
+            $textdata = mysqli_fetch_array($result);
+            $text = $textdata['text'];
+
+            if(trim($text) == "")
+            {
+                $text = get_text($ref_type, $ref_id, "en");
+            }
+        }
+
+        return $text;
+    }
+}
+
+/**
+ * Human-readable distance
+ * @param $distance
+ * @return string
+ */
+function show_distance($distance)
+{
+    if($distance < 1000)
+    {
+        return round($distance) . " ม.";
+    }
+    else
+    {
+        $distance = round($distance / 1000, 2);
+        return $distance . " กม.";
+    }
+}
+
+/**
+ * Search bus stop or place by given keyword
+ * @param $keyword
+ * @param $language
+ * @param int $max_result
+ * @return array
+ */
+function search($keyword, $language, $max_result = 10)
+{
+    $function_result = array();
+
+    $keyword = strtolower(str_replace("'", "", $keyword));
+    $language = urlencode($language);
+
+    foreach(find_where_name_like($keyword . "%", $language) as $result)
+    {
+        $result['name'] = get_text("stop", $result['id'], $language);
+
+        if(result_push($function_result, $result) >= $max_result)
+        {
+            return $function_result;
+        }
+    }
+
+    foreach(find_where_tag_like($keyword . "%", $language) as $result)
+    {
+        $result['name'] = get_text("stop", $result['id'], $language);
+
+        if(result_push($function_result, $result) >= $max_result)
+        {
+            return $function_result;
+        }
+    }
+
+    foreach(find_where_name_like("%" . $keyword . "%", $language) as $result)
+    {
+        $result['name'] = get_text("stop", $result['id'], $language);
+
+        if(result_push($function_result, $result) >= $max_result)
+        {
+            return $function_result;
+        }
+    }
+
+    foreach(find_where_tag_like("%" . $keyword . "%", $language) as $result)
+    {
+        $result['name'] = get_text("stop", $result['id'], $language);
+
+        if(result_push($function_result, $result) >= $max_result)
+        {
+            return $function_result;
+        }
+    }
+
+    if($language != "en")
+    {
+        foreach(find_where_name_like($keyword . "%", "en") as $result)
+        {
+            $result['name'] = get_text("stop", $result['id'], $language);
+
+            if(result_push($function_result, $result) >= $max_result)
+            {
+                return $function_result;
+            }
+        }
+
+        foreach(find_where_tag_like($keyword . "%", "en") as $result)
+        {
+            $result['name'] = get_text("stop", $result['id'], $language);
+
+            if(result_push($function_result, $result) >= $max_result)
+            {
+                return $function_result;
+            }
+        }
+
+        foreach(find_where_name_like("%" . $keyword . "%", "en") as $result)
+        {
+            $result['name'] = get_text("stop", $result['id'], $language);
+
+            if(result_push($function_result, $result) >= $max_result)
+            {
+                return $function_result;
+            }
+        }
+
+        foreach(find_where_tag_like("%" . $keyword . "%", "en") as $result)
+        {
+            $result['name'] = get_text("stop", $result['id'], $language);
+
+            if(result_push($function_result, $result) >= $max_result)
+            {
+                return $function_result;
+            }
+        }
+    }
+
+    if($language != "th")
+    {
+        foreach(find_where_name_like($keyword . "%", "th") as $result)
+        {
+            $result['name'] = get_text("stop", $result['id'], $language);
+
+            if(result_push($function_result, $result) >= $max_result)
+            {
+                return $function_result;
+            }
+        }
+
+        foreach(find_where_tag_like($keyword . "%", "th") as $result)
+        {
+            $result['name'] = get_text("stop", $result['id'], $language);
+
+            if(result_push($function_result, $result) >= $max_result)
+            {
+                return $function_result;
+            }
+        }
+
+        foreach(find_where_name_like("%" . $keyword . "%", "th") as $result)
+        {
+            $result['name'] = get_text("stop", $result['id'], $language);
+
+            if(result_push($function_result, $result) >= $max_result)
+            {
+                return $function_result;
+            }
+        }
+
+        foreach(find_where_tag_like("%" . $keyword . "%", "th") as $result)
+        {
+            $result['name'] = get_text("stop", $result['id'], $language);
+
+            if(result_push($function_result, $result) >= $max_result)
+            {
+                return $function_result;
+            }
+        }
+    }
+
+    return $function_result;
+}
+
+/**
+ * Select bus stop or place from database where name is like given keyword
+ * @param $keyword
+ * @param $language
+ * @return array
+ */
+function find_where_name_like($keyword, $language)
+{
+    global $connection;
+
+    $function_result = array();
+
+    if($language == "th")
+    {
+        $sql = "SELECT `id`, `name`, `busstop` FROM `stops` WHERE `name` LIKE '$keyword'";
+        $results = mysqli_query($connection, $sql);
+        while($stopdata = mysqli_fetch_array($results))
+        {
+            result_push($function_result, array(
+                "id" => $stopdata['id'],
+                "cause" => $stopdata['name'],
+                "busstop" => $stopdata['busstop']
+            ));
+        }
+    }
+    else
+    {
+        $sql = "SELECT `ref_id`, `text`, `busstop` FROM `texts`, `stops` WHERE `ref_type` = 'stop' AND `ref_id` = `stops`.`id` AND `language` = '$language' AND `text` LIKE '$keyword'";
+        $results = mysqli_query($connection, $sql);
+        while($stopdata = mysqli_fetch_array($results))
+        {
+            result_push($function_result, array(
+                "id" => $stopdata['ref_id'],
+                "cause" => $stopdata['text'],
+                "busstop" => $stopdata['busstop']
+            ));
+        }
+    }
+
+    return $function_result;
+}
+
+/**
+ * Select bus stop or place from database where name is like given tag
+ * @param $keyword
+ * @param $language
+ * @return array
+ */
+function find_where_tag_like($keyword, $language)
+{
+    global $connection;
+
+    $function_result = array();
+
+    if($language == "th")
+    {
+        $sql = "SELECT `stop`, `name` FROM `stops_tags` WHERE `name` LIKE '$keyword'";
+        $results = mysqli_query($connection, $sql);
+        while($tagdata = mysqli_fetch_array($results))
+        {
+            $sql = "SELECT `id`, `name`, `busstop` FROM `stops` WHERE `id` = {$tagdata['stop']}";
+            $result = mysqli_query($connection, $sql);
+            $stopdata = mysqli_fetch_array($result);
+
+            result_push($function_result, array(
+                "id" => $stopdata['id'],
+                "cause" => $tagdata['name'],
+                "busstop" => $stopdata['busstop']
+            ));
+        }
+    }
+    else
+    {
+        $sql = "SELECT `ref_id`, `text` FROM `texts` WHERE `ref_type` = 'stop_tag' AND `language` = '$language' AND `text` LIKE '$keyword'";
+        $results = mysqli_query($connection, $sql);
+        while($tagdata = mysqli_fetch_array($results))
+        {
+            $sql = "SELECT `name`, `busstop` FROM `stops` WHERE `id` = {$tagdata['ref_id']}";
+            $result = mysqli_query($connection, $sql);
+            $stopdata = mysqli_fetch_array($result);
+
+            result_push($function_result, array(
+                "id" => $tagdata['ref_id'],
+                "cause" => $tagdata['text'],
+                "busstop" => $stopdata['busstop']
+            ));
+        }
+    }
+
+    return $function_result;
+}
+
+/**
+ * Check if given place id already exists in given array (of result)
+ * @param $result
+ * @param $stopid
+ * @return bool
+ */
+function result_find($result, $stopid)
+{
+    foreach($result as $r)
+    {
+        if($r['id'] == $stopid)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Push an element (of place or bus stop) to result array if it is not pushed yet
+ * @param $result
+ * @param $newelement
+ * @return int
+ */
+function result_push(&$result, $newelement)
+{
+    if(result_find($result, $newelement['id']) == false)
+    {
+        return array_push($result, $newelement);
+    }
+
+    return count($result);
+}
+
+/**
+ * Estimate today timetable
+ */
+function estimate()
+{
+    $today = new Day(mktime(0, 0, 0));
+    estimate_on($today);
+}
+
+/**
+ * Estimate timetable on specified day
+ * @param Day $day
+ */
+function estimate_on($day)
+{
+    global $connection;
+
+    ## VARIABLES ##
+
+    $starttime = 23400; // 06:30
+    $endtime = 81000; // 22:30
+    $interval = 3600; // 30 minutes
+
+    $calculated_day_amount = 15;
+
+    ###############
+
+    $today = $day;
+    $max_today = $today->timestamp + 86399;
+
+    $today_periods = array();
+    for($i = $today->timestamp + $starttime; $i <= $today->timestamp + $endtime; $i += $interval)
+    {
+        array_push($today_periods, array(
+            "lower" => $i,
+            "upper" => $i + $interval - 1
+        ));
+    }
+
+    $sql = "DELETE FROM `time_estimation` WHERE `start_time` BETWEEN {$today->timestamp} AND $max_today OR `end_time` BETWEEN {$today->timestamp} AND $max_today";
+    mysqli_query($connection, $sql);
+
+    $route_ids = array();
+
+    $i = 0;
+    foreach(get_routes_at($today->timestamp) as $route)
+    {
+        if($route['available'] == 1)
+        {
+            $route_ids[$i] = $route['id'];
+        }
+
+        $i++;
+    }
+
+    $sql = "SELECT `route` FROM `route_available_switchers` WHERE `set_available_to` = 1 AND `date` BETWEEN {$today->timestamp} AND $max_today";
+    $results = mysqli_query($connection, $sql);
+    while($switcherdata = mysqli_fetch_array($results))
+    {
+        if(!in_array($switcherdata['route'], $route_ids))
+        {
+            $route_ids[$i] = $switcherdata['route'];
+            $i++;
+        }
+    }
+
+    $periods = array();
+
+    $n = 0;
+    $sql = "SELECT `date` FROM `days` WHERE `type` = {$today->type} AND `date` < {$today->timestamp} ORDER BY `date` DESC LIMIT $calculated_day_amount";
+    $results = mysqli_query($connection, $sql);
+    while($datedata = mysqli_fetch_array($results))
+    {
+        for($i = $datedata['date'] + $starttime; $i <= $datedata['date'] + $endtime; $i += $interval)
+        {
+            $upper = $i + $interval - 1;
+
+            $periods[$n] = array(
+                "lower" => $i,
+                "upper" => $upper
+            );
+            $n++;
+        }
+    }
+
+    $session_ids = array();
+    $sessions = array();
+
+    $sql = "SELECT `id`, `route`, `start_datetime` FROM `sessions` WHERE " . generate_query($periods, "start_datetime");
+    $results = mysqli_query($connection, $sql);
+    while($sessiondata = mysqli_fetch_array($results))
+    {
+        array_push($session_ids, $sessiondata['id']);
+        $sessions[$sessiondata['id']] = $sessiondata;
+    }
+
+    $data = array();	// route >> start_time >> end_time >> stop >> time_array
+
+    $sessions_str = implode(", ", $session_ids);
+    $sql = "SELECT `id`, `stop`, `datetime`, `session` FROM `records` WHERE `session` IN ({$sessions_str}) ORDER BY `datetime` ASC";
+    $results = mysqli_query($connection, $sql);
+    while($recorddata = mysqli_fetch_array($results))
+    {
+        $sessiondata = $sessions[$recorddata['session']];
+
+        $period = find_period($periods, $sessiondata['start_datetime']);
+
+        $lower = shift_day($period['lower'], $today);
+        $upper = shift_day($period['upper'], $today);
+
+        if(!isset($data[$sessiondata['route']][$lower][$upper][$recorddata['stop']]))
+        {
+            $data[$sessiondata['route']][$lower][$upper][$recorddata['stop']] = array();
+        }
+
+        if($recorddata['datetime'] == $sessiondata['start_datetime'])
+        {
+            continue;
+        }
+
+        array_push($data[$sessiondata['route']][$lower][$upper][$recorddata['stop']], $recorddata['datetime'] - $sessiondata['start_datetime']);
+    }
+
+    $i = 0;
+    $estimateds = array();
+    foreach($data as $route => $route_)
+    {
+        foreach($route_ as $start_time => $start_time_)
+        {
+            foreach($start_time_ as $end_time => $end_time_)
+            {
+                $waittime = null;
+
+                $j = 0;
+                foreach($end_time_ as $stop => $stop_)
+                {
+                    if($j == 1)
+                    {
+                        $waittime = wait_time_at($stop, $route, round(($start_time + $end_time) / 2));
+                        break;
+                    }
+                    $j++;
+                }
+
+                foreach($end_time_ as $stop => $stop_)
+                {
+                    $sum = 0;
+                    $n = 0;
+                    foreach($stop_ as $time)
+                    {
+                        $sum += $time;
+                        $n++;
+                    }
+
+                    if($sum > 0 || $n > 0)
+                    {
+                        $avg = round($sum / $n);
+
+                        $estimateds[$i] = array(
+                            "route" => $route,
+                            "start_time" => $start_time,
+                            "end_time" => $end_time,
+                            "stop" => $stop,
+                            "estimated_time" => $avg,
+                            "waittime" => $waittime
+                        );
+                        $i++;
+                    }
+                }
+            }
+        }
+    }
+
+    foreach($estimateds as $estimated)
+    {
+        $sql = "INSERT INTO `time_estimation` (`id`, `route`, `start_time`, `end_time`, `stop`, `estimated_time`, `waittime`) VALUES (0, {$estimated['route']}, {$estimated['start_time']}, {$estimated['end_time']}, {$estimated['stop']}, {$estimated['estimated_time']}, {$estimated['waittime']})";
+        mysqli_query($connection, $sql);
+    }
+
+    echo "Time Estimation (" . date("Y-m-d", $day->timestamp) . ") - OK";
+}
+
+/**
+ * Return the period of time (lower, upper) where contains given timestamp
+ * @param $periods
+ * @param $time
+ * @return bool
+ */
+function find_period($periods, $time)
+{
+    foreach($periods as $period)
+    {
+        if($time >= $period['lower'] && $time <= $period['upper'])
+        {
+            return $period;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Generate query text to search period of time (lower, upper) in specified field name
+ * @param $array
+ * @param $field_name
+ * @return string
+ */
+function generate_query($array, $field_name)
+{
+    $txts = array();
+
+    $i = 0;
+    foreach($array as $data)
+    {
+        $txts[$i] = "(`{$field_name}` BETWEEN {$data['lower']} AND {$data['upper']})";
+        $i++;
+    }
+
+    return implode(" OR ", $txts);
 }
 ?>

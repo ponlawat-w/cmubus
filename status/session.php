@@ -4,8 +4,8 @@
 		<meta charset="utf-8">
 		<?php
 			include_once("../mysql_connection.inc.php");
-			include_once("library.inc.php");
-			include_once("../lib/location.inc.php");
+			include_once("../lib/cron.inc.php");
+			include_once("../lib/app.inc.php");
 		?>
 		<style>
 			body

@@ -1,11 +1,8 @@
 <?php ob_start(); session_start();
 include_once("../../mysql_connection.inc.php");
-include_once("../../lib/calendar.inc.php");
-include_once("../../lib/locale.inc.php");
-	get_language_id();
-	session_write_close();
-include_once("../../lib/location.inc.php");
 include_once("../../lib/app.inc.php");
+get_language_id();
+session_write_close();
 
 if(!isset($_GET['from']) || !isset($_GET['to']))
 {
@@ -25,7 +22,7 @@ if(date("H", $dt) <= 7 || date("H", $dt) >= 22)
 }
 
 $from_stop = new Stop($from);
-$results = $from_stop->findPathsTo($to, $dt, "totalTime", 2);
+$results = $from_stop->findPathsTo($to, $dt, 2);
 
 $page_result = array();
 

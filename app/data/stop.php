@@ -1,9 +1,8 @@
 <?php ob_start(); session_start();
 include_once("../../mysql_connection.inc.php");
-include_once("../../lib/locale.inc.php");
-	get_language_id();
-	session_write_close();
 include_once("../../lib/app.inc.php");
+get_language_id();
+session_write_close();
 
 $id = (int)$_GET['id'];
 
@@ -12,11 +11,11 @@ $stop->GetInfo();
 
 echo json_encode(
 	array(
-		"name" => $stop->Translate(get_language_id()),
-		"busstop" => $stop->busstop,
+		"name" => get_text("stop", $stop->ID, get_language_id()),
+		"busstop" => $stop->BusStop,
 		"location" => array(
-			"lat" => $stop->location_lat,
-			"lon" => $stop->location_lon
+			"lat" => $stop->Location->lat,
+			"lon" => $stop->Location->lon
 		)
 	)
 );

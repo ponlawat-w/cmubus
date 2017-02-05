@@ -172,7 +172,7 @@
 	
 	<form action="admin.php?page=stop&id=<?php echo $id; ?>" method="post">
 		<input type="hidden" name="action" value="removestop">
-		<button type="submit" class="btn btn-danger" onclick="return confirm('แน่ใจหรือไม่ว่าต้องการลบสถานที่นี้');"><i class="fa fa-trash"></i> ลบ</a>
+		<button type="submit" class="btn btn-danger" onclick="return confirm('แน่ใจหรือไม่ว่าต้องการลบสถานที่นี้');"><i class="fa fa-trash"></i> ลบ</button>
 	</form>
 </div>
 

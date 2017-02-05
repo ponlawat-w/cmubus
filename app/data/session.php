@@ -1,10 +1,8 @@
 <?php ob_start(); session_start();
 include_once("../../mysql_connection.inc.php");
-include_once("../../lib/calendar.inc.php");
-include_once("../../lib/locale.inc.php");
-	get_language_id();
-	session_write_close();
 include_once("../../lib/app.inc.php");
+get_language_id();
+session_write_close();
 
 $id = (int)$_GET['id'];
 

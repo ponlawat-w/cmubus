@@ -10,7 +10,7 @@
 		<meta name="keywords" content="CMU,มช,ม.ช.,รถม่วง,ขสมช,ขส.มช.,Chiang Mai University">
 		<?php
 		include_once("../mysql_connection.inc.php");
-		include_once("../lib/locale.inc.php");
+		include_once("../lib/app.inc.php");
 		get_language_id();
 		session_write_close();
 		?>

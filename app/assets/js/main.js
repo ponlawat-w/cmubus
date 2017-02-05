@@ -1,5 +1,7 @@
 var app = angular.module("cmubus", ['ngRoute']);
 
+var appInterval;
+
 app.config(function($routeProvider, $locationProvider, $httpProvider)
 {	
 	$httpProvider.defaults.cache = true;
@@ -79,12 +81,14 @@ app.run(function($rootScope, $location, $anchorScroll)
 
 app.controller("mainController", function($scope, $location)
 {
+	clearInterval(appInterval);
 	$scope.$location = $location;
 });
 // END mainController
 
 app.controller("homeController", function($scope, $http, $location, $anchorScroll)
 {
+    clearInterval(appInterval);
 	$scope.loading = true;
 	$scope.nearStops = [];
 		
@@ -218,6 +222,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 
 app.controller("searchController", function($scope, $http, $location, $anchorScroll, $routeParams)
 {
+    clearInterval(appInterval);
 	$scope.loading = false;
 	
 	$scope.clicked = false;
@@ -495,6 +500,8 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 
 app.controller("searchResultController", function($scope, $routeParams, $http, $location)
 {
+    clearInterval(appInterval);
+
 	$scope.info = {
 		fromName: "",
 		toName: ""
@@ -547,6 +554,8 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 
 app.controller("stopController", function($scope, $http, $routeParams, $location)
 {
+    clearInterval(appInterval);
+
 	$scope.id = $routeParams.id;
 	$scope.loading = true;
 	$scope.timetableLoading = true;
@@ -629,7 +638,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		{
 			$scope.busstop = true;
 			$scope.loadTimetable();
-			setInterval(function() { $scope.loadTimetable(); }, 3000);
+			appInterval = setInterval(function() { $scope.loadTimetable(); }, 3000);
 		}
 		else
 		{
@@ -649,6 +658,8 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 
 app.controller("sessionController", function($scope, $http, $routeParams, $location)
 {
+    clearInterval(appInterval);
+
 	$scope.sessionID = $routeParams.id;
 	
 	$scope.loading = true;
@@ -664,9 +675,9 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
 				$scope.sessionInfo = response.data;
 				$scope.loading = false;
 				
-				if($scope.sessionInfo.online == true)
+				if($scope.sessionInfo.online == false)
 				{
-					setInterval(function() { $scope.loadSessionInfo(); }, 5000);
+					clearInterval(appInterval);
 				}
 			}, function(response)
 			{
@@ -683,13 +694,16 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
 	{
 		$location.path("route/" + id);
 	};
-	
-	$scope.loadSessionInfo();
+
+    $scope.loadSessionInfo();
+    appInterval = setInterval(function() { $scope.loadSessionInfo(); }, 3000);
 });
 // END sessionController
 
 app.controller("routesController", function($scope, $http, $location)
 {
+    clearInterval(appInterval);
+
 	$scope.routes = [];
 	
 	$scope.loading = true;
@@ -711,6 +725,8 @@ app.controller("routesController", function($scope, $http, $location)
 
 app.controller("routeController", function($scope, $http, $location, $routeParams)
 {
+    clearInterval(appInterval);
+
 	$scope.route = {};
 	
 	$scope.loading = true;
@@ -765,6 +781,8 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 
 app.controller("settingsController", function($scope, $http, $location)
 {
+    clearInterval(appInterval);
+
 	// LANGUAGES
 	
 	$scope.languages = [];

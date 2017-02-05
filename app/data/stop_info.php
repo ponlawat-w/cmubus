@@ -1,10 +1,8 @@
 <?php ob_start(); session_start();
 include_once("../../mysql_connection.inc.php");
-include_once("../../lib/calendar.inc.php");
-include_once("../../lib/locale.inc.php");
-	get_language_id();
-	session_write_close();
 include_once("../../lib/app.inc.php");
+get_language_id();
+session_write_close();
 
 $id = (int)$_GET['id'];
 
@@ -19,7 +17,7 @@ foreach($page_result['connections'] as $key => $connect)
 	$s = new Stop($connect['to']);
 	$s->GetInfo();
 	$page_result['connections'][$key]['name'] = get_text("stop", $connect['to'], get_language_id());
-	$page_result['connections'][$key]['busstop'] = $s->busstop;
+	$page_result['connections'][$key]['busstop'] = $s->BusStop;
 }
 
 $page_result['connections'] = sort_by($page_result['connections'], "name", SORT_ASC);

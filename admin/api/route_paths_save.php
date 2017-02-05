@@ -2,7 +2,7 @@
 
 include_once("../../mysql_connection.inc.php");
 include_once("../library.inc.php");
-include_once("../../lib/location.inc.php");
+include_once("../../lib/app.inc.php");
 
 check_authentication();
 

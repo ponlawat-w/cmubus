@@ -1,7 +1,6 @@
 <?php if(!isset($_SESSION['authentication'])) exit(); ?>
 <?php
-	include_once("../lib/datetime.inc.php");
-	include_once("../lib/calendar.inc.php");
+	include_once("../lib/app.inc.php");
 	
 	$today = mktime(0, 0, 0);
 	

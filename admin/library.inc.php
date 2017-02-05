@@ -1,9 +1,5 @@
 <?php
 
-#########################
-### ACCOUNTS FUNCTION ###
-#########################
-
 function password_encode($password_str)
 {
 	return md5($password_str) . sha1($password_str);
