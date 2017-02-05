@@ -1,0 +1,91 @@
+﻿<h4>
+	<center>
+		<a href="javascript:void(0);" ng-click="goStop(from_id)">{{info.fromName}}</a>
+		<div style="margin: 5px 0px;"><a href="javascript:void(0);" class="btn btn-default btn-md" ng-click="switchFromTo()"><i class="glyphicon glyphicon-sort"></i></a></div>
+		<a href="javascript:void(0);" ng-click="goStop(to_id)">{{info.toName}}</a>
+	</center>
+</h4>
+<div ng-show="finished == false"><div class="well"><center><img src="assets/img/loading.gif"><br>{{txt.search.searching}}</center></div></div>
+<div ng-show="finished == true">
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="path in paths">
+			<div class="path-detail"><strong>{{$index|resultNumber}}</strong> ({{path|totalTravelTime}})</div>
+			<div class="dots-list">
+				<ol>
+					<li ng-repeat="sequence in path" style="border-left-color: #{{path[$index+1].routecolor}};">
+						<span class="date"></span>
+						<a href="javascript:void(0);" ng-click="goStop(sequence.stopid)" ng-show="$index == 0 || $index == path.length - 1">
+							<big><strong>{{sequence.stopname}}</strong></big>
+						</a>
+						<a href="javascript:void(0);" ng-click="goStop(sequence.stopid)" ng-show="$index > 0 && $index < path.length - 1">
+							<strong>{{sequence.stopname}}</strong>
+						</a>		
+						<a href="javascript:void(0);" ng-click="goHow(path[$index + 1].route, path[$index].stopid, path[$index+1].stopid, path[$index].stoplocation, path[$index+1].stoplocation)" ng-show="$index < path.length - 1">
+							<br>
+							<div ng-bind-html="path[$index + 1] | connectionInfo | trustedHTML">
+							</div>
+						</a>
+					</li>
+				</ol>
+			</div>
+		</li>
+	</ul>
+</div>
+<style>
+a
+{
+	color: #000000;
+	text-decoration: none;
+}
+a:hover
+{
+	text-decoration: none;
+}
+
+// SOURCE: http://www.divithemeexamples.com/divi-timeline-with-css/
+.dots-list
+{
+}
+.dots-list ol
+{
+	position: relative;
+	margin-bottom: 20px;
+	padding-left: 0px;
+	list-style: none !important;
+}
+.dots-list ol li
+{
+	position: relative;
+	margin-top: 0em;
+	margin-bottom: 20px;padding-left: 20px;
+}
+.dots-list ol li:before
+{
+	content: "";
+	border-left: solid 3px;
+	border-left-color: inherit;
+	position: absolute;
+	width: 4px;
+	top: 5px;
+	bottom: -25px;
+	left: 6px;
+}
+.dots-list ol li:after
+{
+	content: "";
+	background: #ffffff;
+	position: absolute;
+	width: 13px;
+	height: 13px;
+	border-radius: 100%;
+	border: 2px solid #000000;
+	top: 5px;
+	left: 1px;
+}
+.dots-list ol li:last-child:before
+{
+	content: "";
+	border-left: none;
+}
+
+</style>

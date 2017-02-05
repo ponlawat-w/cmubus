@@ -1,0 +1,46 @@
+<h3>{{txt.search.title}}</h3>
+
+<p>
+	<div class="input-group">
+		<span class="input-group-addon">{{txt.search.from}}</span>
+		<input id="from" type="text" class="form-control" placeholder="{{txt.search.detail}}" ng-model="from_keyword" ng-focus="scrollTo('from')" jp-input>
+		<div class="input-group-btn">
+			<button class="btn btn-default" ng-show="from_id != null" ng-click="clear_from()">
+				<i class="fa fa-times"></i>
+			</button>
+			<button class="btn btn-default" ng-show="from_id == null && to_location == false" ng-click="location_from()">
+				<i class="fa fa-location-arrow"></i>
+			</button>
+		</div>
+	</div>
+	<ul class="list-group">
+		<a class="list-group-item" ng-repeat="autocomplete in from_autocompletes" ng-click="setfrom(autocomplete.id)">
+			<strong>{{autocomplete.name}}</strong><br>
+			　<small class="text-uppercase">({{autocomplete.cause}})</small>
+		</a>
+	</ul>
+	
+	<div class="input-group">
+		<span class="input-group-addon">{{txt.search.to}}</span>
+		<input id="to" type="text" class="form-control" placeholder="{{txt.search.detail}}" ng-model="to_keyword" ng-focus="scrollTo('to')" jp-input>
+		<div class="input-group-btn">
+			<button class="btn btn-default" ng-show="to_id != null" ng-click="clear_to()">
+				<i class="fa fa-times"></i>
+			</button>
+			<button class="btn btn-default" ng-show="to_id == null && from_location == false" ng-click="location_to()">
+				<i class="fa fa-location-arrow"></i>
+			</button>
+		</div>
+	</div>
+	<ul class="list-group">
+		<a class="list-group-item" ng-repeat="autocomplete in to_autocompletes" ng-click="setto(autocomplete.id)">
+			<strong>{{autocomplete.name}}</strong><br>
+			　<small class="text-uppercase">({{autocomplete.cause}})</small>
+		</a>
+	</ul>
+</p>
+<div class="well well-sm" ng-show="loading">
+	<center><img src="assets/img/loading.gif"><br>
+	{{txt.pleaseWait}}</center>
+</div>
+<button class="form-control" ng-click="search()" ng-disabled="from_id == null || to_id == null || from_id == to_id">{{txt.search.submit_btn}}</button>

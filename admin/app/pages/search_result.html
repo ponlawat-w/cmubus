@@ -1,0 +1,14 @@
+﻿<h4><center>{{info.fromName}}<br><a ng-click="switchFromTo()"><i class="glyphicon glyphicon-sort"></i></a><br>{{info.toName}}</center></h4>
+<div ng-show="finished == false"><div class="well"><center><img src="assets/img/loading.gif"><br>{{txt.search.searching}}</center></div></div>
+<div ng-show="finished == true">
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="path in paths">
+			<strong>{{path|totalTravelTime}}</strong>
+			<div class="path" ng-repeat="sequence in path" style="border-color: #{{path[$index + 1].routecolor}};">
+				<big ng-show="$index == 0 || $index == path.length - 1"><strong>{{sequence.stopname}}</strong></big>				
+				<span ng-show="$index > 0 && $index < path.length - 1" style="color: #{{path[$index + 1].routecolor}};">{{sequence.stopname}}</span>
+				<span ng-bind-html="path[$index + 1] | connectionInfo | trustedHTML"></span>
+			</div>
+		</li>
+	</ul>
+</div>

@@ -1,0 +1,153 @@
+<div class="panel panel-default" ng-show="loading"><center>
+	<img src="assets/img/loading.gif"><br>
+	{{txt.pleaseWait}}
+</center></div>
+<div ng-show="!loading">
+	<center><h2>{{stopInfo.name}}</h2></center>
+	<div class="btn-group btn-group-justified" data-toggle="buttons" ng-show="busstop">
+		<label class="btn btn-primary btn-sm" ng-class="{'active':(view=='timetable')}">
+			<input type="radio" name="view" ng-model="view" value="timetable" checked="checked"><i class="fa fa-th"></i> {{txt.stop.timetable}}
+		</label>
+		<label class="btn btn-primary btn-sm" ng-class="{'active':(view=='info')}" ng-click="loadInfo()">
+			<input type="radio" name="view" ng-model="view" value="info"><i class="fa fa-info"></i> {{txt.stop.info}}
+		</label>
+	</div>
+	<div ng-show="view == 'timetable'"><p>
+		<div ng-show="timetableLoading" class="panel panel-default">
+			<center><img src="assets/img/loading.gif"><br>
+			{{txt.pleaseWait}}</center>
+		</div>
+		<div ng-show="stopTimetable.length > 0" class="btn-group btn-group-justified" data-toggle="buttons">
+			<label class="btn btn-default btn-xs" ng-class="{'active':(timetableMode=='timeLeft')}">
+				<input type="radio" name="timetableMode" ng-model="timetableMode" value="timeLeft" checked="checked"><i class="fa fa-clock-o"></i> {{txt.stop.timeleft}}
+			</label>
+			<label class="btn btn-default btn-xs" ng-class="{'active':(timetableMode=='place')}">
+				<input type="radio" name="timetableMode" ng-model="timetableMode" value="place"><i class="fa fa-map-marker"></i> {{txt.stop.place}}
+			</label>
+			<label class="btn btn-default btn-xs" ng-class="{'active':(timetableMode=='distace')}">
+				<input type="radio" name="timetableMode" ng-model="timetableMode" value="distace"><i class="fa fa-tachometer"></i> {{txt.stop.distance}}
+			</label>
+		</div>
+		<div ng-show="stopTimetable.length > 0">
+			<p><table class="table table-hover">
+				<thead>
+					<tr class="bg-primary" style="background-color: #660066;">
+						<th colspan="3"><center><strong><big>
+							{{txt.stop.arrivalTimetable}}
+						</big></strong></center></th>
+					</tr>
+					<tr class="bg-primary" style="background-color: #660066;">
+						<th>{{txt.stop.eta}}</th>
+						<th>{{txt.stop.route}}</th>
+						<th ng-show="timetableMode=='place'">{{txt.stop.place}}</th>
+						<th ng-show="timetableMode=='timeLeft'">{{txt.stop.timeleft}}</th>
+						<th ng-show="timetableMode=='distace'">{{txt.stop.distance}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="round in stopTimetable" ng-click="goSession(round.session)" ng-class="{'blink':blinker}" class="cursor-pointer {{round | arrivalClassHandler}}">
+						<td class="{{round.session|timetableTimeClass}}">{{round.estimated_time_readable}}</td>
+						<td style="color:#{{round.routecolor}};">{{round.routename}}</td>
+						<td ng-show="timetableMode=='place'" style="text-overflow: ellipsis;">{{round.laststopname}}</td>
+						<td ng-show="timetableMode=='timeLeft'">{{round|remainingTimeText}}</td>
+						<td ng-show="timetableMode=='distace'">{{round.remaining_distance|distance}}</td>
+					</tr>
+				</tbody>
+			</table></p>
+		</div>
+		<div ng-show="passedTimetable.length > 0">
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th colspan="3"><center><strong><big>
+							{{txt.stop.passedTimetable}}
+						</big></strong></center></th>
+					</tr>
+					<tr>
+						<th>{{txt.stop.eta}}</th>
+						<th>{{txt.stop.route}}</th>
+						<th>{{txt.stop.busno}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="round in passedTimetable" ng-click="goSession(round.session)" class="cursor-pointer">
+						<td>{{round.datetime_readable}}</td>
+						<td style="color:#{{round.routecolor}};">{{round.routename}}</td>
+						<td>{{round.busno}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<p>
+			<button class="btn btn-default" style="width: 100%;" ng-click="openMap()"><i class="fa fa-map-marker"></i> {{txt.stop.viewMap}}</button>
+		</p>
+	</p></div>
+	
+	<div class="panel panel-default" ng-show="view=='info'"><p>
+		<div ng-show="infoLoading"><p><center>
+			<img src="assets/img/loading.gif"><br>
+			{{txt.pleaseWait}}
+		</center></p></div>
+		<div ng-show="!infoLoading">
+			<p>
+				<div class="btn-group btn-group-justified">
+					<a href="javascript:void(0);" class="btn btn-default" ng-click="goSearch('from', id)">{{txt.stop.fromHere}}</a>
+					<a href="javascript:void(0);" class="btn btn-default" ng-click="goSearch('to', id)">{{txt.stop.toHere}}</a>
+				</div>
+			</p>
+			<p>
+				<button class="btn btn-default" style="width: 100%;" ng-click="openMap()"><i class="fa fa-map-marker"></i> {{txt.stop.viewMap}}</button>
+			</p>
+			<table class="table" ng-show="busstop" ng-repeat="route in stopGeneralInfo.routes">
+				<thead>
+					<tr style="background-color:#{{route.routecolor}};color:#ffffff;" ng-click="goRoute(route.route)" class="cursor-pointer">
+						<th colspan="2">{{route.routename}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>{{txt.stop.firstRound}}</th>
+						<td>{{route.estimated_first_readable}}</td>
+					</tr>
+					<tr>
+						<th>{{txt.stop.lastRound}}</th>
+						<td>{{route.estimated_last_readable}}</td>
+					</tr>
+					<tr>
+						<th>{{txt.stop.waittingTime}}</th>
+						<td>{{route.waittime|timeText}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<hr>
+			<div class="list-group">
+				<div class="list-group-item" style="background-color: #660066; color: #ffffff;"><strong><big><i class='map-icon map-icon-walking'></i> {{txt.stop.connections}}</big></strong></div>
+				<a href="javascript:void(0);" class="list-group-item" ng-repeat="connection in stopGeneralInfo.connections" ng-click="goStop(connection.to)">{{connection.name}}<small><sub> {{connection.time|timeText}}</sub></small></a>
+			</div>
+		</div>
+	</p></div>
+</div>
+<style>
+.time
+{
+}
+	.time-default
+	{
+		color: #000000;
+	}
+	.time-estimated
+	{
+		color: #999999;
+	}
+	
+[data-toggle="buttons"] > .btn > input[type="radio"],
+[data-toggle="buttons"] > .btn > input[type="checkbox"]
+{
+    clip: rect(1px 10px 1px 1px);
+}
+
+.arriving
+{
+}
+</style>

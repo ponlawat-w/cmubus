@@ -1,0 +1,36 @@
+body
+{
+	font-family: Leelawadee, Tahoma, Helvetica;
+	padding-top: 70px;
+}
+
+input[type='text'], input[type='number'], input[type='email'], input[type='password'], textarea
+{
+	font-size: 16px;
+}
+
+div.bordered
+{
+	border-left: #ededed solid 1px;
+	border-right: #ededed solid 1px;
+}
+
+.navbar
+{
+	background-color: #660066;
+	color: #ffffff;
+}
+	.navbar a
+	{
+		color: #ffffff;
+	}
+
+.cursor-pointer
+{
+	cursor: pointer;
+}
+
+#main
+{
+	padding: 0px 10px;
+}

@@ -1,0 +1,28 @@
+﻿<div class="panel panel-default" ng-show="loading"><p><center>
+	<img src="assets/img/loading.gif"><br>
+	{{txt.pleaseWait}}
+<center></p></div>
+<div ng-show="!loading">
+	<h4>
+		<a href="javascript:void(0);" class="routecolor" ng-click="goRoute(sessionInfo.route)">{{sessionInfo.routename}}</a> - {{sessionInfo.busno|busNumber}}<br>
+		<small>　{{sessionInfo.start_datetime_readable|sessionStartDateTime}}</small>
+	</h4>
+	<table class="table table-hover cursor-pointer">
+		<tbody>
+			<tr ng-repeat="sequence in sessionInfo.time_sequences" ng-click="goStop(sequence.stop)">
+				<td ng-class="{'estimated':sequence.estimated}" style="white-space: nowrap"><nowrap><span ng-class="{'estimated':sequence.estimated, 'routecolor':!sequence.estimated}">●</span> {{sequence.datetime_readable}}</nowrap></td>
+				<td>{{sequence.stopname}}<span ng-show="sequence.estimated"><small> ({{sequence.remaining_distance|distance}})</small></span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<style>
+.estimated
+{
+	color: #999999;
+}
+.routecolor
+{
+	color: #{{sessionInfo.routecolor}};
+}
+</style>
