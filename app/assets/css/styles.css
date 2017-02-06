@@ -40,6 +40,16 @@ div.bordered
 		right: 10px;
 	}
 
+.slide-toggle
+{
+    transition: all ease-in-out 1s;
+}
+
+.ng-hide
+{
+    bottom: -100%;
+}
+
 .cursor-pointer
 {
 	cursor: pointer;

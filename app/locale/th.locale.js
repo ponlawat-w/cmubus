@@ -7,7 +7,14 @@ app.controller("localeController", function($scope)
 			"viewroutes": "ดูเส้นทางทั้งหมด",
 			"searchingNear": "กำลังค้นหาข้อมูลป้ายที่อยู่ใกล้",
 			"nearStops": "ป้ายที่อยู่ใกล้",
-			"searchDetail": "ค้นหาสถานที่"
+			"searchDetail": "ค้นหาสถานที่",
+            "evaluationSurvey": {
+                "title": "ประเมินแอปพลิเคชัน",
+                "message": "ขอความร่วมมือตอบแบบประเมินการใช้งานแอปฯ",
+                "evaluationButton": "ประเมิน",
+                "laterButton": "ถามทีหลัง",
+                "neverButton": "อย่าถามอีก"
+            }
 		},
 		stop: {
 			"route": "เส้นทาง",
@@ -30,7 +37,7 @@ app.controller("localeController", function($scope)
 		},
 		pleaseWait: "กรุณารอสักครู่",
 		search: {
-			"title": "ค้นหาการเดินทาง",
+			"title": "ค้นหาเส้นทาง",
 			"from": "จาก",
 			"to": "ถึง",
 			"detail": "ค้นหาสถานที่",
@@ -56,7 +63,17 @@ app.controller("localeController", function($scope)
 				},
 				"success": "ขอบคุณสำหรับข้อมูล ข้อความถูกส่งไปยังผู้ดูแลระบบแล้ว"
 			}
-		}
+		},
+        menu: {
+            "home": "หน้าหลัก",
+            "searchPlace": "ค้นหาสถานที่",
+            "searchPath": "ค้นหาเส้นทาง",
+            "viewRoutes": "ดูเส้นทางทั้งหมด",
+            "viewBuses": "ดูรถทั้งหมด",
+            "evaluateApp": "ประเมินแอปพลิเคชัน",
+            "problemReport": "รายงานปัญหา",
+            "languageSettings": "ตั้งค่าภาษา (Language)"
+        }
 	};
 });
 

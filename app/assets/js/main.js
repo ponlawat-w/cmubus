@@ -1,4 +1,4 @@
-var app = angular.module("cmubus", ['ngRoute']);
+var app = angular.module("cmubus", ['ngRoute', 'ngAnimate']);
 
 var appInterval;
 
@@ -13,6 +13,10 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 			templateUrl: "pages/home.html",
 			controller: "homeController"
 		})
+        .when('/menu', {
+            templateUrl: "pages/menu.html",
+            controller: "menuController"
+        })
 		.when('/search', {
 			templateUrl: "pages/search.html",
 			controller: "searchController"
@@ -49,9 +53,21 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 			templateUrl: "pages/routes.html",
 			controller: "routesController"
 		})
-		.when('/settings', {
-			templateUrl: "pages/settings.html",
-			controller: "settingsController"
+        .when('/buses', {
+            templateUrl: "pages/buses.html",
+            controller: "routesController"
+        })
+        .when('/evaluate', {
+            templateUrl: "pages/evaluate.html",
+            controller: "evaluateController"
+        })
+        .when('/report', {
+            templateUrl: "pages/report.html",
+            controller: "reportController"
+        })
+		.when('/language', {
+			templateUrl: "pages/language_settings.html",
+			controller: "languageSettingsController"
 		});
 });
 
@@ -82,18 +98,62 @@ app.run(function($rootScope, $location, $anchorScroll)
 /**
  * Main controller
  */
-app.controller("mainController", function($scope, $location, $http)
+app.controller("mainController", function($scope, $location, $http, $timeout, $interval)
 {
 	clearInterval(appInterval);
 	$scope.$location = $location;
 
+	$scope.showBottomNavbar = false;
 	$scope.bottomNavbar = "";
 	$scope.settingToThai = false;
 
-    if(getCookieValue("user_language") == "" && language != "th")
+	if(getCookieValue("survey_timer") == "" && getCookieValue("survey_timer") != "never")
     {
-        $scope.bottomNavbar = "suggestThai";
+        setCookie("survey_timer", 0, 5184000000);
     }
+
+    var surveyInterval = $interval(function()
+    {
+        if(getCookieValue("survey_timer") == "never")
+        {
+            $interval.cancel(surveyInterval);
+        }
+        else
+        {
+            var currentTime = 0;
+            if(getCookieValue("survey_timer") == "")
+            {
+                currentTime = 0;
+            }
+            else
+            {
+                currentTime = parseInt(getCookieValue("survey_timer"));
+            }
+
+            var newTimeValue = currentTime + 1;
+            setCookie("survey_timer", newTimeValue, 5184000000);
+
+            if(newTimeValue > 24 && $scope.bottomNavbar != "suggestSurvey")
+            {
+                $scope.showBottomNavbar = true;
+                $scope.bottomNavbar = "suggestSurvey";
+            }
+        }
+    }, 5000);
+
+	$timeout(function()
+    {
+        if(getCookieValue("user_language") == "" && language != "th")
+        {
+            $scope.showBottomNavbar = true;
+            $scope.bottomNavbar = "suggestThai";
+
+            $timeout(function()
+            {
+                $scope.closeSuggestion();
+            }, 10000);
+        }
+    }, 1000);
 
     $scope.setToThai = function()
 	{
@@ -103,25 +163,33 @@ app.controller("mainController", function($scope, $location, $http)
         {
         	setCookie("user_language", "th", 5184000000);
             window.location.reload();
-        }, function(reponse)
+        }, function(response)
         {
         });
 	};
 
+    $scope.neverAskMeSurvey = function()
+    {
+        $scope.closeSuggestion();
+
+        setCookie("survey_timer", "never", 5184000000);
+    };
+
     $scope.closeSuggestion = function()
 	{
-		$scope.bottomNavbar = "";
+	    if($scope.bottomNavbar == "suggestSurvey")
+        {
+            setCookie("survey_timer", 0, 5184000000);
+        }
+
+        $scope.showBottomNavbar = false;
 
 		setCookie("user_language", language, 5184000000);
-	}
-
-	setTimeout(function()
-	{
-		if($scope.bottomNavbar == "suggestThai")
-		{
-			$scope.closeSuggestion();
-		}
-	}, 10000);
+        $timeout(function()
+        {
+            $scope.bottomNavbar = "";
+        }, 1000);
+	};
 });
 
 /**
@@ -258,6 +326,13 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 	// END SEARCH
 	
 	$scope.loadData();
+});
+
+/**
+ * Menu controller
+ */
+app.controller("menuController", function($scope)
+{
 });
 
 /**
@@ -832,9 +907,54 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 });
 
 /**
- * Settings controller
+ * Buses controller
  */
-app.controller("settingsController", function($scope, $http, $location)
+app.controller("busesController", function($scope)
+{
+});
+
+/**
+ * Evaluate controller
+ */
+app.controller("evaluateController", function($scope)
+{
+});
+
+/**
+ * Report controller
+ */
+app.controller("reportController", function($scope, $http, $location)
+{
+    clearInterval(appInterval);
+
+    // REPORT
+
+    $scope.reportSendStatus = 0;
+
+    $scope.report = {
+        "type": "",
+        "name": "",
+        "email": "",
+        "message": ""
+    };
+
+    $scope.reportSend = function()
+    {
+        $scope.reportSendStatus = 1;
+
+        $http.post("data/send_report.php", $scope.report).then(function(response)
+        {
+            $scope.reportSendStatus = 2;
+        }, function(response)
+        {
+        });
+    };
+});
+
+/**
+ * Language settings controller
+ */
+app.controller("languageSettingsController", function($scope, $http, $location)
 {
     clearInterval(appInterval);
 
@@ -860,30 +980,6 @@ app.controller("settingsController", function($scope, $http, $location)
 	{
 		
 	});
-	
-	
-	// REPORT
-	
-	$scope.reportSendStatus = 0;
-	
-	$scope.report = {
-		"type": "",
-		"name": "",
-		"email": "",
-		"message": ""
-	};
-	
-	$scope.reportSend = function()
-	{
-		$scope.reportSendStatus = 1;
-		
-		$http.post("data/send_report.php", $scope.report).then(function(response)
-		{
-			$scope.reportSendStatus = 2;
-		}, function(response)
-		{
-		});
-	};
 });
 
 /**

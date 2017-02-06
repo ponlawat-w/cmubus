@@ -1,0 +1,8 @@
+<h4><i class="fa fa-language"></i> {{txt.settings.language}}</h4>
+<div ng-show="languages.length==0" class="panel panel-default"><p><center>
+	<img src="assets/img/loading.gif"><br>
+	{{txt.pleaseWait}}
+</center></p></div>
+<div class="list-group">
+	<a href="javascript:void(0);" class="list-group-item" ng-repeat="language in languages" ng-click="changeLanguage(language.id)">{{language.name}}</a>
+</div>

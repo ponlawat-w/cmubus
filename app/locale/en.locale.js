@@ -8,7 +8,14 @@ app.controller("localeController", function($scope)
 			"searchingNear": "Searching data around here",
 			"nearStops": "Bus stops around here",
 			"search": "Search",
-			"searchDetail": "Search"
+			"searchDetail": "Search",
+			"evaluationSurvey": {
+				"title": "Do you have some time?",
+				"message": "Please help us evaluate this application",
+				"evaluationButton": "Evaluate",
+				"laterButton": "Later",
+				"neverButton": "Don't ask me again"
+			}
 		},
 		stop: {
 			"route": "Route",
@@ -57,6 +64,16 @@ app.controller("localeController", function($scope)
 				},
 				"success": "The problem has been reported to administrator. Thank you."
 			}
+		},
+		menu: {
+			"home": "Home",
+			"searchPlace": "Search bus stop or places",
+			"searchPath": "Transfer information",
+			"viewRoutes": "View all routes",
+			"viewBuses": "View all buses",
+			"evaluateApp": "Evaluate application",
+			"problemReport": "Problem report",
+			"languageSettings": "Language settings"
 		}
 	};
 });

@@ -1,0 +1,55 @@
+<h4><i class="fa fa-flag"></i> {{txt.settings.report.title}}</h4>
+<div class="panel panel-default" style="padding: 0px 10px;">
+    <div ng-show="reportSendStatus == 0">
+        <p>
+        <h5><big>{{txt.settings.report.type}}</big></h5>
+        <div class="btn-group btn-group-vertical" style="width: 100%;" data-toggle="buttons">
+            <label class="btn btn-default" ng-class="{'active':(report.type=='application')}" style="text-align: left;">
+                <input type="radio" name="report_type" ng-model="report.type" value="application" checked="checked">
+                <i class="fa fa-th"></i> {{txt.settings.report.applicationUsage}}
+            </label>
+            <label class="btn btn-default" ng-class="{'active':(report.type=='incorrect_data')}" style="text-align: left;">
+                <input type="radio" name="report_type" ng-model="report.type" value="incorrect_data">
+                <i class="fa fa-window-close-o"></i> {{txt.settings.report.incorrectData}}
+            </label>
+            <label class="btn btn-default" ng-class="{'active':(report.type=='mistranslation')}" style="text-align: left;">
+                <input type="radio" name="report_type" ng-model="report.type" value="mistranslation">
+                <i class="fa fa-language"></i> {{txt.settings.report.mistranslation}}
+            </label>
+            <button class="btn btn-default" style="text-align: left;" onclick="window.location='https://mobileapi.cmu.ac.th/Transit/index'">
+                <i class="fa fa-bus"></i> {{txt.settings.report.bus}}
+            </button>
+        </div>
+        </p>
+        <div ng-show="report.type != ''"><form name="reportForm">
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">{{txt.settings.report.name}}</span>
+                <input name="name" type="text" class="form-control" ng-model="report.name">
+            </div>
+            </p>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">{{txt.settings.report.email}}</span>
+                <input name="email" type="email" class="form-control" ng-model="report.email">
+            </div>
+            </p>
+            <p>
+                <textarea name="message" class="form-control" ng-model="report.message" placeholder="{{txt.settings.report.message}}" style="height: 10em; font-size: 16px;" required></textarea>
+            </p>
+            <p>
+                <button class="btn btn-primary" style="width:100%;" ng-disabled="reportForm.name.$invalid || reportForm.email.$invalid || reportForm.message.$invalid" ng-click="reportSend()">
+                    {{txt.settings.report.submit}}
+                </button>
+            </p>
+        </div></form>
+    </div>
+    <div ng-show="reportSendStatus == 1"><p><center>
+        <img src="assets/img/loading.gif"><br>
+        {{txt.pleaseWait}}
+    </center></p></div>
+    <div ng-show="reportSendStatus == 2" class="text-success"><p><center>
+        <h1><i class="fa fa-check-circle"></i></h1>
+        {{txt.settings.report.success}}
+    </center></p></div>
+</div>

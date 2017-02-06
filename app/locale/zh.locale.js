@@ -8,7 +8,14 @@ app.controller("localeController", function($scope)
 			"searchingNear": "附近公交车站加载中",
 			"nearStops": "附近公交车站",
 			"search": "経路搜索",
-			"searchDetail": "公交车站検索"
+			"searchDetail": "公交车站検索",
+            "evaluationSurvey": {
+                "title": "Do you have some time?",
+                "message": "Please help us answer this survey",
+                "evaluationButton": "Click Here",
+                "laterButton": "Later",
+                "neverButton": "Don't ask me again"
+            }
 		},
 		stop: {
 			"route": "経路",
@@ -57,7 +64,17 @@ app.controller("localeController", function($scope)
 				},
 				"success": "报告问题了。谢谢。"
 			}
-		}
+		},
+        menu: {
+            "home": "Home",
+            "searchPlace": "Search bus stop or places",
+            "searchPath": "Transfer information",
+            "viewRoutes": "View all routes",
+            "viewBuses": "View all buses",
+            "evaluateApp": "Evaluate application",
+            "problemReport": "Problem report",
+            "languageSettings": "Language settings"
+        }
 	};
 });
 

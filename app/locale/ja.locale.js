@@ -9,7 +9,13 @@ app.controller("localeController", function($scope)
 			"nearStops": "周辺バス停",
 			"search": "乗換案内",
 			"searchDetail": "バス停検索",
-			"submit": "決定"
+            "evaluationSurvey": {
+                "title": "アプリ評価",
+                "message": "ご協力をお願いします。",
+                "evaluationButton": "　評価　",
+                "laterButton": "後で",
+                "neverButton": "今後、表示しない"
+            }
 		},
 		stop: {
 			"route": "ルート",
@@ -58,7 +64,17 @@ app.controller("localeController", function($scope)
 				},
 				"success": "問題を通報しました。ご協力ありがとうございます。"
 			}
-		}
+		},
+        menu: {
+            "home": "ホーム",
+            "searchPlace": "バス停・場所検索",
+            "searchPath": "乗換案内",
+            "viewRoutes": "ルート一覧",
+            "viewBuses": "バス一覧",
+            "evaluateApp": "アプリ評価",
+            "problemReport": "問題通報",
+            "languageSettings": "言語設定 (Language)"
+        }
 	};
 });
 
