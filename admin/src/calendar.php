@@ -91,7 +91,7 @@
 		<a href="admin.php?page=calendar&day=<?php echo $previous_day; ?>"><i class="fa fa-arrow-left"></i> วันก่อนหน้า</a>　
 		<a href="admin.php?page=calendar&day=<?php echo $next_day; ?>">วันถัดไป <i class="fa fa-arrow-right"></i></a>
 		
-		<h3><?php echo thaidate("฿วว ฿วท ฿ดด ฿ปปปป", $day->Timestamp) . " (" . $day->TypeToString() . ")"; ?></h3>
+		<h3><?php echo thai_date("฿วว ฿วท ฿ดด ฿ปปปป", $day->Timestamp) . " (" . $day->TypeToString() . ")"; ?></h3>
 		<?php
 			if($day->Detail != "")
 			{

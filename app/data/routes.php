@@ -15,15 +15,15 @@ foreach($routes as $key => $route) if($route['available'] == 1)
 	unset($routes[$key]['detail']);
 	unset($routes[$key]['available']);
 	
-	$sql = "SELECT MAX(`distance_from_start`) AS 'total_distance' FROM `route_paths` WHERE `route` = {$route['id']}";
-	$result = mysqli_query($connection, $sql);
+	$sql = "SELECT MAX(`distance_from_start`) AS 'total_distance' FROM `route_paths` WHERE `route` = ?";
+	$result = sql_query($sql, "i", array($route['id']));
 	$routepathdata = mysqli_fetch_array($result);
 	
 	$routes[$key]['distance'] = $routepathdata['total_distance'];
 	
 	$stops = array();
-	$sql = "SELECT `stop` FROM `route_paths` WHERE `route` = {$route['id']} AND `stop` IS NOT NULL ORDER BY `distance_from_start` ASC";
-	$results = mysqli_query($connection, $sql);
+	$sql = "SELECT `stop` FROM `route_paths` WHERE `route` = ? AND `stop` IS NOT NULL ORDER BY `distance_from_start` ASC";
+	$results = sql_query($sql, "i", array($route['id']));
 	while($stopdata = mysqli_fetch_array($results))
 	{
 		array_push($stops, $stopdata['stop']);

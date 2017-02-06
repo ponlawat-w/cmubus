@@ -32,17 +32,17 @@ $sql = "SELECT `id`,
 			ASIN(
 				SQRT(
 					POWER(
-						SIN(({$lat} - abs(`location_lat`)) * PI() / 180 / 2)
+						SIN((? - abs(`location_lat`)) * PI() / 180 / 2)
 					, 2) +
-					COS({$lat} * PI() / 180) *
+					COS(? * PI() / 180) *
 					POWER(
-						SIN(({$lon} - `location_lon`) * PI() / 180 / 2)
+						SIN((? - `location_lon`) * PI() / 180 / 2)
 					, 2)
 				)
 			) AS `distance`
 		FROM `stops` WHERE $busstop_str
-		ORDER BY `distance` LIMIT $limit;";
-$results = mysqli_query($connection, $sql);
+		ORDER BY `distance` LIMIT ?;";
+$results = sql_query($sql, "dddi", array($lat, $lat, $lon, $limit));
 while($stopdata = mysqli_fetch_array($results))
 {
 	if($stopdata['distance'] > 5000)

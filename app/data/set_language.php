@@ -4,8 +4,8 @@ include_once("../../lib/app.inc.php");
 
 $id = str_replace("'", "", $_GET['id']);
 
-$sql = "SELECT COUNT(*) AS 'count' FROM `languages` WHERE `id` = '$id' AND `available` = 1";
-$result = mysqli_query($connection, $sql);
+$sql = "SELECT COUNT(*) AS 'count' FROM `languages` WHERE `id` = ? AND `available` = 1";
+$result = sql_query($sql, "s", array($id));
 $data = mysqli_fetch_array($result);
 
 if($data['count'] == 1)

@@ -7,7 +7,7 @@ include_once("../../lib/app.inc.php");
 $languages = array();
 
 $sql = "SELECT `id`, `name` FROM `languages` WHERE `available` = 1 ORDER BY `id` ASC";
-$results = mysqli_query($connection, $sql);
+$results = sql_query($sql);
 while($languagedata = mysqli_fetch_array($results))
 {
 	array_push($languages, array("id" => $languagedata['id'], "name" => $languagedata['name']));

@@ -112,7 +112,7 @@ class Stop
          */
 		
 		$sql = "SELECT `id` FROM `stops`";
-		$results = mysqli_query($connection, $sql);
+		$results = sql_query($sql);
 		while($StopIDData = mysqli_fetch_array($results))
 		{
 			$nodes[$StopIDData['id']] = new Node($StopIDData['id'], $max_result);
@@ -295,7 +295,7 @@ class Stop
                         {
                             continue;
                         }
-                        error_log("estimated time = last record {$lastRecordData['datetime']} + estimated $estimatedTimeBetweenStops");
+
                         $estimatedTime = $lastRecordData['datetime'] + $estimatedTimeBetweenStops;
                     }
                     else
@@ -715,11 +715,8 @@ class Session
 		
 		$last_record = array(
 			"stop" => "",
-			"datetime" => null,
-			"estimated_time" => 0
+			"datetime" => null
 		);
-
-		$recordData = null;
 
 		$sql = "SELECT `stop`, `datetime` FROM `records` WHERE `session` = ? ORDER BY `datetime` ASC";
 		$results = sql_query($sql, "i", array($this->ID));
@@ -736,22 +733,10 @@ class Session
 			);
 			
 			array_push($time_sequences, $item);
-		}
 
-        if(count($time_sequences) > 0)
-        {
             $last_record['stop'] = $recordData['stop'];
             $last_record['datetime'] = $recordData['datetime'];
-
-            $sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
-            $result = sql_query($sql, "iii", array($this->Route, $recordData['stop'], $this->StartTimeStamp));
-
-            if(mysqli_num_rows($result) > 0)
-            {
-                $estimatedData = mysqli_fetch_array($result);
-                $last_record['estimated_time'] = $estimatedData['estimated_time'];
-            }
-        }
+		}
 		
 		if($online == true)
 		{
@@ -761,23 +746,20 @@ class Session
 			$results = sql_query($sql, "id", array($this->Route, $busData['last_distance']));
 			while($nextStopData = mysqli_fetch_array($results))
 			{
-				$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = {$this->Route} AND `stop` = {$nextStopData['stop']} AND ({$this->StartTimeStamp} BETWEEN `start_time` AND `end_time`)";
-				$result = mysqli_query($connection, $sql);
-				
-				$dt = null;
-				if(mysqli_num_rows($result) > 0)
-				{
-					$estimatedData = mysqli_fetch_array($result);
-					
-					$dt = $last_record['datetime'] + ($estimatedData['estimated_time'] - $last_record['estimated_time']);
-				}
+			    $estimatedArrivalTimestamp = null;
+
+				$timeFromLastRecordToThisStop = estimated_time_between($this->Route, $last_record['stop'], $nextStopData['stop'], $this->StartTimeStamp);
+				if($timeFromLastRecordToThisStop != null)
+                {
+				    $estimatedArrivalTimestamp = $last_record['datetime'] + $timeFromLastRecordToThisStop;
+                }
 				
 				$item = array(
 					"stop" => $nextStopData['stop'],
 					"stopname" => get_text("stop", $nextStopData['stop'], get_language_id()),
-					"datetime" => $dt,
-					"datetime_readable" => date("H:i", $dt),
-					"remaining_time" => $dt - $now,
+					"datetime" => $estimatedArrivalTimestamp,
+					"datetime_readable" => date("H:i", $estimatedArrivalTimestamp),
+					"remaining_time" => $estimatedArrivalTimestamp - $now,
 					"remaining_distance" => $nextStopData['distance_from_start'] - $busData['last_distance'],
 					"estimated" => true
 				);
@@ -1133,16 +1115,14 @@ class Day
      */
     public function __construct($day)
     {
-        global $connection;
-
         if(date("His", $day) != "000000")
         {
             unset($this);
             return false;
         }
 
-        $sql = "SELECT `type`, `detail` FROM `days` WHERE `date` = $day";
-        $result = mysqli_query($connection, $sql);
+        $sql = "SELECT `type`, `detail` FROM `days` WHERE `date` = ?";
+        $result = sql_query($sql, "i", array($day));
         $numRows = mysqli_num_rows($result);
 
         if($numRows == 0)
@@ -1156,8 +1136,8 @@ class Day
                 $this->Type = 0;
             }
 
-            $sql = "INSERT INTO `days` (`date`, `type`, `detail`) VALUES ($day, {$this->Type}, '')";
-            mysqli_query($connection, $sql);
+            $sql = "INSERT INTO `days` (`date`, `type`, `detail`) VALUES (?, ?, ?)";
+            sql_query($sql, "iis", array($day, $this->Type, ""));
 
             $this->Timestamp = $day;
             $this->Detail = "";
@@ -1180,8 +1160,8 @@ class Day
     {
         global $connection;
 
-        $sql = "SELECT `name` FROM `day_types` WHERE `id` = {$this->Type}";
-        $result = mysqli_query($connection, $sql);
+        $sql = "SELECT `name` FROM `day_types` WHERE `id` = ?";
+        $result = sql_query($sql, "i", array($this->Type));
         $data = mysqli_fetch_array($result);
 
         return $data['name'];
@@ -1193,10 +1173,8 @@ class Day
      */
     public function SetTypeTo($newType)
     {
-        global $connection;
-
-        $sql = "UPDATE `days` SET `type` = $newType WHERE `date` = {$this->Timestamp}";
-        mysqli_query($connection, $sql);
+        $sql = "UPDATE `days` SET `type` = ? WHERE `date` = ?";
+        sql_query($sql, "ii", array($newType, $this->Timestamp));
 
         $this->Type = $newType;
     }
@@ -1207,10 +1185,8 @@ class Day
      */
     public function SetDetail($newDetail)
     {
-        global $connection;
-
-        $sql = "UPDATE `days` SET `detail` = '$newDetail' WHERE `date` = {$this->Timestamp}";
-        mysqli_query($connection, $sql);
+        $sql = "UPDATE `days` SET `detail` = ? WHERE `date` = ?";
+        sql_query($sql, "si", array($newDetail, $this->Timestamp));
 
         $this->Detail = $newDetail;
     }
@@ -1372,7 +1348,7 @@ function estimated_time_between($route, $stop1, $stop2, $timestamp)
 
     $stop1DistanceData = mysqli_fetch_array($result);
 
-    if($stop1DistanceData['distance_form_start'] == 0)
+    if($stop1DistanceData['distance_from_start'] == 0)
     {
         return estimated_time($route, $stop2, $timestamp);
     }
@@ -1402,6 +1378,11 @@ function estimated_time_between($route, $stop1, $stop2, $timestamp)
 function sql_query($sqlParseText, $variableTypes = "", $variableValuesArray = array())
 {
     global $connection;
+
+    if($variableTypes == "")
+    {
+        return mysqli_query($connection, $sqlParseText);
+    }
 
     $variableReferencesArray = array();
     foreach($variableValuesArray as $key => $value)
@@ -1609,8 +1590,6 @@ function get_day_from_timestamp($timestamp)
  */
 function get_routes_at($time)
 {
-    global $connection;
-
     $routes = array();
     $now = mktime();
 
@@ -1621,15 +1600,15 @@ function get_routes_at($time)
 
     $i = 0;
     $sql = "SELECT `id`, `refid`, `color`, `name`, `available`, `detail` FROM `routes` ORDER BY `name` ASC, `detail` ASC";
-    $results = mysqli_query($connection, $sql);
+    $results = sql_query($sql);
     while($routeData = mysqli_fetch_array($results))
     {
         $available = $routeData['available'];
 
         if($time != $now)
         {
-            $sql = "SELECT `set_available_to` FROM `route_available_switchers` WHERE `route` = {$routeData['id']} AND `date` BETWEEN $now AND $time ORDER BY `date` DESC LIMIT 1";
-            $result = mysqli_query($connection, $sql);
+            $sql = "SELECT `set_available_to` FROM `route_available_switchers` WHERE `route` = ? AND `date` BETWEEN ? AND ? ORDER BY `date` DESC LIMIT 1";
+            $result = sql_query($sql, "iii", array($routeData['id'], $now, $time));
             $numRows = mysqli_num_rows($result);
 
             if($numRows == 1)
@@ -1675,7 +1654,7 @@ function get_routes_at($time)
  * @param bool $timestamp
  * @return false|string
  */
-function thaidate($format, $timestamp = false)
+function thai_date($format, $timestamp = false)
 {
     // ให้เวลาเป็นเวลาปัจจุบัน ในกรณีที่ไม่มีอินพุตด้านเวลา
     if($timestamp == false)
@@ -1769,7 +1748,7 @@ function thaidate($format, $timestamp = false)
  * @param $timestamp
  * @return mixed
  */
-function getday($timestamp)
+function get_start_day($timestamp)
 {
     return $timestamp - ($timestamp % 86400);
 }
@@ -1782,8 +1761,6 @@ function getday($timestamp)
  */
 function get_language_id()
 {
-    global $connection;
-
     if(isset($_SESSION['user']) && isset($_SESSION['user']['language']))
     {
         return $_SESSION['user']['language'];
@@ -1791,11 +1768,11 @@ function get_language_id()
 
     if(isset($_COOKIE['user_language']))
     {
-        $sql = "SELECT COUNT(*) AS 'count' FROM `languages` WHERE `id` = '{$_COOKIE['user_language']}'";
-        $result = mysqli_query($connection, $sql);
-        $languagecountdata = mysqli_fetch_array($result);
+        $sql = "SELECT COUNT(*) AS 'count' FROM `languages` WHERE `id` = ?";
+        $result = sql_query($sql, "s", array($_COOKIE['user_language']));
+        $languageCountData = mysqli_fetch_array($result);
 
-        if($languagecountdata['count'] == 1)
+        if($languageCountData['count'] == 1)
         {
             $_SESSION['user']['language'] = $_COOKIE['user_language'];
             return $_SESSION['user']['language'];
@@ -1811,8 +1788,8 @@ function get_language_id()
         $language_ = explode("-", $language_[0]);
         $language = trim($language_[0]);
 
-        $sql = "SELECT `id` FROM `languages` WHERE `id` = '$language' AND `available` = 1";
-        $result = mysqli_query($connection, $sql);
+        $sql = "SELECT `id` FROM `languages` WHERE `id` = ? AND `available` = 1";
+        $result = sql_query($sql, "s", array($language));
         if(mysqli_num_rows($result) == 1)
         {
             $_SESSION['user']['language'] = $language;
@@ -1843,8 +1820,6 @@ function set_language_id($language_id)
  */
 function get_text($ref_type, $ref_id, $language)
 {
-    global $connection;
-
     $ref_type = urlencode($ref_type);
     $ref_id = urlencode($ref_id);
 
@@ -1857,8 +1832,8 @@ function get_text($ref_type, $ref_id, $language)
     {
         if($ref_type == "stop")
         {
-            $sql = "SELECT `name` FROM `stops` WHERE `id` = $ref_id";//
-            $result = mysqli_query($connection, $sql);
+            $sql = "SELECT `name` FROM `stops` WHERE `id` = ?";
+            $result = sql_query($sql, "i", array($ref_id));
 
             if(mysqli_num_rows($result) == 1)
             {
@@ -1870,7 +1845,7 @@ function get_text($ref_type, $ref_id, $language)
         else if($ref_type == "route")
         {
             $sql = "SELECT `name` FROM `routes` WHERE `id` = $ref_id";
-            $result = mysqli_query($connection, $sql);
+            $result = sql_query($sql, "i", array($ref_id));
 
             if(mysqli_num_rows($result) == 1)
             {
@@ -1884,8 +1859,8 @@ function get_text($ref_type, $ref_id, $language)
     }
     else if($language == "en")
     {
-        $sql = "SELECT `text` FROM `texts` WHERE `ref_type` = '$ref_type' AND `ref_id` = $ref_id AND `language` = '$language'";
-        $result = mysqli_query($connection, $sql);
+        $sql = "SELECT `text` FROM `texts` WHERE `ref_type` = ? AND `ref_id` = ? AND `language` = ?";
+        $result = sql_query($sql, "sis", array($ref_type, $ref_id, $language));
         if(mysqli_num_rows($result) == 0)
         {
             $text = get_text($ref_type, $ref_id, "th");
@@ -1905,8 +1880,8 @@ function get_text($ref_type, $ref_id, $language)
     }
     else
     {
-        $sql = "SELECT `text` FROM `texts` WHERE `ref_type` = '$ref_type' AND `ref_id` = $ref_id AND `language` = '$language'";
-        $result = mysqli_query($connection, $sql);
+        $sql = "SELECT `text` FROM `texts` WHERE `ref_type` = ? AND `ref_id` = ? AND `language` = ?";
+        $result = sql_query($sql, "sis", array($ref_type, $ref_id, $language));
         if(mysqli_num_rows($result) == 0)
         {
             $text = get_text($ref_type, $ref_id, "en");
@@ -2095,14 +2070,12 @@ function search($keyword, $language, $max_result = 10)
  */
 function find_where_name_like($keyword, $language)
 {
-    global $connection;
-
     $function_result = array();
 
     if($language == "th")
     {
-        $sql = "SELECT `id`, `name`, `busstop` FROM `stops` WHERE `name` LIKE '$keyword'";
-        $results = mysqli_query($connection, $sql);
+        $sql = "SELECT `id`, `name`, `busstop` FROM `stops` WHERE `name` LIKE ?";
+        $results = sql_query($sql, "s", array($keyword));
         while($stopdata = mysqli_fetch_array($results))
         {
             result_push($function_result, array(
@@ -2114,8 +2087,8 @@ function find_where_name_like($keyword, $language)
     }
     else
     {
-        $sql = "SELECT `ref_id`, `text`, `busstop` FROM `texts`, `stops` WHERE `ref_type` = 'stop' AND `ref_id` = `stops`.`id` AND `language` = '$language' AND `text` LIKE '$keyword'";
-        $results = mysqli_query($connection, $sql);
+        $sql = "SELECT `ref_id`, `text`, `busstop` FROM `texts`, `stops` WHERE `ref_type` = 'stop' AND `ref_id` = `stops`.`id` AND `language` = ? AND `text` LIKE ?";
+        $results = sql_query($sql, "ss", array($language, $keyword));
         while($stopdata = mysqli_fetch_array($results))
         {
             result_push($function_result, array(
@@ -2137,41 +2110,39 @@ function find_where_name_like($keyword, $language)
  */
 function find_where_tag_like($keyword, $language)
 {
-    global $connection;
-
     $function_result = array();
 
     if($language == "th")
     {
-        $sql = "SELECT `stop`, `name` FROM `stops_tags` WHERE `name` LIKE '$keyword'";
-        $results = mysqli_query($connection, $sql);
-        while($tagdata = mysqli_fetch_array($results))
+        $sql = "SELECT `stop`, `name` FROM `stops_tags` WHERE `name` LIKE ?";
+        $results = sql_query($sql, "s", array($keyword));
+        while($tagData = mysqli_fetch_array($results))
         {
-            $sql = "SELECT `id`, `name`, `busstop` FROM `stops` WHERE `id` = {$tagdata['stop']}";
-            $result = mysqli_query($connection, $sql);
-            $stopdata = mysqli_fetch_array($result);
+            $sql = "SELECT `id`, `name`, `busstop` FROM `stops` WHERE `id` = ?";
+            $result = sql_query($sql, "i", array($tagData['stop']));
+            $stopData = mysqli_fetch_array($result);
 
             result_push($function_result, array(
-                "id" => $stopdata['id'],
-                "cause" => $tagdata['name'],
-                "busstop" => $stopdata['busstop']
+                "id" => $stopData['id'],
+                "cause" => $tagData['name'],
+                "busstop" => $stopData['busstop']
             ));
         }
     }
     else
     {
-        $sql = "SELECT `ref_id`, `text` FROM `texts` WHERE `ref_type` = 'stop_tag' AND `language` = '$language' AND `text` LIKE '$keyword'";
-        $results = mysqli_query($connection, $sql);
-        while($tagdata = mysqli_fetch_array($results))
+        $sql = "SELECT `ref_id`, `text` FROM `texts` WHERE `ref_type` = 'stop_tag' AND `language` = ? AND `text` LIKE ?";
+        $results = sql_query($sql, "ss", array($language, $keyword));
+        while($tagData = mysqli_fetch_array($results))
         {
-            $sql = "SELECT `name`, `busstop` FROM `stops` WHERE `id` = {$tagdata['ref_id']}";
-            $result = mysqli_query($connection, $sql);
-            $stopdata = mysqli_fetch_array($result);
+            $sql = "SELECT `name`, `busstop` FROM `stops` WHERE `id` = ?";
+            $result = sql_query($sql, "i", array($tagData['ref_id']));
+            $stopData = mysqli_fetch_array($result);
 
             result_push($function_result, array(
-                "id" => $tagdata['ref_id'],
-                "cause" => $tagdata['text'],
-                "busstop" => $stopdata['busstop']
+                "id" => $tagData['ref_id'],
+                "cause" => $tagData['text'],
+                "busstop" => $stopData['busstop']
             ));
         }
     }

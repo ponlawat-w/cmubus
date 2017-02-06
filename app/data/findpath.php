@@ -13,8 +13,8 @@ $to = (int)$_GET['to'];
 
 
 $dt = mktime();
-$sql = "INSERT INTO `search_logs` (`id`, `datetime`, `search_from`, `search_to`) VALUES (0, $dt, $from, $to)";
-mysqli_query($connection, $sql);
+$sql = "INSERT INTO `search_logs` (`id`, `datetime`, `search_from`, `search_to`) VALUES (0, ?, ?, ?)";
+sql_query($sql, "iii", array($dt, $from, $to));
 
 if(date("H", $dt) <= 7 || date("H", $dt) >= 22)
 {
