@@ -17,12 +17,27 @@ div.bordered
 
 .navbar
 {
-	background-color: #660066;
-	color: #ffffff;
 }
-	.navbar a
+	.navbar-fixed-top
 	{
+		background-color: #660066;
 		color: #ffffff;
+	}
+		.navbar-fixed-top a
+		{
+			color: #ffffff;
+		}
+	.navbar-fixed-bottom
+	{
+		background-color: #ededed;
+		box-shadow: 0px 0px 1em #000000;
+	}
+	.close-button
+	{
+		position: absolute;
+		font-size: 1.5em;
+		color: #000000;
+		right: 10px;
 	}
 
 .cursor-pointer

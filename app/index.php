@@ -19,6 +19,9 @@
 		<link rel="stylesheet" type="text/css" href="assets/css/map-icons.min.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
 		<title>CMU BUS</title>
+        <script>
+            var language = "<?php echo get_language_id(); ?>";
+        </script>
 	</head>
 	<body ng-controller="mainController">
 		<nav class="navbar navbar-fixed-top">
@@ -38,10 +41,27 @@
 				<div ng-view>
 				</div>
 			</div>
-		</div></div>
+		</div>
+        <nav class="navbar navbar-fixed-bottom" ng-show="bottomNavbar!=''">
+            <div class="container-fluid col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-xl-2 col-xl-offset-5">
+                <a href="javascript:void(0);" class="close-button" ng-click="closeSuggestion()"><i class="fa fa-times"></i></a>
+                <div id="navbar-suggest-thai" ng-show="bottomNavbar=='suggestThai'">
+                    <p>
+                        <h4>ใช้งานภาษาไทยหรือไม่</h4>
+                        <div ng-show="!settingToThai">
+                            <button class="btn btn-default" ng-click="setToThai();">คลิกที่นี่เพื่อเปลี่ยนเป็นภาษาไทย</button>
+                        </div>
+                        <div ng-show="settingToThai">
+                            กรุณารอสักครู่…
+                        </div>
+                    </p>
+                </div>
+            </div>
+        </nav>
 	</body>
 	<script src="assets/js/angular.min.js"></script>
 	<script src="assets/js/angular-route.min.js"></script>
+    <script src="assets/js/angular-animate.min.js"></script>
 	<script src="assets/js/main.js"></script>
 	<script src="locale/<?php echo get_language_id(); ?>.locale.js"></script>
 </html>

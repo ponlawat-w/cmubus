@@ -79,13 +79,54 @@ app.run(function($rootScope, $location, $anchorScroll)
 	});
 });
 
-app.controller("mainController", function($scope, $location)
+/**
+ * Main controller
+ */
+app.controller("mainController", function($scope, $location, $http)
 {
 	clearInterval(appInterval);
 	$scope.$location = $location;
-});
-// END mainController
 
+	$scope.bottomNavbar = "";
+	$scope.settingToThai = false;
+
+    if(getCookieValue("user_language") == "" && language != "th")
+    {
+        $scope.bottomNavbar = "suggestThai";
+    }
+
+    $scope.setToThai = function()
+	{
+		$scope.settingToThai = true;
+
+        $http.get("data/set_language.php?id=th").then(function(response)
+        {
+        	setCookie("user_language", "th", 5184000000);
+            window.location.reload();
+        }, function(reponse)
+        {
+        });
+	};
+
+    $scope.closeSuggestion = function()
+	{
+		$scope.bottomNavbar = "";
+
+		setCookie("user_language", language, 5184000000);
+	}
+
+	setTimeout(function()
+	{
+		if($scope.bottomNavbar == "suggestThai")
+		{
+			$scope.closeSuggestion();
+		}
+	}, 10000);
+});
+
+/**
+ * Home controller
+ */
 app.controller("homeController", function($scope, $http, $location, $anchorScroll)
 {
     clearInterval(appInterval);
@@ -218,8 +259,10 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 	
 	$scope.loadData();
 });
-// END homeController
 
+/**
+ * Search controller
+ */
 app.controller("searchController", function($scope, $http, $location, $anchorScroll, $routeParams)
 {
     clearInterval(appInterval);
@@ -496,8 +539,10 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 		$location.path("/stop/" + id);
 	};
 });
-// END searchController
 
+/**
+ * Search result controller
+ */
 app.controller("searchResultController", function($scope, $routeParams, $http, $location)
 {
     clearInterval(appInterval);
@@ -550,8 +595,10 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 		}
 	};
 });
-// END searchResultController
 
+/**
+ * Bus stop controller
+ */
 app.controller("stopController", function($scope, $http, $routeParams, $location)
 {
     clearInterval(appInterval);
@@ -654,8 +701,10 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		
 	});
 });
-// END stopController
 
+/**
+ * Session controller
+ */
 app.controller("sessionController", function($scope, $http, $routeParams, $location)
 {
     clearInterval(appInterval);
@@ -698,8 +747,10 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
     $scope.loadSessionInfo();
     appInterval = setInterval(function() { $scope.loadSessionInfo(); }, 3000);
 });
-// END sessionController
 
+/**
+ * Routes controller
+ */
 app.controller("routesController", function($scope, $http, $location)
 {
     clearInterval(appInterval);
@@ -721,8 +772,10 @@ app.controller("routesController", function($scope, $http, $location)
 		$location.path("route/" + id);
 	};
 });
-// END routesController
 
+/**
+ * Route controller
+ */
 app.controller("routeController", function($scope, $http, $location, $routeParams)
 {
     clearInterval(appInterval);
@@ -777,8 +830,10 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 		$location.path("route/" + $routeParams.id);
 	};
 });
-// END routeController
 
+/**
+ * Settings controller
+ */
 app.controller("settingsController", function($scope, $http, $location)
 {
     clearInterval(appInterval);
@@ -791,14 +846,8 @@ app.controller("settingsController", function($scope, $http, $location)
 	{
 		$http.get("data/set_language.php?id=" + newLanguageID).then(function(response)
 		{
-			var d = new Date();
-			d.setTime(d.getTime() + 5184000000);
-			var expires = "expires="+ d.toUTCString();
-			document.cookie = "user_language=" + newLanguageID + ";" + expires + "";
-
+			setCookie("user_language", newLanguageID, 5184000000);
 			window.location.reload();
-
-			//window.location = "https://app.cmubus.com";
 		}, function(reponse)
 		{			
 		});
@@ -836,9 +885,10 @@ app.controller("settingsController", function($scope, $http, $location)
 		});
 	};
 });
-// END settingsController
 
-// FILTERS //
+/**
+ * Filters
+ */
 
 app.filter('trustedHTML', function($sce)
 { 
@@ -888,4 +938,28 @@ app.filter("arrivalClassHandler", function()
 	};
 });
 
-// END FILTERS//
+
+/**
+ * Set cookie of this site
+ * @param name
+ * @param value
+ * @param expireTimeInMillisecond
+ */
+function setCookie(name, value, expireTimeInMillisecond)
+{
+    var d = new Date();
+    d.setTime(d.getTime() + expireTimeInMillisecond);
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + "";
+}
+
+/**
+ * Get cookie value by provided parameter
+ * @param param
+ * @returns {*}
+ */
+function getCookieValue(param)
+{
+    var readCookie = document.cookie.match('(^|;)\\s*' + param + '\\s*=\\s*([^;]+)');
+    return readCookie ? readCookie.pop() : '';
+}
