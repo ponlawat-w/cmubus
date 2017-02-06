@@ -522,8 +522,8 @@ class Stop
 			
 			foreach($days as $day)
 			{				
-				$sql = "SELECT MIN(`start_datetime`) AS 'min_dt', MAX(`start_datetime`) AS 'max_dt' FROM `sessions` WHERE `route` = {$route['id']} AND (`start_datetime` BETWEEN {$day} AND " . ($day + 86399) . ")";
-				$result = sql_query($sql, "iii", array($route['id'], $day, $day));
+				$sql = "SELECT MIN(`start_datetime`) AS 'min_dt', MAX(`start_datetime`) AS 'max_dt' FROM `sessions` WHERE `route` = ? AND (`start_datetime` BETWEEN ? AND ?)";
+				$result = sql_query($sql, "iii", array($route['id'], $day, $day + 86399));
 				$data = mysqli_fetch_array($result);
 				
 				if($data['min_dt'] != null)
@@ -556,13 +556,13 @@ class Stop
 			$countData = mysqli_fetch_array($result);
 			if($countData['route_count'] == 1)
             {
-                $estimatedTimeToThisStopOnFirstRound = estimated_time($route, $this->ID, $estimated_first);
+                $estimatedTimeToThisStopOnFirstRound = estimated_time($route['id'], $this->ID, $estimated_first);
                 if($estimatedTimeToThisStopOnFirstRound != null)
                 {
                     $estimated_first += $estimatedTimeToThisStopOnFirstRound;
                 }
 
-                $estimatedTimeToThisStopOnLastRound = estimated_time($route, $this->ID, $estimated_last);
+                $estimatedTimeToThisStopOnLastRound = estimated_time($route['id'], $this->ID, $estimated_last);
                 if($estimatedTimeToThisStopOnLastRound != null)
                 {
                     $estimated_last += $estimatedTimeToThisStopOnLastRound;
@@ -1384,6 +1384,11 @@ function sql_query($sqlParseText, $variableTypes = "", $variableValuesArray = ar
         return mysqli_query($connection, $sqlParseText);
     }
 
+    if(strlen($variableTypes) != count($variableValuesArray))
+    {
+        return false;
+    }
+
     $variableReferencesArray = array();
     foreach($variableValuesArray as $key => $value)
     {
@@ -1844,7 +1849,7 @@ function get_text($ref_type, $ref_id, $language)
         }
         else if($ref_type == "route")
         {
-            $sql = "SELECT `name` FROM `routes` WHERE `id` = $ref_id";
+            $sql = "SELECT `name` FROM `routes` WHERE `id` = ?";
             $result = sql_query($sql, "i", array($ref_id));
 
             if(mysqli_num_rows($result) == 1)
