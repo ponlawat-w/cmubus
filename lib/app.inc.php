@@ -1430,10 +1430,14 @@ function wait_time_at($stop, $route, $datetime = false)
 	{
 		$waitTimeData = mysqli_fetch_array($result);
 	}
-	else
+	else if(date("His", $datetime) != "120000")
 	{
 		return wait_time_at($stop, $route, mktime(12, 0, 0));
 	}
+	else
+    {
+        return 0;
+    }
 	
 	return $waitTimeData['waittime'];
 }
@@ -1784,7 +1788,15 @@ function get_language_id()
         }
     }
 
-    $accepted_languages = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+    if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+    {
+        $accepted_languages = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+    }
+    else
+    {
+        $accepted_languages = "th";
+    }
+
     $accepted_languages_array = explode(",", $accepted_languages);
 
     foreach($accepted_languages_array as $language)
@@ -2217,11 +2229,14 @@ function estimate_on($day)
 
     ###############
 
+    /**
+     * @var Day $today
+     */
     $today = $day;
-    $max_today = $today->timestamp + 86399;
+    $max_today = $today->Timestamp + 86399;
 
     $today_periods = array();
-    for($i = $today->timestamp + $starttime; $i <= $today->timestamp + $endtime; $i += $interval)
+    for($i = $today->Timestamp + $starttime; $i <= $today->Timestamp + $endtime; $i += $interval)
     {
         array_push($today_periods, array(
             "lower" => $i,
@@ -2229,13 +2244,13 @@ function estimate_on($day)
         ));
     }
 
-    $sql = "DELETE FROM `time_estimation` WHERE `start_time` BETWEEN {$today->timestamp} AND $max_today OR `end_time` BETWEEN {$today->timestamp} AND $max_today";
+    $sql = "DELETE FROM `time_estimation` WHERE `start_time` BETWEEN {$today->Timestamp} AND $max_today OR `end_time` BETWEEN {$today->Timestamp} AND $max_today";
     mysqli_query($connection, $sql);
 
     $route_ids = array();
 
     $i = 0;
-    foreach(get_routes_at($today->timestamp) as $route)
+    foreach(get_routes_at($today->Timestamp) as $route)
     {
         if($route['available'] == 1)
         {
@@ -2245,7 +2260,7 @@ function estimate_on($day)
         $i++;
     }
 
-    $sql = "SELECT `route` FROM `route_available_switchers` WHERE `set_available_to` = 1 AND `date` BETWEEN {$today->timestamp} AND $max_today";
+    $sql = "SELECT `route` FROM `route_available_switchers` WHERE `set_available_to` = 1 AND `date` BETWEEN {$today->Timestamp} AND $max_today";
     $results = mysqli_query($connection, $sql);
     while($switcherdata = mysqli_fetch_array($results))
     {
@@ -2259,7 +2274,7 @@ function estimate_on($day)
     $periods = array();
 
     $n = 0;
-    $sql = "SELECT `date` FROM `days` WHERE `type` = {$today->type} AND `date` < {$today->timestamp} ORDER BY `date` DESC LIMIT $calculated_day_amount";
+    $sql = "SELECT `date` FROM `days` WHERE `type` = {$today->Type} AND `date` < {$today->Timestamp} ORDER BY `date` DESC LIMIT $calculated_day_amount";
     $results = mysqli_query($connection, $sql);
     while($datedata = mysqli_fetch_array($results))
     {
@@ -2369,7 +2384,7 @@ function estimate_on($day)
         mysqli_query($connection, $sql);
     }
 
-    echo "Time Estimation (" . date("Y-m-d", $day->timestamp) . ") - OK";
+    echo "Time Estimation (" . date("Y-m-d", $day->Timestamp) . ") - OK";
 }
 
 /**
