@@ -39,7 +39,7 @@ function update_bus($data)
 	
 	$now = mktime();
 	$sql = "UPDATE `buses` SET `route` = {$data['route']}, `session` = {$data['session']}, `last_sequence` = {$data['last_sequence']}, `last_distance` = {$data['last_distance']}, `location_lat` = {$data['location_lat']}, `location_lon` = {$data['location_lon']}, `rotation` = {$data['rotation']}, `last_update` = $now WHERE `id` = {$data['id']}";
-	$result = mysqli_query($connection, $sql);
+	mysqli_query($connection, $sql);
 	
 	if(mysqli_affected_rows($connection) == 0)
 	{
@@ -48,12 +48,16 @@ function update_bus($data)
 	}
 }
 
+/**
+ * @param Location $location
+ * @param $rotation
+ * @param $route
+ * @param int $min_distance_from_start
+ * @return array
+ */
 function check_if_on_route($location, $rotation, $route, $min_distance_from_start = 0)
 {
 	global $connection;
-	
-	$location_lat = $location->lat;
-	$location_lon = $location->lon;
 	
 	$max_range = $min_distance_from_start + 500;
 	
@@ -149,7 +153,9 @@ function download_data($route)
 function update_data()
 {
 	global $connection;
-	
+
+	$now = mktime();
+
 	$buses = array();
 	$i = 0;
 	
@@ -177,7 +183,7 @@ function update_data()
 		$sql = "SELECT `sequence`, `stop` FROM `route_paths` WHERE `route` = $route ORDER BY `sequence` ASC LIMIT 1";
 		$result = mysqli_query($connection, $sql);
 		$first_sequence_data = mysqli_fetch_array($result);
-		$first_sequence_location = seq2loc($route, $first_sequence_data['sequence']);
+		//$first_sequence_location = seq2loc($route, $first_sequence_data['sequence']);
 		
 		## Get the last sequence location ##
 		$sql = "SELECT `sequence`, `stop` FROM `route_paths` WHERE `route` = $route ORDER BY `sequence` DESC LIMIT 1";
@@ -219,8 +225,8 @@ function update_data()
 			## If bus session is not started yet, wait for bus to start moving ##
 			if($session == 0)
 			{
-				## Start new session if bus jest leave the first sequence (distance between 70 and 500 metres) ##
-				$bus_distance_from_start = $location->DistanceTo($first_sequence_location);
+				## Start new session if bus just leave the first sequence (distance between 70 and 500 metres) ##
+				//$bus_distance_from_start = $location->DistanceTo($first_sequence_location);
 				$check_on_route = check_if_on_route($location, $busdata['rotation'], $route);
 				
 				if($check_on_route['result'] == true && $check_on_route['distance_from_start'] > 70 && $check_on_route['distance_from_start'] < 500)
