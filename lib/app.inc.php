@@ -1411,10 +1411,11 @@ function sql_query($sqlParseText, $variableTypes = "", $variableValuesArray = ar
  * Return approximated waiting time at specified route, busstop and time
  * @param $stop
  * @param $route
- * @param bool $datetime
- * @return mixed
+ * @param int|bool $datetime
+ * @param bool $temporaryWaitTime
+ * @return int
  */
-function wait_time_at($stop, $route, $datetime = false)
+function wait_time_at($stop, $route, $datetime = false, $temporaryWaitTime = false)
 {	
 	global $connection;	
 	
@@ -1425,19 +1426,21 @@ function wait_time_at($stop, $route, $datetime = false)
 	}
 
 	$sql = "SELECT `waittime` FROM `time_estimation` WHERE `stop` = ? AND `route` = ? AND ? BETWEEN `start_time` AND `end_time`";
+	//error_log("SELECT `waittime` FROM `time_estimation` WHERE `stop` = $stop AND `route` = $route AND $datetime BETWEEN `start_time` AND `end_time`");
 	$result = sql_query($sql, "iii", array($stop, $route, $datetime));
 	if(mysqli_num_rows($result) > 0)
 	{
 		$waitTimeData = mysqli_fetch_array($result);
 	}
-	else if(date("His", $datetime) != "120000")
-	{
-		return wait_time_at($stop, $route, mktime(12, 0, 0));
-	}
 	else
-    {
-        return 0;
-    }
+	{
+	    if($temporaryWaitTime == true)
+        {
+            return 0;
+        }
+
+		return wait_time_at($stop, $route, mktime(12, 0, 0), true);
+	}
 	
 	return $waitTimeData['waittime'];
 }
@@ -2343,7 +2346,7 @@ function estimate_on($day)
                 {
                     if($j == 1)
                     {
-                        $waittime = wait_time_at($stop, $route, round(($start_time + $end_time) / 2));
+                        $waittime = calculate_wait_time_at($stop, $route, round(($start_time + $end_time) / 2));
                         break;
                     }
                     $j++;
@@ -2384,7 +2387,68 @@ function estimate_on($day)
         mysqli_query($connection, $sql);
     }
 
-    echo "Time Estimation (" . date("Y-m-d", $day->Timestamp) . ") - OK";
+    echo "Time Estimation (" . date("Y-m-d", $day->Timestamp) . ") - OK\n";
+}
+
+function calculate_wait_time_at($stop, $route, $datetime = false)
+{
+    global $connection;
+
+	// Default time is NOW
+	if($datetime == false)
+        	{
+        		$datetime = mktime();
+        	}
+
+	// Calculate using 30 minutes bound
+	$time = ($datetime + date("Z", $datetime)) % 86400;
+	$bound = 1800;
+
+	$lower = $time - ($bound / 2);
+	$upper = $time + ($bound / 2);
+
+	$calculated_day_amount = 10;
+
+    /**
+     * @var Day $day
+     */
+	$day = get_day_from_timestamp($datetime);
+
+	$days = array();
+	$sqltxts = array();
+
+	$sql = "SELECT `date` FROM `days` WHERE `type` = {$day->Type} AND `date` < {$day->Timestamp} ORDER BY `date` DESC LIMIT {$calculated_day_amount}";
+	$results = mysqli_query($connection, $sql);
+	while($daydata = mysqli_fetch_array($results))
+        	{
+        		$day = new Day($daydata['date']);
+        		array_push($sqltxts, "(`datetime` BETWEEN " . ($day->Timestamp + $lower) . " AND " . ($day->Timestamp + $upper) . ")");
+        	}
+
+	$sqltxt = implode(" OR ", $sqltxts);
+
+	$sql = "SELECT COUNT(*) AS 'count' FROM `records`, `sessions` WHERE `records`.`session` = `sessions`.`id` AND `route` = $route AND `stop` = $stop AND ($sqltxt)";
+	$result = mysqli_query($connection, $sql);
+	$recordcountdata = mysqli_fetch_array($result);
+
+	if($recordcountdata['count'] == 0)
+    {
+        return null;
+	}
+
+	$frequency = $recordcountdata['count'] / count($sqltxts);
+
+	$sql = "SELECT COUNT(*) AS 'count' FROM `route_paths` WHERE `route` = $route AND `stop` = $stop";
+	$result = mysqli_query($connection, $sql);
+	$countdata = mysqli_fetch_array($result);
+	if($countdata['count'] == 2)
+        	{
+        		$frequency /= 2;
+        	}
+
+	$waiting_time = $bound / $frequency;
+
+	return $waiting_time;
 }
 
 /**

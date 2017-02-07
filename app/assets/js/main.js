@@ -924,8 +924,8 @@ app.controller("evaluateController", function($scope, $http)
 
 	$scope.surveyFormData = {
 		role: "",
-		name: null,
-		email: null,
+		name: "",
+		email: "",
 		usefulness: 0,
 		accuracy: 0,
 		performance: 0,
