@@ -68,7 +68,7 @@
                             {{txt.home.evaluationSurvey.message}}
                         </p>
                         <p style="padding-bottom: 0.7em;">
-                            <a href="#/evaluate" class="btn btn-lg btn-success">{{txt.home.evaluationSurvey.evaluationButton}}</a>　
+                            <a href="#/evaluate" ng-click="closeSuggestion()" class="btn btn-lg btn-success">{{txt.home.evaluationSurvey.evaluationButton}}</a>　
                             <a href="javascript:void(0)" class="btn btn-default" ng-click="closeSuggestion()"">{{txt.home.evaluationSurvey.laterButton}}</a>
                         </p>
                         <p>

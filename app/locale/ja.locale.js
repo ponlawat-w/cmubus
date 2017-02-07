@@ -74,6 +74,34 @@ app.controller("localeController", function($scope)
             "evaluateApp": "アプリ評価",
             "problemReport": "問題通報",
             "languageSettings": "言語設定 (Language)"
+        },
+        evaluationSurvey: {
+            "title": "アプリ評価",
+            "role": "あなたは…",
+            roles: {
+                "student": "チェンマイ大学の大学生",
+                "staff": "チェンマイ大学の先生・スタッフ",
+                "visitor": "大学の客・訪問者",
+                "other": "その他"
+            },
+            "name": "氏名",
+            "email": "メール",
+            "usefulness": "このアプリはどのくらい役に立ちますか。",
+            "accuracy": "このアプリのデータ正確性がどのくらい認められますか。",
+            "performance": "このアプリの性能はどのくらいだと思いますか。",
+            "satisfaction": "ご利用はご満足ですか",
+            "comment": "コメント",
+            "typeHere": "コメントがあれば、こちらにご入力ください…",
+            "levels": [
+                "",
+                "とても悪い",
+                "悪い",
+                "普通",
+                "良い",
+                "とても良い"
+            ],
+            "submit": "　評価　",
+            "success": "ご協力ありがとうございます。"
         }
 	};
 });

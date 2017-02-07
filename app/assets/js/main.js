@@ -916,8 +916,34 @@ app.controller("busesController", function($scope)
 /**
  * Evaluate controller
  */
-app.controller("evaluateController", function($scope)
+app.controller("evaluateController", function($scope, $http)
 {
+	setCookie("survey_timer", "never", 5184000000);
+
+	$scope.surveySendStatus = 0;
+
+	$scope.surveyFormData = {
+		role: "",
+		name: null,
+		email: null,
+		usefulness: 0,
+		accuracy: 0,
+		performance: 0,
+		satisfaction: 0,
+		comment: ""
+	};
+
+	$scope.sendData = function()
+	{
+        $scope.surveySendStatus = 1;
+
+        $http.post("data/send_survey.php", $scope.surveyFormData).then(function(response)
+        {
+            $scope.surveySendStatus = 2;
+        }, function(response)
+        {
+        });
+	};
 });
 
 /**

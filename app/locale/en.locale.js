@@ -74,6 +74,34 @@ app.controller("localeController", function($scope)
 			"evaluateApp": "Evaluate application",
 			"problemReport": "Problem report",
 			"languageSettings": "Language settings"
+		},
+        evaluationSurvey: {
+			"title": "Evaluation Survey",
+            "role": "You are…",
+			roles: {
+				"student": "CMU student",
+				"staff": "CMU staff",
+				"visitor": "CMU guest or visitor",
+				"other": "Other"
+			},
+            "name": "Name",
+            "email": "E-mail",
+			"usefulness": "Do you think this app is useful?",
+			"accuracy": "Are you satisfied by data accuracy in this app?",
+			"performance": "Are you satisfied by application performance?",
+			"satisfaction": "Total Satisfaction",
+			"comment": "Comment",
+			"typeHere": "Leave your comment here…",
+			"levels": [
+				"",
+                "Not at all",
+                "No",
+                "Normal",
+                "Yes",
+                "Very much"
+            ],
+			"submit": "Send",
+			"success": "You answer has been sent. Thank you."
 		}
 	};
 });

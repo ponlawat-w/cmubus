@@ -1,1 +1,115 @@
-UNDER CONSTRUCTION…
+<h4><i class="fa fa-star"></i> {{txt.evaluationSurvey.title}}</h4>
+<div class="panel panel-default" style="padding: 0px 10px;">
+    <div ng-show="surveySendStatus == 0">
+        <p>
+        <form name="surveyForm">
+            {{txt.evaluationSurvey.role}}
+            <div class="btn-group btn-group-vertical" style="width: 100%;" data-toggle="buttons">
+                <label class="btn btn-sm btn-default" ng-class="{'active':(surveyFormData.role=='student')}" style="text-align: left;">
+                    <input type="radio" name="survey_type" ng-model="surveyFormData.role" value="student">
+                    {{txt.evaluationSurvey.roles.student}}
+                </label>
+                <label class="btn btn-sm btn-default" ng-class="{'active':(surveyFormData.role=='staff')}" style="text-align: left;">
+                    <input type="radio" name="survey_type" ng-model="surveyFormData.role" value="staff">
+                    {{txt.evaluationSurvey.roles.staff}}
+                </label>
+                <label class="btn btn-sm btn-default" ng-class="{'active':(surveyFormData.role=='visitor')}" style="text-align: left;">
+                    <input type="radio" name="survey_type" ng-model="surveyFormData.role" value="visitor">
+                    {{txt.evaluationSurvey.roles.visitor}}
+                </label>
+                <label class="btn btn-sm btn-default" ng-class="{'active':(surveyFormData.role=='other')}" style="text-align: left;">
+                    <input type="radio" name="survey_type" ng-model="surveyFormData.role" value="other">
+                    {{txt.evaluationSurvey.roles.other}}
+                </label>
+            </div>
+            <p>
+                <div class="input-group">
+                    <span class="input-group-addon">{{txt.evaluationSurvey.name}}</span>
+                    <input name="name" type="text" class="form-control" ng-model="surveyFormData.name">
+                </div>
+            </p>
+            <p>
+                <div class="input-group">
+                    <span class="input-group-addon">{{txt.evaluationSurvey.email}}</span>
+                    <input name="email" type="email" class="form-control" ng-model="surveyFormData.email">
+                </div>
+            </p>
+
+
+            <div style="text-align: center">
+                <hr>
+
+                <p>
+                    <p>{{txt.evaluationSurvey.usefulness}}</p>
+                    <div style="font-size: 1.5em">
+                        <span style="color: #660066; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.usefulness = i">
+                            <i class="fa fa-star" ng-show="surveyFormData.usefulness >= i"></i>
+                            <i class="fa fa-star-o" ng-show="surveyFormData.usefulness < i"></i>
+                        </span>
+                    </div>
+                    <div>{{txt.evaluationSurvey.levels[surveyFormData.usefulness]}}</div>
+                </p>
+
+                <hr>
+
+                <p>
+                    <p>{{txt.evaluationSurvey.accuracy}}</p>
+                    <div style="font-size: 1.5em">
+                        <span style="color: #660066; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.accuracy = i">
+                                <i class="fa fa-star" ng-show="surveyFormData.accuracy >= i"></i>
+                                <i class="fa fa-star-o" ng-show="surveyFormData.accuracy < i"></i>
+                         </span>
+                    </div>
+                    <div>{{txt.evaluationSurvey.levels[surveyFormData.accuracy]}}</div>
+                </p>
+
+                <hr>
+
+                <p>
+                    <p>{{txt.evaluationSurvey.performance}}</p>
+                    <div style="font-size: 1.5em">
+                        <span style="color: #660066; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.performance = i">
+                            <i class="fa fa-star" ng-show="surveyFormData.performance >= i"></i>
+                            <i class="fa fa-star-o" ng-show="surveyFormData.performance < i"></i>
+                        </span>
+                    </div>
+                    <div>{{txt.evaluationSurvey.levels[surveyFormData.performance]}}</div>
+                </p>
+
+                <hr>
+
+                <p>
+                <h3><strong>{{txt.evaluationSurvey.satisfaction}}</strong></h3>
+                    <div style="font-size: 1.8em">
+                        <span style="color: #660066; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.satisfaction = i">
+                            <i class="fa fa-star" ng-show="surveyFormData.satisfaction >= i"></i>
+                            <i class="fa fa-star-o" ng-show="surveyFormData.satisfaction < i"></i>
+                        </span>
+                    </div>
+                    <div>{{txt.evaluationSurvey.levels[surveyFormData.satisfaction]}}</div>
+
+                    <hr>
+                </p>
+            </div>
+
+            {{txt.evaluationSurvey.comment}}
+            <p>
+                <textarea name="comment" class="form-control" ng-model="surveyFormData.comment" placeholder="{{txt.evaluationSurvey.typeHere}}" style="height: 10em; font-size: 16px;"></textarea>
+            </p>
+            <p>
+                <button class="btn btn-primary" style="width:100%;" ng-disabled="surveyFormData.usefulness < 1 || surveyFormData.accuracy < 1 || surveyFormData.performance < 1 || surveyFormData.satisfaction < 1 || surveyFormData.role == '' || surveyForm.email.$invalid" ng-click="sendData()">
+                    {{txt.evaluationSurvey.submit}}
+                </button>
+            </p>
+        </form>
+        </p>
+    </div>
+    <div ng-show="surveySendStatus == 1"><p><center>
+        <img src="assets/img/loading.gif"><br>
+        {{txt.pleaseWait}}
+    </center></p></div>
+    <div ng-show="surveySendStatus == 2" class="text-success"><p><center>
+        <h1><i class="fa fa-check-circle"></i></h1>
+        {{txt.evaluationSurvey.success}}
+    </center></p></div>
+</div>
