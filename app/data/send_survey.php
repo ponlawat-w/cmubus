@@ -16,8 +16,8 @@ $comment = $post_data->comment;
 
 $now = mktime();
 
-$sql = "INSERT INTO `evaluation_survey` (`id`, `role`, `name`, `email`, `usefulness`, `easy_to_use`, `accuracy`, `performance`, `satisfaction`, `comment`) VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-sql_query($sql, "sssiiiiis", array($role, $name, $email, $usefulness, $easyToUse, $accuracy, $performance, $satisfaction, $comment));
+$sql = "INSERT INTO `evaluation_survey` (`id`, `role`, `name`, `email`, `usefulness`, `easy_to_use`, `accuracy`, `performance`, `satisfaction`, `comment`, `datetime`) VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+sql_query($sql, "sssiiiiisi", array($role, $name, $email, $usefulness, $easyToUse, $accuracy, $performance, $satisfaction, $comment, mktime()));
 
 mysqli_close($connection);
 ob_end_flush(); ?>
