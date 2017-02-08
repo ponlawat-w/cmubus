@@ -14,15 +14,15 @@ if(isset($_GET['limit']))
 }
 
 $stoponly = "true";
-if(isset($_GET['limit']))
+if(isset($_GET['stoponly']))
 {
-    $stoponly = $_GET['$stoponly'];
+    $stoponly = $_GET['stoponly'];
 }
 
 $timetable = "false";
-if(isset($_GET['$timetable']))
+if(isset($_GET['timetable']))
 {
-    $timetable = $_GET['$timetable'];
+    $timetable = $_GET['timetable'];
 }
 
 if($stoponly == "true")

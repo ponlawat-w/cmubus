@@ -6,8 +6,6 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 {	
 	$httpProvider.defaults.cache = true;
 	
-	$locationProvider.hashPrefix('');
-	
 	$routeProvider
 		.when('/', {
 			templateUrl: "pages/home.html",
@@ -69,6 +67,8 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 			templateUrl: "pages/language_settings.html",
 			controller: "languageSettingsController"
 		});
+
+    $locationProvider.html5Mode(true);
 });
 
 app.directive('jpInput', ['$parse', function($parse)
@@ -927,6 +927,7 @@ app.controller("evaluateController", function($scope, $http)
 		name: "",
 		email: "",
 		usefulness: 0,
+		easyToUse: 0,
 		accuracy: 0,
 		performance: 0,
 		satisfaction: 0,

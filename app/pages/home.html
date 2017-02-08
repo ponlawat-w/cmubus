@@ -1,6 +1,6 @@
 <div class="btn-group btn-group-justified">
-	<a href="#/search" class="btn btn-default"><i class="fa fa-bus"></i> {{txt.home.search}}</a>
-	<a href="#/routes" class="btn btn-default"><i class="fa fa-map"></i> {{txt.home.viewroutes}}</a>
+	<a href="/search" class="btn btn-default"><i class="fa fa-bus"></i> {{txt.home.search}}</a>
+	<a href="/routes" class="btn btn-default"><i class="fa fa-map"></i> {{txt.home.viewroutes}}</a>
 </div>
 <p>
 	<div class="input-group">
@@ -20,7 +20,7 @@
 	{{txt.home.searchingNear}}
 </center></p></div>
 <div ng-show="!loading"><p>
-	<h3>{{txt.home.nearStops}} <a href="#" ng-click="loadData()"><i class="fa fa-refresh"></i></a></h3>
+	<h3>{{txt.home.nearStops}} <a href="javascript:void(0);" ng-click="loadData()"><i class="fa fa-refresh"></i></a></h3>
 	<div class="list-group">
 		<a href="javascript:void(0);" class="list-group-item" ng-repeat="stop in nearStops" ng-click="goStop(stop.id)">
 			<p><i class="fa fa-bus"></i> {{stop.name}}<br>　<small>{{stop.distance|distance}}</small></p>

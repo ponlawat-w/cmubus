@@ -8,6 +8,7 @@ $role = $post_data->role;
 $name = $post_data->name;
 $email = $post_data->email;
 $usefulness = $post_data->usefulness;
+$easyToUse = $post_data->easyToUse;
 $accuracy = $post_data->accuracy;
 $performance = $post_data->performance;
 $satisfaction = $post_data->satisfaction;
@@ -15,8 +16,8 @@ $comment = $post_data->comment;
 
 $now = mktime();
 
-$sql = "INSERT INTO `evaluation_survey` (`id`, `role`, `name`, `email`, `usefulness`, `accuracy`, `performance`, `satisfaction`, `comment`) VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)";
-sql_query($sql, "sssiiiis", array($role, $name, $email, $usefulness, $accuracy, $performance, $satisfaction, $comment));
+$sql = "INSERT INTO `evaluation_survey` (`id`, `role`, `name`, `email`, `usefulness`, `easy_to_use`, `accuracy`, `performance`, `satisfaction`, `comment`) VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+sql_query($sql, "sssiiiiis", array($role, $name, $email, $usefulness, $easyToUse, $accuracy, $performance, $satisfaction, $comment));
 
 mysqli_close($connection);
 ob_end_flush(); ?>

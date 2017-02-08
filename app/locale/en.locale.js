@@ -87,6 +87,7 @@ app.controller("localeController", function($scope)
             "name": "Name",
             "email": "E-mail",
 			"usefulness": "Do you think this app is useful?",
+			"easyToUse": "Do you think this app is easy to use?",
 			"accuracy": "Are you satisfied by data accuracy in this app?",
 			"performance": "Are you satisfied by application performance?",
 			"satisfaction": "Total Satisfaction",
