@@ -8,13 +8,22 @@ $lat = (double)$_GET['lat'];
 $lon = (double)$_GET['lon'];
 
 $limit = 1;
-$limit = $_GET['limit'];
+if(isset($_GET['limit']))
+{
+    $limit = $_GET['limit'];
+}
 
 $stoponly = "true";
-$stoponly = $_GET['stoponly'];
+if(isset($_GET['limit']))
+{
+    $stoponly = $_GET['$stoponly'];
+}
 
 $timetable = "false";
-$timetable = $_GET['timetable'];
+if(isset($_GET['$timetable']))
+{
+    $timetable = $_GET['$timetable'];
+}
 
 if($stoponly == "true")
 {
