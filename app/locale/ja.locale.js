@@ -9,6 +9,7 @@ app.controller("localeController", function($scope)
 			"nearStops": "周辺バス停",
 			"search": "乗換案内",
 			"searchDetail": "バス停検索",
+            "click2cTimeTable": "時刻表を見る",
             "evaluationSurvey": {
                 "title": "アプリ評価",
                 "message": "ご協力をお願いします。",
@@ -103,6 +104,12 @@ app.controller("localeController", function($scope)
             ],
             "submit": "　評価　",
             "success": "ご協力ありがとうございます。"
+        },
+        buses: {
+            "title": "バスの一覧",
+            "busno": "番号",
+            "status": "状態",
+            "offline": "情報無し"
         }
 	};
 });
@@ -157,6 +164,21 @@ app.filter("remainingTimeText", function()
 			return "あと" + time + "分";
 		}
 	};
+});
+
+app.filter("currentStopText", function()
+{
+    return function(round)
+    {
+        if((round.remaining_distance != null && round.remaining_distance < 300))
+        {
+            return "まもなく到着";
+        }
+        else
+        {
+            return round.laststopname;
+        }
+    };
 });
 
 app.filter("timeText", function()

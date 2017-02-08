@@ -2390,6 +2390,13 @@ function estimate_on($day)
     echo "Time Estimation (" . date("Y-m-d", $day->Timestamp) . ") - OK\n";
 }
 
+/**
+ * Calculate bus waiting time at specified bus stop, route and timestamp
+ * @param $stop
+ * @param $route
+ * @param bool $datetime
+ * @return float|null
+ */
 function calculate_wait_time_at($stop, $route, $datetime = false)
 {
     global $connection;

@@ -9,6 +9,7 @@ app.controller("localeController", function($scope)
 			"nearStops": "Bus stops around here",
 			"search": "Search",
 			"searchDetail": "Search",
+            "click2cTimeTable": "Click to see timetable",
 			"evaluationSurvey": {
 				"title": "Do you have some time?",
 				"message": "Please help us evaluate this application",
@@ -103,7 +104,13 @@ app.controller("localeController", function($scope)
             ],
 			"submit": "Send",
 			"success": "You answer has been sent. Thank you."
-		}
+		},
+        buses: {
+            "title": "All Buses",
+            "busno": "Bus no.",
+            "status": "Status",
+            "offline": "Offline"
+        }
 	};
 });
 
@@ -165,6 +172,21 @@ app.filter("remainingTimeText", function()
 			return "in " + time + " mins";
 		}
 	};
+});
+
+app.filter("currentStopText", function()
+{
+    return function(round)
+    {
+        if((round.remaining_distance != null && round.remaining_distance < 300))
+        {
+            return "arriving";
+        }
+        else
+        {
+            return round.laststopname;
+        }
+    };
 });
 
 app.filter("timeText", function()

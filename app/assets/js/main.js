@@ -53,7 +53,7 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 		})
         .when('/buses', {
             templateUrl: "pages/buses.html",
-            controller: "routesController"
+            controller: "busesController"
         })
         .when('/evaluate', {
             templateUrl: "pages/evaluate.html",
@@ -95,12 +95,9 @@ app.run(function($rootScope, $location, $anchorScroll)
 	});
 });
 
-/**
- * Main controller
- */
 app.controller("mainController", function($scope, $location, $http, $timeout, $interval)
 {
-	clearInterval(appInterval);
+	$interval.cancel(appInterval);
 	$scope.$location = $location;
 
 	$scope.showBottomNavbar = false;
@@ -192,39 +189,33 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
 	};
 });
 
-/**
- * Home controller
- */
-app.controller("homeController", function($scope, $http, $location, $anchorScroll)
+app.controller("homeController", function($scope, $http, $location, $anchorScroll, $interval)
 {
-    clearInterval(appInterval);
-	$scope.loading = true;
+    $interval.cancel(appInterval);
+
+    $scope.requesting = false;
+    $scope.loading = true;
 	$scope.nearStops = [];
-		
+
 	$scope.loadData = function()
 	{
 		$scope.loading = true;
 		$scope.nearStops = [];
+		$scope.nearStopsMore = [];
+
+		$scope.lat = null;
+		$scope.lon = null;
 		
 		if (navigator.geolocation)
 		{
-			navigator.geolocation.getCurrentPosition(function(position)
+			navigator.geolocation.watchPosition(function(position)
 			{
 				$scope.$apply(function()
 				{
-					var lat = position.coords.latitude;
-					var lon = position.coords.longitude;
-					
-					var url = "data/findnearstop.php?lat=" + lat + "&lon=" + lon + "&stoponly=true&limit=5&timetable=true";
-					
-					$http.get(url).then(function(response)
-					{
-						$scope.loading = false;
-						$scope.nearStops = response.data;
-					}, function(response)
-					{
-						$scope.loading = false;
-					});
+                    $scope.lat = position.coords.latitude;
+                    $scope.lon = position.coords.longitude;
+
+                    $scope.loadNearStops();
 				});
 			}, function()
 			{
@@ -235,6 +226,36 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 		{
 			$scope.loading = false;
 		}
+	};
+
+	$scope.loadNearStops = function()
+	{
+        if($scope.requesting == false)
+        {
+            $scope.requesting = true;
+
+            var url = "data/findnearstop.php?temp=" + Date.now() + "&lat=" + $scope.lat + "&lon=" + $scope.lon;
+
+            $http.get(url + "&stoponly=true&limit=3&timetable=true").then(function(response)
+            {
+                $scope.nearStops = response.data;
+                $http.get(url + "&stoponly=true&limit=10&timetable=false").then(function(response)
+                {
+                    $scope.nearStopsMore = response.data;
+                    $scope.loading = false;
+
+                    $scope.requesting = false;
+
+                }, function(response)
+                {
+                    $scope.loading = false;
+                });
+
+            }, function(response)
+            {
+                $scope.loading = false;
+            });
+        }
 	};
 	
 	$scope.goSession = function(session)
@@ -254,7 +275,9 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 	{
 		$location.path("route/" + routeid);
 	};
-	
+
+	appInterval = $interval(function() { $scope.loadNearStops(); }, 7000);
+
 	// SEARCH
 	
 	$scope.autocompletes = [];
@@ -328,19 +351,14 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 	$scope.loadData();
 });
 
-/**
- * Menu controller
- */
-app.controller("menuController", function($scope)
+app.controller("menuController", function($scope, $interval)
 {
+	$interval.cancel(appInterval);
 });
 
-/**
- * Search controller
- */
-app.controller("searchController", function($scope, $http, $location, $anchorScroll, $routeParams)
+app.controller("searchController", function($scope, $http, $location, $anchorScroll, $routeParams, $interval)
 {
-    clearInterval(appInterval);
+    $interval.cancel(appInterval);
 	$scope.loading = false;
 	
 	$scope.clicked = false;
@@ -615,12 +633,9 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	};
 });
 
-/**
- * Search result controller
- */
-app.controller("searchResultController", function($scope, $routeParams, $http, $location)
+app.controller("searchResultController", function($scope, $routeParams, $http, $location, $interval)
 {
-    clearInterval(appInterval);
+    $interval.cancel(appInterval);
 
 	$scope.info = {
 		fromName: "",
@@ -669,14 +684,16 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 			window.location = "http://maps.apple.com/?saddr=" + from_location.lat + "," + from_location.lon + "&daddr=" + to_location.lat + "," + to_location.lon + "&dirflg=w";
 		}
 	};
+
+	$scope.openMap = function(stopLocation)
+	{
+        window.location = "https://maps.apple.com/?q=" + stopLocation.lat + "," + stopLocation.lon;
+	};
 });
 
-/**
- * Bus stop controller
- */
-app.controller("stopController", function($scope, $http, $routeParams, $location)
+app.controller("stopController", function($scope, $http, $routeParams, $location, $interval)
 {
-    clearInterval(appInterval);
+    $interval.cancel(appInterval);
 
 	$scope.id = $routeParams.id;
 	$scope.loading = true;
@@ -684,7 +701,9 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 	$scope.infoLoading = false;
 	$scope.infoLoaded = false;
 	
-	$scope.busstop = null;;
+	$scope.busstop = null;
+
+	$scope.requesting = false;
 	
 	$scope.timetableMode = "timeLeft";
 	$scope.view = "timetable";
@@ -693,17 +712,23 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 	$scope.stopInfo = {};
 	
 	$scope.loadTimetable = function()
-	{		
-		$http.get("data/timetable.php?stopid=" + $scope.id + "&temp=" + Date.now()).then(function(response)
+	{
+		if($scope.requesting == false)
 		{
-			$scope.timetableLoading = false;		
-			$scope.stopTimetable = response.data.arrival_timetable;
-			$scope.passedTimetable = response.data.passed_timetable;
-			
-		}, function(response)
-		{			
-			$scope.timetableLoading = false;			
-		});
+			$scope.requesting = true;
+
+			$http.get("data/timetable.php?stopid=" + $scope.id + "&temp=" + Date.now()).then(function(response)
+			{
+				$scope.requesting = false;
+				$scope.timetableLoading = false;
+				$scope.stopTimetable = response.data.arrival_timetable;
+				$scope.passedTimetable = response.data.passed_timetable;
+
+			}, function(response)
+			{
+				$scope.timetableLoading = false;
+			});
+		}
 	};
 	
 	$scope.loadInfo = function()
@@ -760,7 +785,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		{
 			$scope.busstop = true;
 			$scope.loadTimetable();
-			appInterval = setInterval(function() { $scope.loadTimetable(); }, 3000);
+			appInterval = $interval(function() { $scope.loadTimetable(); }, 3000);
 		}
 		else
 		{
@@ -777,31 +802,33 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 	});
 });
 
-/**
- * Session controller
- */
-app.controller("sessionController", function($scope, $http, $routeParams, $location)
+app.controller("sessionController", function($scope, $http, $routeParams, $location, $interval)
 {
-    clearInterval(appInterval);
+    $interval.cancel(appInterval);
 
 	$scope.sessionID = $routeParams.id;
 	
 	$scope.loading = true;
+
+	$scope.requesting = false;
 	
 	$scope.sessionInfo = {online: true};
 	
 	$scope.loadSessionInfo = function()
 	{
-		if($scope.sessionInfo.online == true)
+		if($scope.sessionInfo.online == true && $scope.requesting == false)
 		{
+			$scope.requesting = true;
+
 			$http.get("data/session.php?id=" + $scope.sessionID + "&temp=" + Date.now()).then(function(response)
 			{
 				$scope.sessionInfo = response.data;
 				$scope.loading = false;
+				$scope.requesting = false;
 				
 				if($scope.sessionInfo.online == false)
 				{
-					clearInterval(appInterval);
+					$interval.cancel(appInterval);
 				}
 			}, function(response)
 			{
@@ -820,15 +847,12 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
 	};
 
     $scope.loadSessionInfo();
-    appInterval = setInterval(function() { $scope.loadSessionInfo(); }, 3000);
+    appInterval = $interval(function() { $scope.loadSessionInfo(); }, 3000);
 });
 
-/**
- * Routes controller
- */
-app.controller("routesController", function($scope, $http, $location)
+app.controller("routesController", function($scope, $http, $location, $interval)
 {
-    clearInterval(appInterval);
+    $interval.cancel(appInterval);
 
 	$scope.routes = [];
 	
@@ -848,12 +872,9 @@ app.controller("routesController", function($scope, $http, $location)
 	};
 });
 
-/**
- * Route controller
- */
-app.controller("routeController", function($scope, $http, $location, $routeParams)
+app.controller("routeController", function($scope, $http, $location, $routeParams, $interval)
 {
-    clearInterval(appInterval);
+    $interval.cancel(appInterval);
 
 	$scope.route = {};
 	
@@ -906,18 +927,49 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 	};
 });
 
-/**
- * Buses controller
- */
-app.controller("busesController", function($scope)
+app.controller("busesController", function($scope, $http, $interval, $location)
 {
+	$interval.cancel(appInterval);
+
+	$scope.requesting = false;
+	$scope.loading = true;
+    $scope.busesData = [];
+
+	$scope.loadBusData = function()
+	{
+		if($scope.requesting == false)
+		{
+			$scope.requesting = true;
+
+			$http.get("data/buses.php?temp=" + Date.now()).then(function(response)
+			{
+				$scope.loading = false;
+				$scope.requesting = false;
+
+                $scope.busesData = response.data;
+
+			}, function(response)
+			{
+			});
+		}
+	};
+
+	$scope.goSession = function(sessionID)
+	{
+		if(sessionID > 0)
+		{
+			$location.path("session/" + sessionID);
+		}
+	};
+
+	$scope.loadBusData();
+    appInterval = $interval(function() { $scope.loadBusData(); }, 3000);
 });
 
-/**
- * Evaluate controller
- */
-app.controller("evaluateController", function($scope, $http)
+app.controller("evaluateController", function($scope, $http, $interval)
 {
+	$interval.cancel(appInterval);
+
 	setCookie("survey_timer", "never", 5184000000);
 
 	$scope.surveySendStatus = 0;
@@ -947,12 +999,9 @@ app.controller("evaluateController", function($scope, $http)
 	};
 });
 
-/**
- * Report controller
- */
-app.controller("reportController", function($scope, $http, $location)
+app.controller("reportController", function($scope, $http, $interval)
 {
-    clearInterval(appInterval);
+    $interval.cancel(appInterval);
 
     // REPORT
 
@@ -978,12 +1027,9 @@ app.controller("reportController", function($scope, $http, $location)
     };
 });
 
-/**
- * Language settings controller
- */
-app.controller("languageSettingsController", function($scope, $http, $location)
+app.controller("languageSettingsController", function($scope, $http, $location, $interval)
 {
-    clearInterval(appInterval);
+	$interval.cancel(appInterval);
 
 	// LANGUAGES
 	
@@ -1008,10 +1054,6 @@ app.controller("languageSettingsController", function($scope, $http, $location)
 		
 	});
 });
-
-/**
- * Filters
- */
 
 app.filter('trustedHTML', function($sce)
 { 
@@ -1061,13 +1103,21 @@ app.filter("arrivalClassHandler", function()
 	};
 });
 
+app.filter("busDataColor", function()
+{
+    return function(busData)
+    {
+        if(busData.session > 0)
+        {
+        	return "color: #" + busData.route_color + "; cursor: pointer;";
+        }
+        else
+        {
+            return "color: #999999;";
+        }
+    };
+});
 
-/**
- * Set cookie of this site
- * @param name
- * @param value
- * @param expireTimeInMillisecond
- */
 function setCookie(name, value, expireTimeInMillisecond)
 {
     var d = new Date();
@@ -1076,11 +1126,6 @@ function setCookie(name, value, expireTimeInMillisecond)
     document.cookie = name + "=" + value + ";" + expires + "";
 }
 
-/**
- * Get cookie value by provided parameter
- * @param param
- * @returns {*}
- */
 function getCookieValue(param)
 {
     var readCookie = document.cookie.match('(^|;)\\s*' + param + '\\s*=\\s*([^;]+)');

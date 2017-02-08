@@ -1,1 +1,25 @@
-UNDER CONSTRUCTION…
+<div class="panel panel-default" ng-show="loading"><p><center>
+    <img src="assets/img/loading.gif"><br>
+    {{txt.pleaseWait}}
+</center></p></div>
+
+<div ng-show="!loading">
+    <h3>{{txt.buses.title}}</h3>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th style="white-space: nowrap;">{{txt.buses.busno}}</th>
+                <th colspan="2">{{txt.buses.status}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="bus in busesData" style="{{bus|busDataColor}}" ng-click="goSession(bus.session)">
+                <td style="white-space: nowrap;">{{bus.busno}}</td>
+                <td style="white-space: nowrap;" ng-show="bus.session > 0">{{bus.route_name}}</td>
+                <td ng-show="bus.session > 0">{{bus.stopname}}</td>
+                <td ng-show="bus.session == 0" colspan="2">{{txt.buses.offline}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,7 +1,3 @@
-<div class="btn-group btn-group-justified">
-	<a href="/search" class="btn btn-default"><i class="fa fa-bus"></i> {{txt.home.search}}</a>
-	<a href="/routes" class="btn btn-default"><i class="fa fa-map"></i> {{txt.home.viewroutes}}</a>
-</div>
 <p>
 	<div class="input-group">
 		<span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -15,12 +11,8 @@
 	</ul>
 </p>
 <hr>
-<div class="panel panel-default" ng-show="loading"><p><center>
-	<img src="assets/img/loading.gif"><br>
-	{{txt.home.searchingNear}}
-</center></p></div>
-<div ng-show="!loading"><p>
-	<h3>{{txt.home.nearStops}} <a href="javascript:void(0);" ng-click="loadData()"><i class="fa fa-refresh"></i></a></h3>
+<div ng-show="nearStops.length > 0"><p>
+	<h3>{{txt.home.nearStops}}<!-- <a href="javascript:void(0);" ng-click="loadData()"><i class="fa fa-refresh"></i></a>--></h3>
 	<div class="list-group">
 		<a href="javascript:void(0);" class="list-group-item" ng-repeat="stop in nearStops" ng-click="goStop(stop.id)">
 			<p><i class="fa fa-bus"></i> {{stop.name}}<br>　<small>{{stop.distance|distance}}</small></p>
@@ -29,8 +21,18 @@
 				<span ng-repeat="time in route.timetable" class="{{time.session|timetableTimeClass}}">{{time.estimated_time_readable}}</span>
 			</div>
 		</a>
+		<a href="javascript:void(0);" class="list-group-item" ng-repeat="stop in nearStopsMore" ng-if="$index > 2" ng-click="goStop(stop.id)">
+			<p><i class="fa fa-bus"></i> {{stop.name}}<br>　<small>{{stop.distance|distance}}</small></p>
+			<div style="color: #999999; padding-left: 1em;">
+				{{txt.home.click2cTimeTable}}
+			</div>
+		</a>
 	</div>
 </p></div>
+<div class="panel panel-default" ng-show="loading"><p><center>
+	<img src="assets/img/loading.gif"><br>
+	{{txt.home.searchingNear}}
+</center></p></div>
 <style>
 .time
 {

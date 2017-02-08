@@ -38,7 +38,6 @@
 				</div>
 				<ul class="nav navbar-nav navbar-right pull-right">
 					<li class="pull-left"><a href="/"><i class='fa fa-home'></i></a></li>
-					<li class="pull-left"><a href="/search"><i class='fa fa-search'></i></a></li>
 					<li class="pull-right"><a href="/menu"><i class='fa fa-bars'></i></a></li>
 				</ul>
 			</div>

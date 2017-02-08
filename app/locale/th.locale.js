@@ -4,10 +4,11 @@ app.controller("localeController", function($scope)
 		header: "CMU BUS",
 		home: {
 			"search": "ค้นหาเส้นทาง",
-			"viewroutes": "ดูเส้นทางทั้งหมด",
-			"searchingNear": "กำลังค้นหาข้อมูลป้ายที่อยู่ใกล้",
+            "viewroutes": "ดูเส้นทางทั้งหมด",
+            "searchingNear": "กำลังค้นหาข้อมูลป้ายที่อยู่ใกล้",
 			"nearStops": "ป้ายที่อยู่ใกล้",
 			"searchDetail": "ค้นหาสถานที่",
+			"click2cTimeTable": "คลิกเพื่อดูตารางเวลา",
             "evaluationSurvey": {
                 "title": "ประเมินแอปพลิเคชัน",
                 "message": "ขอความร่วมมือตอบแบบประเมินการใช้งานแอปฯ",
@@ -102,7 +103,13 @@ app.controller("localeController", function($scope)
             ],
             "submit": "　ส่ง　",
             "success": "ส่งข้อมูลแบบประเมินแล้ว ขอขอบพระคุณสำหรับความร่วมมือ"
-        }
+        },
+		buses: {
+			"title": "ดูรถทั้งหมด",
+			"busno": "เลขรถ",
+			"status": "สถานะ",
+			"offline": "ไม่มีข้อมูล"
+		}
 	};
 });
 
@@ -158,6 +165,21 @@ app.filter("remainingTimeText", function()
 	};
 });
 
+app.filter("currentStopText", function()
+{
+    return function(round)
+    {
+        if((round.remaining_distance != null && round.remaining_distance < 300))
+        {
+            return "กำลังจะถึง";
+        }
+        else
+        {
+            return round.laststopname;
+        }
+    };
+});
+
 app.filter("timeText", function()
 {
 	return function(time)
@@ -174,7 +196,6 @@ app.filter("timeText", function()
 		return time + " นาที";
 	};
 });
-
 
 app.filter("totalTravelTime", function()
 {

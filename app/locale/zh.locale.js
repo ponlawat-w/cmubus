@@ -9,6 +9,7 @@ app.controller("localeController", function($scope)
 			"nearStops": "附近公交车站",
 			"search": "経路搜索",
 			"searchDetail": "公交车站検索",
+            "click2cTimeTable": "Click to see timetable",
             "evaluationSurvey": {
                 "title": "Do you have some time?",
                 "message": "Please help us answer this survey",
@@ -103,6 +104,12 @@ app.controller("localeController", function($scope)
             ],
             "submit": "Send",
             "success": "You answer has been sent. Thank you."
+        },
+        buses: {
+            "title": "All Buses",
+            "busno": "Bus no.",
+            "status": "Status",
+            "offline": "Offline"
         }
 	};
 });
@@ -157,6 +164,21 @@ app.filter("remainingTimeText", function()
 			return "剩余" + time + "分钟";
 		}
 	};
+});
+
+app.filter("currentStopText", function()
+{
+    return function(round)
+    {
+        if((round.remaining_distance != null && round.remaining_distance < 300))
+        {
+            return "即将到达";
+        }
+        else
+        {
+            return round.laststopname;
+        }
+    };
 });
 
 app.filter("timeText", function()
