@@ -27,6 +27,10 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 			templateUrl: "pages/search.html",
 			controller: "searchController"
 		})
+        .when('/editsearch/:from_id/:to_id', {
+            templateUrl: "pages/search.html",
+            controller: "searchController"
+        })
 		.when('/search/:from_id/:to_id', {
 			templateUrl: "pages/search_result.html",
 			controller: "searchResultController"
@@ -66,7 +70,11 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 		.when('/language', {
 			templateUrl: "pages/language_settings.html",
 			controller: "languageSettingsController"
-		});
+		})
+        .when('/about', {
+            templateUrl: "pages/about.html",
+            controller: "aboutController"
+        });
 
     $locationProvider.html5Mode(true);
 });
@@ -130,7 +138,7 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
             var newTimeValue = currentTime + 1;
             setCookie("survey_timer", newTimeValue, 5184000000);
 
-            if(newTimeValue > 24 && $scope.bottomNavbar != "suggestSurvey")
+            if(newTimeValue > 60 && $scope.bottomNavbar != "suggestSurvey")
             {
                 $scope.showBottomNavbar = true;
                 $scope.bottomNavbar = "suggestSurvey";
@@ -148,9 +156,9 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
             $timeout(function()
             {
                 $scope.closeSuggestion();
-            }, 10000);
+            }, 60000);
         }
-    }, 1000);
+    }, 500);
 
     $scope.setToThai = function()
 	{
@@ -195,13 +203,15 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 
     $scope.requesting = false;
     $scope.loading = true;
-	$scope.nearStops = [];
+    $scope.nearStops = [];
+    $scope.nearStopsMore = [];
+    $scope.recommendedPlaces = [];
 
-	$scope.loadData = function()
-	{
-		$scope.loading = true;
-		$scope.nearStops = [];
-		$scope.nearStopsMore = [];
+    $scope.loadData = function()
+    {
+        $scope.loading = true;
+        $scope.nearStops = [];
+        $scope.nearStopsMore = [];
 
 		$scope.lat = null;
 		$scope.lon = null;
@@ -219,12 +229,10 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 				});
 			}, function()
 			{
-				$scope.loading = false;
 			});
 		}
 		else
 		{
-			$scope.loading = false;
 		}
 	};
 
@@ -239,17 +247,37 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
             $http.get(url + "&stoponly=true&limit=3&timetable=true").then(function(response)
             {
                 $scope.nearStops = response.data;
-                $http.get(url + "&stoponly=true&limit=10&timetable=false").then(function(response)
-                {
-                    $scope.nearStopsMore = response.data;
-                    $scope.loading = false;
 
-                    $scope.requesting = false;
+                if($scope.nearStops.length > 0)
+				{
+					$http.get(url + "&stoponly=true&limit=10&timetable=false").then(function(response)
+					{
+						$scope.nearStopsMore = response.data;
 
-                }, function(response)
-                {
-                    $scope.loading = false;
-                });
+						$scope.loading = false;
+						$scope.requesting = false;
+
+					}, function(response)
+					{
+						$scope.loading = false;
+					});
+				}
+				else
+				{
+                    $http.get("data/recommended_places.php").then(function(response)
+                    {
+                        $scope.recommendedPlaces = response.data;
+
+                        $scope.loading = false;
+                        $scope.requesting = false;
+
+                        $interval.cancel(appInterval);
+
+                    }, function(response)
+                    {
+                        $scope.loading = false;
+                    });
+				}
 
             }, function(response)
             {
@@ -269,6 +297,11 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 	$scope.goStop = function(stopid)
 	{
 		$location.path("stop/" + stopid);
+	};
+
+	$scope.searchTo = function(stopid)
+	{
+		$location.path("searchto/" + stopid);
 	};
 	
 	$scope.goRoute = function(routeid)
@@ -647,6 +680,7 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 	$scope.to_id = $routeParams.to_id;
 	
 	$scope.finished = false;
+	$scope.searchingMore = false;
 	
 	$scope.switchFromTo = function()
 	{
@@ -660,17 +694,42 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 		$http.get("data/stop.php?id=" + $scope.to_id).then(function(response)
 		{
 			$scope.info.toName = response.data.name;
-			$http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id).then(function(response)
+			$http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=1&quick=true").then(function(response)
 			{
 				$scope.finished = true;
 				$scope.paths = response.data;
+
+				$scope.searchingMore = true;
+
+                $http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=3&quick=false").then(function(response)
+				{
+					$scope.searchingMore = false;
+
+					//$scope.paths = response.data;
+
+					for(i = 0; i < response.data.length; i++)
+					{
+						$scope.paths[$scope.paths.length] = response.data[i];
+					}
+
+					$scope.paths.sort(function(a, b)
+					{
+						return totalTravelTime(a).localeCompare(totalTravelTime(b));
+					});
+
+				}, function(response) { });
 			}, function(reponse) {  });			
 		}, function(response) {});
 	}, function(response) {});
-		
+
 	$scope.goStop = function(id)
 	{
 		$location.path("stop/" + id);
+	};
+
+	$scope.editSearch = function()
+	{
+		$location.path("editsearch/" + $scope.from_id + "/" + $scope.to_id);
 	};
 	
 	$scope.goHow = function(route_id, from_id, to_id, from_location, to_location)
@@ -1027,6 +1086,11 @@ app.controller("reportController", function($scope, $http, $interval)
     };
 });
 
+app.controller("aboutController", function($scope, $interval)
+{
+    $interval.cancel(appInterval);
+});
+
 app.controller("languageSettingsController", function($scope, $http, $location, $interval)
 {
 	$interval.cancel(appInterval);
@@ -1130,4 +1194,17 @@ function getCookieValue(param)
 {
     var readCookie = document.cookie.match('(^|;)\\s*' + param + '\\s*=\\s*([^;]+)');
     return readCookie ? readCookie.pop() : '';
+}
+
+function totalTravelTime(path)
+{
+    var total = 0;
+    for(i = 0; i < path.length; i++)
+    {
+        total += path[i].traveltime + path[i].waittime;
+    }
+
+    total = Math.ceil(total / 60);
+
+    return total;
 }

@@ -5,6 +5,9 @@
 		<a href="javascript:void(0);" ng-click="goStop(to_id)">{{info.toName}}</a>
 	</center>
 </h4>
+<p>
+	<button class="btn btn-default btn-sm" style="width: 100%;" ng-click="editSearch()">{{txt.search.edit}}</button>
+</p>
 <div ng-show="finished == false"><div class="well"><center><img src="assets/img/loading.gif"><br>{{txt.search.searching}}</center></div></div>
 <div ng-show="finished == true">
 	<ul class="list-group">
@@ -21,7 +24,7 @@
 							<strong>{{sequence.stopname}}</strong>
 						</a>
 
-						<a href="javascript:void(0)" style="padding: 0px 0.15em;" ng-click="openMap(sequence.stoplocation)" ><i class="fa fa-map-marker"></i></a>
+						<sup><a href="javascript:void(0)" class="btn btn-default btn-xs" style="border-radius: 1em;" ng-click="openMap(sequence.stoplocation)" ><i class="fa fa-map-marker"></i></a></sup>
 
 						<a href="javascript:void(0);" ng-click="goHow(path[$index + 1].route, path[$index].stopid, path[$index+1].stopid, path[$index].stoplocation, path[$index+1].stoplocation)" ng-show="$index < path.length - 1">
 							<br>
@@ -31,6 +34,9 @@
 					</li>
 				</ol>
 			</div>
+		</li>
+		<li class="list-group-item" ng-show="searchingMore == true">
+			<center><img src="assets/img/loading.gif"><br>{{txt.search.searchingMore}}</center>
 		</li>
 	</ul>
 </div>

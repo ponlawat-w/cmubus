@@ -3,12 +3,11 @@ app.controller("localeController", function($scope)
 	$scope.txt = {
 		header: "CMU BUS",
 		home: {
-			"search": "How to go",
+			"search": "Where you want to go in CMU?",
 			"viewroutes": "View all routes",
-			"searchingNear": "Searching data around here",
-			"nearStops": "Bus stops around here",
-			"search": "Search",
-			"searchDetail": "Search",
+			"searchingNear": "Searching near bus stops",
+			"nearStops": "Near bus stops",
+			"searchDetail": "or search a place",
             "click2cTimeTable": "Click to see timetable",
 			"evaluationSurvey": {
 				"title": "Do you have some time?",
@@ -16,7 +15,10 @@ app.controller("localeController", function($scope)
 				"evaluationButton": "Evaluate",
 				"laterButton": "Later",
 				"neverButton": "Don't ask me again"
-			}
+			},
+            recommendedPlaces: {
+                title: "Recommended Places"
+            }
 		},
 		stop: {
 			"route": "Route",
@@ -44,7 +46,9 @@ app.controller("localeController", function($scope)
 			"to": "To",
 			"detail": "search place",
 			"submit_btn": "Search",
-			"searching": "Please wait"
+			"searching": "Please wait",
+            "searchingMore": "Searching more",
+            "edit": "Edit search"
 		},
 		settings: {
 			"title": "Settings",
@@ -63,7 +67,8 @@ app.controller("localeController", function($scope)
 				"error": {
 					"noInput": "Please type the form correctly"
 				},
-				"success": "The problem has been reported to administrator. Thank you."
+				"success": "The problem has been reported to administrator. Thank you.",
+                "optional": "optional"
 			}
 		},
 		menu: {
@@ -74,7 +79,8 @@ app.controller("localeController", function($scope)
 			"viewBuses": "View all buses",
 			"evaluateApp": "Evaluate application",
 			"problemReport": "Problem report",
-			"languageSettings": "Language settings"
+			"languageSettings": "Language settings",
+            "about": "About"
 		},
         evaluationSurvey: {
 			"title": "Evaluation Survey",
@@ -110,6 +116,15 @@ app.controller("localeController", function($scope)
             "busno": "Bus no.",
             "status": "Status",
             "offline": "Offline"
+        },
+        about: {
+            title: "About this app",
+            textJustify: "auto",
+            message: [
+                "The application \"CMU BUS\" is a part of project \"University Bus Information System\" (6/2559) which is in 261491 Project Survey and 261492 Project course in Department of Computer Engineering, Faculty of Engineering, Chiang Mai University in academic year 2559.",
+                "All information about time in this application (estimated arrival time, estimated waiting time) are calculated automatically by machine using recorded data in previous days. The mentioned data do not come from the university bus organization (ขส.มช.) directly. Therefore, the developer disclaims any damage that is caused by any incorrect data.",
+				"This application requires user geolocation in order to calculate the near bus stops. However, user's latitude and longitude will not be collected. But user's search data will be collected for being reference of bus usage."
+            ]
         }
 	};
 });

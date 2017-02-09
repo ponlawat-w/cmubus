@@ -3,7 +3,7 @@ app.controller("localeController", function($scope)
 	$scope.txt = {
 		header: "CMU BUS",
 		home: {
-			"search": "ค้นหาเส้นทาง",
+			"search": "ค้นหาเส้นทางใน มช.",
             "viewroutes": "ดูเส้นทางทั้งหมด",
             "searchingNear": "กำลังค้นหาข้อมูลป้ายที่อยู่ใกล้",
 			"nearStops": "ป้ายที่อยู่ใกล้",
@@ -15,7 +15,10 @@ app.controller("localeController", function($scope)
                 "evaluationButton": "ประเมิน",
                 "laterButton": "ถามทีหลัง",
                 "neverButton": "อย่าถามอีก"
-            }
+            },
+			recommendedPlaces: {
+				title: "สถานที่แนะนำ"
+			}
 		},
 		stop: {
 			"route": "เส้นทาง",
@@ -43,7 +46,9 @@ app.controller("localeController", function($scope)
 			"to": "ถึง",
 			"detail": "ค้นหาสถานที่",
 			"submit_btn": "ค้นหา",
-			"searching": "กำลังค้นหา"
+			"searching": "กำลังค้นหา",
+			"searchingMore": "กำลังค้นหาเพิ่มเติม",
+			"edit": "แก้ไขการค้นหา"
 		},
 		settings: {
 			"title": "ตั้งค่า",
@@ -62,7 +67,8 @@ app.controller("localeController", function($scope)
 				"error": {
 					"noInput": "กรุณากรอกข้อมูลให้ครบ"
 				},
-				"success": "ขอบคุณสำหรับข้อมูล ข้อความถูกส่งไปยังผู้ดูแลระบบแล้ว"
+				"success": "ขอบคุณสำหรับข้อมูล ข้อความถูกส่งไปยังผู้ดูแลระบบแล้ว",
+				"optional": "ไม่บังคับ"
 			}
 		},
         menu: {
@@ -73,7 +79,8 @@ app.controller("localeController", function($scope)
             "viewBuses": "ดูรถทั้งหมด",
             "evaluateApp": "ประเมินแอปพลิเคชัน",
             "problemReport": "รายงานปัญหา",
-            "languageSettings": "ตั้งค่าภาษา (Language)"
+            "languageSettings": "ตั้งค่าภาษา (Language)",
+            "about": "เกี่ยวกับ"
         },
         evaluationSurvey: {
             "title": "ประเมินแอปพลิเคชัน",
@@ -109,6 +116,15 @@ app.controller("localeController", function($scope)
 			"busno": "เลขรถ",
 			"status": "สถานะ",
 			"offline": "ไม่มีข้อมูล"
+		},
+		about: {
+			title: "เกี่ยวกับ CMU BUS",
+			textJustify: "distribute",
+			message: [
+				"แอปพลิเคชัน CMU BUS เป็นส่วนหนึ่งของโครงงาน ระบบให้ข้อมูลเพื่อการใช้งานรถประจำทางในมหาวิทยาลัย (6/2559) ในกระบวนวิชา 261491 การสำรวจโครงงาน และ 261492 โครงงาน ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่ ปีการศึกษา 2559",
+				"ข้อมูลเวลารถที่แสดงในแอปพลิเคชันนี้ (เวลาประมาณรถถึง เวลารอรถโดยประมาณ เป็นต้น) เกิดจากการคำนวณเพื่อประมาณเวลาโดยใช้ข้อมูลของวันก่อนหน้าที่ได้เก็บบันทึก ดังนั้น ข้อมูลเวลาประมาณรถถึง หรือ ข้อมูลเวลารอรถที่แสดงบนแอปพลิเคชัน เกิดจากการคำนวณอัตโนมัติโดยคอมพิวเตอร์ มิได้มาจากทางขนส่งมวลชนมหาวิทยาลัยเชียงใหม่ (ขส.มช.) โดยตรงแต่อย่างใด ทางผู้พัฒนาจึงขอไม่รับผิดชอบในความเสียหายที่เกิดขึ้นจากความผิดพลาดของข้อมูลใด ๆ",
+				"แอปพลิเคชันนี้ มีการเรียกขอข้อมูลพิกัดตำแหน่งจากผู้ใช้งาน เพื่อใช้ในการคำนวณหาป้ายที่ใกล้ที่สุด ซึ่งระบบจะไม่มีการเก็บพิกัดของผู้ใช้งานโดยตรง แต่จะมีการเก็บบันทึกข้อมูลการค้นหาสถานที่ เพื่อใช้ในการอ้างอิงในการสรุปผลการใช้งานรถโดยสารของมหาวิทยาลัย"
+			]
 		}
 	};
 });
@@ -121,7 +137,7 @@ app.filter("distance", function()
 		{
 			return "-";
 		}
-		
+
 		if(distance < 1000)
 		{
 			distance = Math.round(distance);
@@ -152,14 +168,14 @@ app.filter("remainingTimeText", function()
 		else
 		{
 			var time = Math.ceil(round.remaining_time / 60);
-		
+
 			if(time >= 60)
 			{
 				time = Math.round(time / 60);
-				
+
 				return "อีก " + time + " ชั่วโมง";
 			}
-			
+
 			return "อีก " + time + " นาที";
 		}
 	};
@@ -185,14 +201,14 @@ app.filter("timeText", function()
 	return function(time)
 	{
 		time = Math.ceil(time / 60);
-		
+
 		if(time >= 60)
 		{
 			time = Math.round(time / 60);
-			
+
 			return time + " ชั่วโมง";
 		}
-		
+
 		return time + " นาที";
 	};
 });
@@ -201,15 +217,7 @@ app.filter("totalTravelTime", function()
 {
 	return function(path)
 	{
-		var total = 0;
-		for(i = 0; i < path.length; i++)
-		{
-			total += path[i].traveltime + path[i].waittime;
-		}
-		
-		total = Math.ceil(total / 60);
-		
-		return total + " นาที";
+		return totalTravelTime(path) + " นาที";
 	};
 });
 

@@ -3,11 +3,10 @@ app.controller("localeController", function($scope)
 	$scope.txt = {
 		header: "CMU BUS",
 		home: {
-			"search": "経路搜索",
+            "search": "Where you want to go in CMU?",
 			"viewroutes": "看経路",
 			"searchingNear": "附近公交车站加载中",
 			"nearStops": "附近公交车站",
-			"search": "経路搜索",
 			"searchDetail": "公交车站検索",
             "click2cTimeTable": "Click to see timetable",
             "evaluationSurvey": {
@@ -16,6 +15,9 @@ app.controller("localeController", function($scope)
                 "evaluationButton": "Click Here",
                 "laterButton": "Later",
                 "neverButton": "Don't ask me again"
+            },
+            recommendedPlaces: {
+                title: "Recommended Places"
             }
 		},
 		stop: {
@@ -44,7 +46,9 @@ app.controller("localeController", function($scope)
 			"to": "到达地",
 			"detail": "公共汽车站、位置",
 			"submit_btn": "搜索",
-			"searching": "搜索中"
+			"searching": "搜索中",
+            "searchingMore": "Searching more",
+            "edit": "Edit search"
 		},
 		settings: {
 			"title": "设置",
@@ -63,7 +67,8 @@ app.controller("localeController", function($scope)
 				"error": {
 					"noInput": "请输入问题报告的内容…"
 				},
-				"success": "报告问题了。谢谢。"
+				"success": "报告问题了。谢谢。",
+                "optional": "optional"
 			}
 		},
         menu: {
@@ -74,7 +79,8 @@ app.controller("localeController", function($scope)
             "viewBuses": "View all buses",
             "evaluateApp": "Evaluate application",
             "problemReport": "Problem report",
-            "languageSettings": "Language settings"
+            "languageSettings": "Language settings",
+            "about": "About"
         },
         evaluationSurvey: {
             "title": "Evaluation Survey",
@@ -110,6 +116,15 @@ app.controller("localeController", function($scope)
             "busno": "Bus no.",
             "status": "Status",
             "offline": "Offline"
+        },
+        about: {
+            title: "About this app",
+            textJustify: "auto",
+            message: [
+                "The application \"CMU BUS\" is a part of project \"University Bus Information System\" (6/2559) which is in 261491 Project Survey and 261492 Project course in Department of Computer Engineering, Faculty of Engineering, Chiang Mai University in academic year 2559.",
+                "All information about time in this application (estimated arrival time, estimated waiting time) are calculated automatically by machine using recorded data in previous days. The mentioned data do not come from the university bus organization (ขส.มช.) directly. Therefore, the developer disclaims any damage that is caused from incorrect data.",
+				"This application requires user geolocation in order to calculate the near bus stops. However, user's latitude and longitude will not be collected. But user's search data will be collected for being reference of bus usage."
+            ]
         }
 	};
 });

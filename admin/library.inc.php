@@ -29,6 +29,7 @@ function authenticate($username, $password)
 	}
 	else
 	{
+	    sleep(5);
 		return false;
 	}
 }

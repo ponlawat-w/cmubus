@@ -3,19 +3,21 @@ app.controller("localeController", function($scope)
 	$scope.txt = {
 		header: "ＣＭＵバス",
 		home: {
-			"search": "乗換案内",
+			"search": "チェンマイ大学のバス乗換案内",
 			"viewroutes": "ルート一覧",
 			"searchingNear": "周辺バス停の情報を読み込み中",
 			"nearStops": "周辺バス停",
-			"search": "乗換案内",
 			"searchDetail": "バス停検索",
             "click2cTimeTable": "時刻表を見る",
             "evaluationSurvey": {
                 "title": "アプリ評価",
-                "message": "ご協力をお願いします。",
+                "message": "アプリ評価のご協力をお願いします。",
                 "evaluationButton": "　評価　",
                 "laterButton": "後で",
                 "neverButton": "今後、表示しない"
+            },
+            recommendedPlaces: {
+                title: "おすすめスポット"
             }
 		},
 		stop: {
@@ -44,7 +46,9 @@ app.controller("localeController", function($scope)
 			"to": "到着",
 			"detail": "バス停、施設、ビル名等",
 			"submit_btn": "検索",
-			"searching": "検索中"
+			"searching": "検索中",
+            "searchingMore": "さらに検索中",
+            "edit": "編集"
 		},
 		settings: {
 			"title": "設定",
@@ -63,7 +67,8 @@ app.controller("localeController", function($scope)
 				"error": {
 					"noInput": "全てを入力してください。"
 				},
-				"success": "問題を通報しました。ご協力ありがとうございます。"
+				"success": "問題を通報しました。ご協力ありがとうございます。",
+                "optional": ""
 			}
 		},
         menu: {
@@ -74,7 +79,8 @@ app.controller("localeController", function($scope)
             "viewBuses": "バス一覧",
             "evaluateApp": "アプリ評価",
             "problemReport": "問題通報",
-            "languageSettings": "言語設定 (Language)"
+            "languageSettings": "言語設定 (Language)",
+			"about": "このアプリについて…"
         },
         evaluationSurvey: {
             "title": "アプリ評価",
@@ -93,7 +99,7 @@ app.controller("localeController", function($scope)
             "performance": "このアプリの性能はどのくらいだと思いますか。",
             "satisfaction": "ご利用はご満足ですか",
             "comment": "コメント",
-            "typeHere": "コメントがあれば、こちらにご入力ください…",
+            "typeHere": "ご意見があれば、こちらにご入力ください…",
             "levels": [
                 "",
                 "とても悪い",
@@ -110,6 +116,15 @@ app.controller("localeController", function($scope)
             "busno": "番号",
             "status": "状態",
             "offline": "情報無し"
+        },
+        about: {
+            title: "このアプリについて",
+            textJustify: "auto",
+            message: [
+                "当アプリケーション、「ＣＭＵ　ＢＵＳ」は、2559年度のチェンマイ大学工学部計算機工学科の261491 Project Surveyと261492 Projectの「University Bus Information System」（6/2559）というプロジェクトの一部であります。",
+                "当アプリケーションの時刻情報（到着時間、バス待ち時間など）がチェンマイ大学のバス運行会社（ขส.มช.）からではなく、前日保存した時刻のデータを利用して機械に自動的に計算された情報であります。そのため、当アプリケーションの開発者が間違いの予算時刻や誤報などからの欠損を否認をさせていただきます。",
+				"当アプリケーションでは、周辺バス停を探す為、ユーザーの位置情報が要求されていますが、位置情報が保存される事がありません。しかし、バスの利用の参考の為にユーザーの検索情報を保存しております。"
+            ]
         }
 	};
 });

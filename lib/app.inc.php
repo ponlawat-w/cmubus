@@ -88,9 +88,10 @@ class Stop
      * @param $destinationID
      * @param int|bool $datetime
      * @param int $max_result
-     * @return mixed
+     * @param bool $quickSearch
+     * @return Node[]
      */
-    public function FindPathsTo($destinationID, $datetime = false, $max_result = 2)
+    public function FindPathsTo($destinationID, $datetime = false, $max_result = 1, $quickSearch = false)
 	{
 		global $connection;
 
@@ -170,7 +171,7 @@ class Stop
 			
 			$nodes[$currentID]->Marked = true;
 			
-			if($nodes[$destinationID]->Touched >= $max_result)
+			if($quickSearch == true && count($nodes[$destinationID]->Paths) >= $max_result)
 			{
 				break;
 			}
@@ -183,19 +184,27 @@ class Stop
             $connect_location = $this->Location;
 			foreach($connected_ids as $connected_id)
 			{
-				// Find Distance				
+				// Find Distance
+
+                if($nodes[$connected_id]->Marked == true)
+                {
+                    continue;
+                }
 				
 				$connect_stop = new Stop($connected_id);
 				$connect_stop->GetInfo();
 				
 				array_push($connected_stops,
 					array("id" => $connected_id,
-						"distance" => $destination_location->DistanceTo($connect_location)
+						"distance" => $connect_stop->Location->DistanceTo($destination_location)
 					)
 				);
 			}
-			
-			$connected_stops = sort_by($connected_stops, "distance", SORT_ASC);
+
+			if($quickSearch == true)
+            {
+			    $connected_stops = sort_by($connected_stops, "distance", SORT_ASC);
+            }
 						
 			// Find next node
 			$nextID = null;
@@ -1510,34 +1519,11 @@ function get_single_path_at($stop, $datetime = false, $bus = true, $walk = true)
 				$distanceData = mysqli_fetch_array($result);
 				$stop_distance = $distanceData['distance_from_start'];
 				
-				$time_to_stop = 0;
-				if($stop_distance > 0)
-				{
-					$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
-					$result = sql_query($sql, "iii", array($routeData['id'], $stop, $datetime));
-					if(mysqli_num_rows($result) > 0)
-					{
-						$estimatedData = mysqli_fetch_array($result);
-						$time_to_stop = $estimatedData['estimated_time'];
-					}
-				}
-				
 				$sql = "SELECT `stop` FROM `route_paths` WHERE `route` = ? AND `stop` IS NOT NULL AND `distance_from_start` > ?";
 				$results = sql_query($sql, "id", array($routeData['id'], $stop_distance));
 				while($stopData = mysqli_fetch_array($results))
 				{
-					$time = 0;
-					
-					if($time_to_stop >= 0)
-					{
-						$sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
-						$result = sql_query($sql, "iii", array($routeData, $stopData, $datetime));
-						if(mysqli_num_rows($result) > 0)
-						{
-							$estimatedData = mysqli_fetch_array($result);
-							$time = $estimatedData['estimated_time'] - $time_to_stop;
-						}
-					}
+				    $time = estimated_time_between($routeData['id'], $stop, $stopData['stop'], $datetime);
 					
 					array_push($function_result,
 						array(	"to" => $stopData['stop'],
