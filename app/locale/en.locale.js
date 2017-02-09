@@ -3,7 +3,7 @@ app.controller("localeController", function($scope)
 	$scope.txt = {
 		header: "CMU BUS",
 		home: {
-			"search": "Where you want to go in CMU?",
+			"search": "Where do you want to go in CMU",
 			"viewroutes": "View all routes",
 			"searchingNear": "Searching near bus stops",
 			"nearStops": "Near bus stops",
