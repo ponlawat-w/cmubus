@@ -258,11 +258,23 @@ class Stop
 		$Hr = date("H");
 		
 		$out = ($Hr >= 21 || $Hr <= 6);
+
+		$day = new Day(mktime(0, 0, 0));
+
+		if($Hr > 21)
+        {
+            $tomorrow = new Day(mktime(24, 0, 0));
+
+            if($day->Type != $tomorrow->Type)
+            {
+                $day = get_latest_day_on_type($tomorrow->Type);
+            }
+        }
 		
 		$info = array();
 		if($out)
 		{
-			$info = $this->DailyTimeTable();
+			$info = $this->DailyTimeTable($day);
 		}
 		
 		$now = mktime();
@@ -485,9 +497,10 @@ class Stop
     /**
      * Get bus stop daily time table (approximated first round, approximated last round and approximated waiting time from each route)
      * [{route, routename, routecolor, estimated_first, estimated_first_readable, estimated_last, estimated_last_readable, waittime}]
+     * @param Day|bool $day
      * @return array
      */
-	public function DailyTimeTable()
+	public function DailyTimeTable($day = false)
 	{
 		global $connection;
 		
@@ -504,7 +517,17 @@ class Stop
 		}
 		
 		$day_to_calculate = 5;
-		$today = new Day(mktime(0, 0, 0));
+
+		$today = null;
+
+		if($day == false)
+        {
+		    $today = new Day(mktime(0, 0, 0));
+        }
+        else
+        {
+            $today = $day;
+        }
 		
 		$timezone = date("Z");
 		
@@ -1316,20 +1339,41 @@ class Location
 }
 
 /**
+ * Get the latest day object of specified type
+ * @param int $type
+ * @return Day
+ */
+function get_latest_day_on_type($type)
+{
+    $sql = "SELECT `date` FROM `days` WHERE `date` < ? ORDER BY `date` DESC LIMIT 1";
+    $result = sql_query($sql, "i", mktime(0, 0, 0));
+
+    return new Day($result['date']);
+}
+
+/**
  * Query estimated time from origin from database with specified route, bus stop and time
- * @param $route
- * @param $stop
- * @param $timestamp
+ * @param int $route
+ * @param int $stop
+ * @param int $timestamp
+ * @param bool $recursivelyCalled = false
  * @return mixed
  */
-function estimated_time($route, $stop, $timestamp)
+function estimated_time($route, $stop, $timestamp, $recursivelyCalled = false)
 {
     $sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
     $result = sql_query($sql, "iii", array($route, $stop, $timestamp));
 
     if(mysqli_num_rows($result) == 0)
     {
-        return null;
+        if($recursivelyCalled == true)
+        {
+            return null;
+        }
+        else
+        {
+            return estimated_time($route, $stop, $timestamp, true);
+        }
     }
 
     $estimatedData = mysqli_fetch_array($result);
@@ -1339,13 +1383,14 @@ function estimated_time($route, $stop, $timestamp)
 
 /**
  * Get estimated time between specified bus stops in specified route and time
- * @param $route
- * @param $stop1
- * @param $stop2
- * @param $timestamp
+ * @param int $route
+ * @param int $stop1
+ * @param int $stop2
+ * @param int $timestamp
+ * @param bool $recursivelyCalled = false
  * @return mixed
  */
-function estimated_time_between($route, $stop1, $stop2, $timestamp)
+function estimated_time_between($route, $stop1, $stop2, $timestamp, $recursivelyCalled = false)
 {
     $sql = "SELECT `distance_from_start` FROM `route_paths` WHERE `route` = ? AND `stop` = ? ORDER BY `distance_from_start` ASC";
     $result = sql_query($sql, "ii", array($route, $stop1));

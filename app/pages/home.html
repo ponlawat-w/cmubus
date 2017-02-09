@@ -1,4 +1,4 @@
-<p">
+<p>
 	<a href="/search" class="btn btn-lg btn-default" style="width: 100%;">{{txt.home.search}}</a>
 </p>
 <p>
@@ -40,7 +40,7 @@
 	<p>
 	<h3>{{txt.home.recommendedPlaces.title}}</h3>
 	<div class="list-group">
-		<a href="javascript:void(0);" class="list-group-item" ng-repeat="recommendedPlace in recommendedPlaces" ng-click="searchTo(recommendedPlace.id)">
+		<a href="javascript:void(0);" class="list-group-item" ng-repeat="recommendedPlace in recommendedPlaces" ng-click="goStop(recommendedPlace.id)">
 			<h4><i class="fa fa-map-marker"></i> {{recommendedPlace.name}}</h4>
 		</a>
 	</div>
