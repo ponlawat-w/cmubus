@@ -911,7 +911,7 @@ class Node
 		{
 			if($path->IsBetterThan($this->Paths[$i]) == true)
 			{
-                for($j = $this->MaxPath - 2; $j >= $i; $j--)
+                for($j = count($this->Paths) - 2; $j >= $i; $j--)
                 {
                     $this->Paths[$j + 1] = $this->Paths[$j];
                 }
