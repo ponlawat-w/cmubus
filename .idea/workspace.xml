@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="936d406f-f07a-47df-8c38-f906088802de" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/pages/about.html" afterPath="$PROJECT_DIR$/app/pages/about.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/app.inc.php" afterPath="$PROJECT_DIR$/lib/app.inc.php" />
-    </list>
+    <list default="true" id="936d406f-f07a-47df-8c38-f906088802de" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,14 +23,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
               <caret line="8" column="15" lean-forward="false" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
-              <folding>
-                <element signature="e#6317#6402#0" expanded="false" />
-                <element signature="e#6441#6508#0" expanded="false" />
-                <element signature="e#6558#6623#0" expanded="false" />
-                <element signature="e#6665#6746#0" expanded="false" />
-                <element signature="e#6790#7474#0" expanded="false" />
-                <marker date="1486619024194" expanded="true" signature="7190:7221" ph="..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -41,20 +31,10 @@
       <file leaf-file-name="ja.locale.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/locale/ja.locale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="124" column="37" lean-forward="false" selection-start-line="124" selection-start-column="37" selection-end-line="124" selection-end-column="37" />
+            <state relative-caret-position="2499">
+              <caret line="147" column="37" lean-forward="false" selection-start-line="147" selection-start-column="37" selection-end-line="147" selection-end-column="37" />
               <folding>
-                <element signature="e#3779#4096#0" expanded="false" />
-                <element signature="e#4143#4545#0" expanded="false" />
-                <element signature="e#4590#4835#0" expanded="false" />
-                <element signature="e#4873#5051#0" expanded="false" />
-                <element signature="e#5096#5301#0" expanded="false" />
-                <element signature="e#5346#5426#0" expanded="false" />
-                <element signature="e#5465#5530#0" expanded="false" />
-                <element signature="e#5580#5638#0" expanded="false" />
-                <element signature="e#5680#5752#0" expanded="false" />
-                <element signature="e#5796#6458#0" expanded="false" />
-                <marker date="1486653627197" expanded="true" signature="6189:6220" ph="..." />
+                <marker date="1486653627000" expanded="true" signature="4831:4835" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -64,19 +44,9 @@
         <entry file="file://$PROJECT_DIR$/app/locale/en.locale.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="85">
-              <caret line="5" column="46" lean-forward="false" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="46" />
+              <caret line="5" column="34" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
               <folding>
-                <element signature="e#4545#4863#0" expanded="false" />
-                <element signature="e#4910#5452#0" expanded="false" />
-                <element signature="e#5497#5744#0" expanded="false" />
-                <element signature="e#5782#6102#0" expanded="false" />
-                <element signature="e#6147#6429#0" expanded="false" />
-                <element signature="e#6474#6553#0" expanded="false" />
-                <element signature="e#6592#6661#0" expanded="false" />
-                <element signature="e#6711#6779#0" expanded="false" />
-                <element signature="e#6821#6898#0" expanded="false" />
-                <element signature="e#6942#8026#0" expanded="false" />
-                <marker date="1486623494470" expanded="true" signature="7498:7529" ph="..." />
+                <marker date="1486623494000" expanded="true" signature="5740:5744" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -85,32 +55,19 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/assets/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2584">
-              <caret line="722" column="30" lean-forward="false" selection-start-line="722" selection-start-column="30" selection-end-line="722" selection-end-column="30" />
-              <folding>
-                <element signature="e#2222#2429#0" expanded="false" />
-                <element signature="e#2488#2668#0" expanded="false" />
-                <element signature="e#2761#5019#0" expanded="false" />
-                <element signature="e#5117#8833#0" expanded="false" />
-                <element signature="e#8898#8933#0" expanded="false" />
-                <element signature="e#9047#14551#0" expanded="false" />
-                <element signature="e#16936#19096#0" expanded="false" />
-                <element signature="e#19196#20114#0" expanded="false" />
-                <element signature="e#20199#20507#0" expanded="false" />
-                <element signature="e#20605#21594#0" expanded="false" />
-                <element signature="e#21678#22348#0" expanded="false" />
-                <element signature="e#22424#22977#0" expanded="false" />
-                <element signature="e#23051#23523#0" expanded="false" />
-                <element signature="e#23589#23627#0" expanded="false" />
-                <element signature="e#23722#24201#0" expanded="false" />
-                <element signature="e#24246#24280#0" expanded="false" />
-                <element signature="e#24328#24473#0" expanded="false" />
-                <element signature="e#24516#24625#0" expanded="false" />
-                <element signature="e#24674#24840#0" expanded="false" />
-                <element signature="e#24882#25123#0" expanded="false" />
-                <element signature="n#!!block;n#setCookie#0" expanded="false" />
-                <element signature="n#!!block;n#getCookieValue#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="119">
+              <caret line="806" column="15" lean-forward="false" selection-start-line="806" selection-start-column="15" selection-end-line="806" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="31" column="17" lean-forward="false" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -118,7 +75,7 @@
       <file leaf-file-name="styles.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/assets/css/styles.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="918">
+            <state relative-caret-position="508">
               <caret line="54" column="0" lean-forward="false" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="33" />
               <folding />
             </state>
@@ -128,12 +85,9 @@
       <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/pages/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="714">
-              <caret line="42" column="128" lean-forward="false" selection-start-line="42" selection-start-column="128" selection-end-line="42" selection-end-column="128" />
-              <folding>
-                <element signature="n#style#0;n#a#0;n#p#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#a#1;n#div#0;n#div#1;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="596">
+              <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -141,11 +95,10 @@
       <file leaf-file-name="app.inc.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/app.inc.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="871" column="10" lean-forward="false" selection-start-line="871" selection-start-column="10" selection-end-line="871" selection-end-column="10" />
+            <state relative-caret-position="494">
+              <caret line="242" column="31" lean-forward="false" selection-start-line="242" selection-start-column="31" selection-end-line="242" selection-end-column="31" />
               <folding>
                 <element signature="e#7#28#0#PHP" expanded="false" />
-                <element signature="n#Stop#0;n#!!top" expanded="false" />
                 <element signature="e#198#247#0#PHP" expanded="false" />
                 <element signature="n#__get#0;n#Stop#0;n#!!top" expanded="false" />
                 <element signature="e#309#363#0#PHP" expanded="false" />
@@ -159,227 +112,155 @@
                 <element signature="e#1756#1970#0#PHP" expanded="false" />
                 <element signature="n#FindPathsTo#0;n#Stop#0;n#!!top" expanded="false" />
                 <element signature="e#5385#5595#0#PHP" expanded="false" />
-                <element signature="e#12855#13030#0#PHP" expanded="false" />
+                <element signature="n#TimeTable#0;n#Stop#0;n#!!top" expanded="false" />
+                <element signature="e#11311#11486#0#PHP" expanded="false" />
                 <element signature="n#PassedTimetable#0;n#Stop#0;n#!!top" expanded="false" />
-                <element signature="e#13897#14226#0#PHP" expanded="false" />
+                <element signature="e#12353#12682#0#PHP" expanded="false" />
                 <element signature="n#DailyTimeTable#0;n#Stop#0;n#!!top" expanded="false" />
-                <element signature="e#17694#17815#0#PHP" expanded="false" />
+                <element signature="e#16130#16251#0#PHP" expanded="false" />
                 <element signature="n#PassingRoutes#0;n#Stop#0;n#!!top" expanded="false" />
-                <element signature="e#18507#18543#0#PHP" expanded="false" />
+                <element signature="e#16943#16979#0#PHP" expanded="false" />
                 <element signature="n#Session#0;n#!!top" expanded="false" />
-                <element signature="e#18639#18688#0#PHP" expanded="false" />
+                <element signature="e#17075#17124#0#PHP" expanded="false" />
                 <element signature="n#__get#0;n#Session#0;n#!!top" expanded="false" />
-                <element signature="e#18750#18807#0#PHP" expanded="false" />
+                <element signature="e#17186#17243#0#PHP" expanded="false" />
                 <element signature="n#__construct#0;n#Session#0;n#!!top" expanded="false" />
-                <element signature="e#19203#19320#0#PHP" expanded="false" />
+                <element signature="e#17639#17756#0#PHP" expanded="false" />
                 <element signature="n#LastRecord#0;n#Session#0;n#!!top" expanded="false" />
-                <element signature="e#19737#20101#0#PHP" expanded="false" />
+                <element signature="e#18173#18537#0#PHP" expanded="false" />
                 <element signature="n#GetStatus#0;n#Session#0;n#!!top" expanded="false" />
-                <element signature="e#22994#23016#0#PHP" expanded="false" />
+                <element signature="e#21430#21452#0#PHP" expanded="false" />
                 <element signature="n#Route#0;n#!!top" expanded="false" />
-                <element signature="e#23082#23154#0#PHP" expanded="false" />
-                <element signature="e#23176#23225#0#PHP" expanded="false" />
+                <element signature="e#21518#21590#0#PHP" expanded="false" />
+                <element signature="e#21612#21661#0#PHP" expanded="false" />
                 <element signature="n#__get#0;n#Route#0;n#!!top" expanded="false" />
-                <element signature="e#23287#23342#0#PHP" expanded="false" />
+                <element signature="e#21723#21778#0#PHP" expanded="false" />
                 <element signature="n#__construct#0;n#Route#0;n#!!top" expanded="false" />
-                <element signature="e#24097#24118#0#PHP" expanded="false" />
+                <element signature="e#22533#22554#0#PHP" expanded="false" />
                 <element signature="n#Node#0;n#!!top" expanded="false" />
-                <element signature="e#24294#24343#0#PHP" expanded="false" />
-                <element signature="n#__get#0;n#Node#0;n#!!top" expanded="false" />
-                <element signature="e#24402#24488#0#PHP" expanded="false" />
-                <element signature="n#__construct#0;n#Node#0;n#!!top" expanded="false" />
-                <element signature="e#24618#24780#0#PHP" expanded="false" />
-                <element signature="n#CompareAndAdd#0;n#Node#0;n#!!top" expanded="false" />
-                <element signature="e#25199#25281#0#PHP" expanded="false" />
-                <element signature="n#LastTimeStamp#0;n#Node#0;n#!!top" expanded="false" />
-                <element signature="e#25442#25558#0#PHP" expanded="false" />
-                <element signature="n#AllMarked#0;n#Node#0;n#!!top" expanded="false" />
-                <element signature="e#25750#25771#0#PHP" expanded="false" />
+                <element signature="e#24186#24207#0#PHP" expanded="false" />
                 <element signature="n#Path#0;n#!!top" expanded="false" />
-                <element signature="e#25789#25940#0#PHP" expanded="false" />
-                <element signature="e#26065#26114#0#PHP" expanded="false" />
-                <element signature="n#__get#0;n#Path#0;n#!!top" expanded="false" />
-                <element signature="e#26173#26259#0#PHP" expanded="false" />
-                <element signature="n#__construct#0;n#Path#0;n#!!top" expanded="false" />
-                <element signature="e#26418#26496#0#PHP" expanded="false" />
-                <element signature="n#LastSequence#0;n#Path#0;n#!!top" expanded="false" />
-                <element signature="e#26633#26786#0#PHP" expanded="false" />
-                <element signature="n#AddSequence#0;n#Path#0;n#!!top" expanded="false" />
-                <element signature="e#27138#27256#0#PHP" expanded="false" />
-                <element signature="n#IsBetterThan#0;n#Path#0;n#!!top" expanded="false" />
-                <element signature="e#27543#27761#0#PHP" expanded="false" />
-                <element signature="n#Readable#0;n#Path#0;n#!!top" expanded="false" />
-                <element signature="e#29430#29450#0#PHP" expanded="false" />
+                <element signature="e#27866#27886#0#PHP" expanded="false" />
                 <element signature="n#Day#0;n#!!top" expanded="false" />
-                <element signature="e#29532#29581#0#PHP" expanded="false" />
-                <element signature="n#__get#0;n#Day#0;n#!!top" expanded="false" />
-                <element signature="e#29655#29709#0#PHP" expanded="false" />
-                <element signature="n#__construct#0;n#Day#0;n#!!top" expanded="false" />
-                <element signature="e#30733#30798#0#PHP" expanded="false" />
-                <element signature="n#TypeToString#0;n#Day#0;n#!!top" expanded="false" />
-                <element signature="e#31080#31134#0#PHP" expanded="false" />
-                <element signature="n#SetTypeTo#0;n#Day#0;n#!!top" expanded="false" />
-                <element signature="e#31355#31413#0#PHP" expanded="false" />
-                <element signature="n#SetDetail#0;n#Day#0;n#!!top" expanded="false" />
-                <element signature="e#31644#31729#0#PHP" expanded="false" />
-                <element signature="n#GetFinal#0;n#Day#0;n#!!top" expanded="false" />
-                <element signature="e#31817#31842#0#PHP" expanded="false" />
+                <element signature="e#30253#30278#0#PHP" expanded="false" />
                 <element signature="n#Location#0;n#!!top" expanded="false" />
-                <element signature="e#31899#31988#0#PHP" expanded="false" />
-                <element signature="n#__construct#0;n#Location#0;n#!!top" expanded="false" />
-                <element signature="e#32126#32247#0#PHP" expanded="false" />
-                <element signature="n#DistanceTo#0;n#Location#0;n#!!top" expanded="false" />
-                <element signature="e#32562#32884#0#PHP" expanded="false" />
-                <element signature="n#DistanceToLine#0;n#Location#0;n#!!top" expanded="false" />
-                <element signature="e#33814#33960#0#PHP" expanded="false" />
-                <element signature="n#DegreeTo#0;n#Location#0;n#!!top" expanded="false" />
-                <element signature="e#34389#34505#0#PHP" expanded="false" />
-                <element signature="n#DegreeDiff#0;n#Location#0;n#!!top" expanded="false" />
-                <element signature="e#34659#34748#0#PHP" expanded="false" />
+                <element signature="e#33095#33184#0#PHP" expanded="false" />
                 <element signature="n#get_latest_day_on_type#0;n#!!top" expanded="false" />
-                <element signature="e#34970#35192#0#PHP" expanded="false" />
+                <element signature="e#33481#33703#0#PHP" expanded="false" />
                 <element signature="n#estimated_time#0;n#!!top" expanded="false" />
-                <element signature="e#35820#36052#0#PHP" expanded="false" />
+                <element signature="e#34331#34563#0#PHP" expanded="false" />
                 <element signature="n#estimated_time_between#0;n#!!top" expanded="false" />
-                <element signature="e#36933#37106#0#PHP" expanded="false" />
+                <element signature="e#35416#35589#0#PHP" expanded="false" />
                 <element signature="n#sql_query#0;n#!!top" expanded="false" />
-                <element signature="e#37888#38079#0#PHP" expanded="false" />
+                <element signature="e#36371#36562#0#PHP" expanded="false" />
                 <element signature="n#wait_time_at#0;n#!!top" expanded="false" />
-                <element signature="e#38895#39083#0#PHP" expanded="false" />
+                <element signature="e#37378#37566#0#PHP" expanded="false" />
                 <element signature="n#get_single_path_at#0;n#!!top" expanded="false" />
-                <element signature="e#41203#41311#0#PHP" expanded="false" />
+                <element signature="e#39686#39794#0#PHP" expanded="false" />
                 <element signature="n#sort_by#0;n#!!top" expanded="false" />
-                <element signature="e#41516#41637#0#PHP" expanded="false" />
+                <element signature="e#39999#40120#0#PHP" expanded="false" />
                 <element signature="n#shift_day#0;n#!!top" expanded="false" />
-                <element signature="e#41817#41894#0#PHP" expanded="false" />
+                <element signature="e#40300#40377#0#PHP" expanded="false" />
                 <element signature="n#get_day_from_timestamp#0;n#!!top" expanded="false" />
-                <element signature="e#42058#42137#0#PHP" expanded="false" />
+                <element signature="e#40541#40620#0#PHP" expanded="false" />
                 <element signature="n#get_routes_at#0;n#!!top" expanded="false" />
-                <element signature="e#43560#43882#0#PHP" expanded="false" />
+                <element signature="e#42043#42365#0#PHP" expanded="false" />
                 <element signature="n#thai_date#0;n#!!top" expanded="false" />
-                <element signature="e#45846#45916#0#PHP" expanded="false" />
+                <element signature="e#44329#44399#0#PHP" expanded="false" />
                 <element signature="n#get_start_day#0;n#!!top" expanded="false" />
-                <element signature="e#46003#46173#0#PHP" expanded="false" />
+                <element signature="e#44486#44656#0#PHP" expanded="false" />
                 <element signature="n#get_language_id#0;n#!!top" expanded="false" />
-                <element signature="e#47613#47673#0#PHP" expanded="false" />
+                <element signature="e#46096#46156#0#PHP" expanded="false" />
                 <element signature="n#set_language_id#0;n#!!top" expanded="false" />
-                <element signature="e#47768#47910#0#PHP" expanded="false" />
+                <element signature="e#46251#46393#0#PHP" expanded="false" />
                 <element signature="n#get_text#0;n#!!top" expanded="false" />
-                <element signature="e#50083#50155#0#PHP" expanded="false" />
+                <element signature="e#48566#48638#0#PHP" expanded="false" />
                 <element signature="n#show_distance#0;n#!!top" expanded="false" />
-                <element signature="e#50377#50511#0#PHP" expanded="false" />
+                <element signature="e#48860#48994#0#PHP" expanded="false" />
                 <element signature="n#search#0;n#!!top" expanded="false" />
-                <element signature="e#54402#54540#0#PHP" expanded="false" />
+                <element signature="e#52885#53023#0#PHP" expanded="false" />
                 <element signature="n#find_where_name_like#0;n#!!top" expanded="false" />
-                <element signature="e#55655#55789#0#PHP" expanded="false" />
+                <element signature="e#54138#54272#0#PHP" expanded="false" />
                 <element signature="n#find_where_tag_like#0;n#!!top" expanded="false" />
-                <element signature="e#57254#57382#0#PHP" expanded="false" />
+                <element signature="e#55737#55865#0#PHP" expanded="false" />
                 <element signature="n#result_find#0;n#!!top" expanded="false" />
-                <element signature="e#57562#57706#0#PHP" expanded="false" />
+                <element signature="e#56045#56189#0#PHP" expanded="false" />
                 <element signature="n#result_push#0;n#!!top" expanded="false" />
-                <element signature="e#57902#57937#0#PHP" expanded="false" />
+                <element signature="e#56385#56420#0#PHP" expanded="false" />
                 <element signature="n#estimate#0;n#!!top" expanded="false" />
-                <element signature="e#58027#58092#0#PHP" expanded="false" />
+                <element signature="e#56510#56575#0#PHP" expanded="false" />
                 <element signature="n#estimate_on#0;n#!!top" expanded="false" />
-                <element signature="e#63577#63737#0#PHP" expanded="false" />
+                <element signature="e#62060#62220#0#PHP" expanded="false" />
                 <element signature="n#calculate_wait_time_at#0;n#!!top" expanded="false" />
-                <element signature="e#65450#65583#0#PHP" expanded="false" />
+                <element signature="e#63933#64066#0#PHP" expanded="false" />
                 <element signature="n#find_period#0;n#!!top" expanded="false" />
-                <element signature="e#65806#65957#0#PHP" expanded="false" />
+                <element signature="e#64289#64440#0#PHP" expanded="false" />
                 <element signature="n#generate_query#0;n#!!top" expanded="false" />
-                <marker date="1486714877501" expanded="true" signature="531:621" ph="SELECT `name... stops" />
-                <marker date="1486714877501" expanded="true" signature="2464:2488" ph="SELECT `id` stops" />
-                <marker date="1486714877501" expanded="true" signature="6344:6460" ph="SELECT `dist... route_paths" />
-                <marker date="1486714877501" expanded="true" signature="6740:6894" ph="SELECT `id`,... buses" />
-                <marker date="1486714877501" expanded="true" signature="7143:7197" ph="SELECT `star... sessions" />
-                <marker date="1486714877501" expanded="true" signature="7333:7418" ph="SELECT `date... records" />
-                <marker date="1486714877501" expanded="true" signature="9758:9854" ph="SELECT `star... sessions" />
-                <marker date="1486714877501" expanded="true" signature="13152:13245" ph="SELECT `sess... records" />
-                <marker date="1486714877501" expanded="true" signature="14737:14851" ph="SELECT `date... days" />
-                <marker date="1486714877501" expanded="true" signature="15327:15475" ph="SELECT MIN(`... sessions" />
-                <marker date="1486714877501" expanded="true" signature="16149:16233" ph="SELECT COUNT... route_paths" />
-                <marker date="1486714877501" expanded="true" signature="18013:18072" ph="SELECT DISTI... route_paths" />
-                <marker date="1486714877501" expanded="true" signature="18884:18956" ph="SELECT `busn... sessions" />
-                <marker date="1486714877501" expanded="true" signature="19367:19460" ph="SELECT `stop... records" />
-                <marker date="1486714877501" expanded="true" signature="20224:20285" ph="SELECT `sess... buses" />
-                <marker date="1486714877501" expanded="true" signature="20565:20649" ph="SELECT `stop... records" />
-                <marker date="1486714877501" expanded="true" signature="21322:21448" ph="SELECT `stop... route_paths" />
-                <marker date="1486714877501" expanded="true" signature="23444:23495" ph="SELECT `name... routes" />
-                <marker date="1486714877501" expanded="true" signature="23713:23844" ph="SELECT `stop... route_paths" />
-                <marker date="1486714877501" expanded="true" signature="29885:29937" ph="SELECT `type... days" />
-                <marker date="1486714877501" expanded="true" signature="30296:30358" ph="INSERT INTO `days`... " />
-                <marker date="1486714877501" expanded="true" signature="30885:30930" ph="SELECT `name... day_types" />
-                <marker date="1486714877501" expanded="true" signature="31197:31242" ph="UPDATE `days... " />
-                <marker date="1486714877501" expanded="true" signature="31478:31525" ph="UPDATE `days... " />
-                <marker date="1486714877501" expanded="true" signature="34802:34833" ph="SELECT `date... days" />
-                <marker date="1486714877501" expanded="true" signature="34802:34873" ph="SELECT `date... days" />
-                <marker date="1486714877501" expanded="true" signature="35286:35409" ph="SELECT `esti... time_estimation" />
-                <marker date="1486714877501" expanded="true" signature="36163:36278" ph="SELECT `dist... route_paths" />
-                <marker date="1486714877501" expanded="true" signature="38279:38394" ph="SELECT `wait... time_estimation" />
-                <marker date="1486714877501" expanded="true" signature="39308:39402" ph="SELECT `stop... connections" />
-                <marker date="1486714877501" expanded="true" signature="40166:40289" ph="SELECT `dist... route_paths" />
-                <marker date="1486714877501" expanded="true" signature="40625:40728" ph="SELECT `stop... route_paths" />
-                <marker date="1486714877501" expanded="true" signature="42295:42403" ph="SELECT `id`,... routes" />
-                <marker date="1486714877501" expanded="true" signature="42600:42732" ph="SELECT `set_... route_available_switchers" />
-                <marker date="1486714877501" expanded="true" signature="46398:46456" ph="SELECT COUNT... languages" />
-                <marker date="1486714877501" expanded="true" signature="47247:47310" ph="SELECT `id` languages" />
-                <marker date="1486714877501" expanded="true" signature="48196:48237" ph="SELECT `name... stops" />
-                <marker date="1486714877501" expanded="true" signature="48553:48595" ph="SELECT `name... routes" />
-                <marker date="1486714877501" expanded="true" signature="48927:49010" ph="SELECT `text... texts" />
-                <marker date="1486714877501" expanded="true" signature="49519:49602" ph="SELECT `text... texts" />
-                <marker date="1486714877501" expanded="true" signature="54675:54738" ph="SELECT `id`,... stops" />
-                <marker date="1486714877501" expanded="true" signature="55114:55261" ph="SELECT `ref_... texts" />
-                <marker date="1486714877501" expanded="true" signature="55923:55982" ph="SELECT `stop... stops_tags" />
-                <marker date="1486714877501" expanded="true" signature="56128:56186" ph="SELECT `id`,... stops" />
-                <marker date="1486714877501" expanded="true" signature="56560:56663" ph="SELECT `ref_... texts" />
-                <marker date="1486714877501" expanded="true" signature="56821:56873" ph="SELECT `name... stops" />
-                <marker date="1486714877501" expanded="true" signature="58703:58841" ph="DELETE FROM " />
-                <marker date="1486714877501" expanded="true" signature="59127:59247" ph="SELECT `rout... route_available_switchers" />
-                <marker date="1486714877501" expanded="true" signature="59575:59691" ph="SELECT `date... days" />
-                <marker date="1486714877501" expanded="true" signature="60191:60252" ph="SELECT `id`,... sessions" />
-                <marker date="1486714877501" expanded="true" signature="60664:60782" ph="SELECT `id`,... records" />
-                <marker date="1486714877501" expanded="true" signature="63170:63447" ph="INSERT INTO `time_estimation`... " />
-                <marker date="1486714877501" expanded="true" signature="64267:64379" ph="SELECT `date... days" />
-                <marker date="1486714877501" expanded="true" signature="64744:64895" ph="SELECT COUNT... records" />
-                <marker date="1486714877501" expanded="true" signature="65128:65210" ph="SELECT COUNT... route_paths" />
-                <marker date="1486714877501" expanded="true" signature="65445:65448" ph="{...}" />
+                <marker date="1486742721992" expanded="true" signature="531:621" ph="SELECT `name... stops" />
+                <marker date="1486742721992" expanded="true" signature="2464:2488" ph="SELECT `id` stops" />
+                <marker date="1486742721992" expanded="true" signature="6351:6467" ph="SELECT `dist... route_paths" />
+                <marker date="1486742721992" expanded="true" signature="6747:6901" ph="SELECT `id`,... buses" />
+                <marker date="1486742721992" expanded="true" signature="7150:7204" ph="SELECT `star... sessions" />
+                <marker date="1486742721992" expanded="true" signature="7340:7425" ph="SELECT `date... records" />
+                <marker date="1486742721992" expanded="true" signature="9765:9861" ph="SELECT `star... sessions" />
+                <marker date="1486742721992" expanded="true" signature="11608:11701" ph="SELECT `sess... records" />
+                <marker date="1486742721992" expanded="true" signature="13168:13251" ph="SELECT `date... days" />
+                <marker date="1486742721992" expanded="true" signature="13763:13911" ph="SELECT MIN(`... sessions" />
+                <marker date="1486742721992" expanded="true" signature="14585:14669" ph="SELECT COUNT... route_paths" />
+                <marker date="1486742721992" expanded="true" signature="16449:16508" ph="SELECT DISTI... route_paths" />
+                <marker date="1486742721992" expanded="true" signature="17320:17392" ph="SELECT `busn... sessions" />
+                <marker date="1486742721992" expanded="true" signature="17803:17896" ph="SELECT `stop... records" />
+                <marker date="1486742721992" expanded="true" signature="18660:18721" ph="SELECT `sess... buses" />
+                <marker date="1486742721992" expanded="true" signature="19001:19085" ph="SELECT `stop... records" />
+                <marker date="1486742721992" expanded="true" signature="19758:19884" ph="SELECT `stop... route_paths" />
+                <marker date="1486742721992" expanded="true" signature="21880:21931" ph="SELECT `name... routes" />
+                <marker date="1486742721992" expanded="true" signature="22149:22280" ph="SELECT `stop... route_paths" />
+                <marker date="1486742721992" expanded="true" signature="28321:28373" ph="SELECT `type... days" />
+                <marker date="1486742721992" expanded="true" signature="28732:28794" ph="INSERT INTO `days`... " />
+                <marker date="1486742721992" expanded="true" signature="29321:29366" ph="SELECT `name... day_types" />
+                <marker date="1486742721992" expanded="true" signature="29633:29678" ph="UPDATE `days... " />
+                <marker date="1486742721992" expanded="true" signature="29914:29961" ph="UPDATE `days... " />
+                <marker date="1486742721992" expanded="true" signature="33238:33324" ph="SELECT `date... days" />
+                <marker date="1486742721992" expanded="true" signature="33797:33920" ph="SELECT `esti... time_estimation" />
+                <marker date="1486742721992" expanded="true" signature="34646:34761" ph="SELECT `dist... route_paths" />
+                <marker date="1486742721992" expanded="true" signature="36762:36877" ph="SELECT `wait... time_estimation" />
+                <marker date="1486742721992" expanded="true" signature="37791:37885" ph="SELECT `stop... connections" />
+                <marker date="1486742721992" expanded="true" signature="38649:38772" ph="SELECT `dist... route_paths" />
+                <marker date="1486742721992" expanded="true" signature="39108:39211" ph="SELECT `stop... route_paths" />
+                <marker date="1486742721992" expanded="true" signature="40778:40886" ph="SELECT `id`,... routes" />
+                <marker date="1486742721992" expanded="true" signature="41083:41215" ph="SELECT `set_... route_available_switchers" />
+                <marker date="1486742721992" expanded="true" signature="44881:44939" ph="SELECT COUNT... languages" />
+                <marker date="1486742721992" expanded="true" signature="45730:45793" ph="SELECT `id` languages" />
+                <marker date="1486742721992" expanded="true" signature="46679:46720" ph="SELECT `name... stops" />
+                <marker date="1486742721992" expanded="true" signature="47036:47078" ph="SELECT `name... routes" />
+                <marker date="1486742721992" expanded="true" signature="47410:47493" ph="SELECT `text... texts" />
+                <marker date="1486742721992" expanded="true" signature="48002:48085" ph="SELECT `text... texts" />
+                <marker date="1486742721992" expanded="true" signature="53158:53221" ph="SELECT `id`,... stops" />
+                <marker date="1486742721992" expanded="true" signature="53597:53744" ph="SELECT `ref_... texts" />
+                <marker date="1486742721992" expanded="true" signature="54406:54465" ph="SELECT `stop... stops_tags" />
+                <marker date="1486742721992" expanded="true" signature="54611:54669" ph="SELECT `id`,... stops" />
+                <marker date="1486742721992" expanded="true" signature="55043:55146" ph="SELECT `ref_... texts" />
+                <marker date="1486742721992" expanded="true" signature="55304:55356" ph="SELECT `name... stops" />
+                <marker date="1486742721992" expanded="true" signature="57186:57324" ph="DELETE FROM " />
+                <marker date="1486742721992" expanded="true" signature="57610:57730" ph="SELECT `rout... route_available_switchers" />
+                <marker date="1486742721992" expanded="true" signature="58058:58174" ph="SELECT `date... days" />
+                <marker date="1486742721992" expanded="true" signature="58674:58735" ph="SELECT `id`,... sessions" />
+                <marker date="1486742721992" expanded="true" signature="59147:59265" ph="SELECT `id`,... records" />
+                <marker date="1486742721992" expanded="true" signature="61653:61930" ph="INSERT INTO `time_estimation`... " />
+                <marker date="1486742721992" expanded="true" signature="62750:62862" ph="SELECT `date... days" />
+                <marker date="1486742721992" expanded="true" signature="63227:63378" ph="SELECT COUNT... records" />
+                <marker date="1486742721992" expanded="true" signature="63611:63693" ph="SELECT COUNT... route_paths" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="about.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="about.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/pages/about.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
+              <caret line="15" column="42" lean-forward="false" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search_result.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/pages/search_result.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="32" lean-forward="false" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
-              <folding>
-                <element signature="n#style#0;n#button#0;n#p#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#a#0;n#sup#0;n#li#0;n#ol#0;n#div#1;n#li#0;n#ul#0;n#div#1;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stop.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/pages/stop.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="38" column="75" lean-forward="false" selection-start-line="38" selection-start-column="75" selection-end-line="38" selection-end-column="75" />
-              <folding>
-                <element signature="n#style#0;n#button#0;n#sup#0;n#h2#0;n#center#0;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#tr#0;n#thead#0;n#table#0;n#div#2;n#div#1;n#div#1;n#!!top" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -396,12 +277,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>error_</find>
-      <find>mysqli_query</find>
       <find>setInter</find>
       <find>ngAnimate</find>
       <find>btn-lg</find>
-      <find>error_log</find>
       <find>min_dt</find>
       <find>accuracy</find>
       <find>performance</find>
@@ -426,6 +304,9 @@
       <find>$scope.$wa</find>
       <find>Readable</find>
       <find>function Read</find>
+      <find>538</find>
+      <find>1411</find>
+      <find>error_log</find>
     </findStrings>
     <replaceStrings>
       <replace>clearInterval(appInterval);</replace>
@@ -476,7 +357,6 @@
         <option value="$PROJECT_DIR$/app/data/send_survey.php" />
         <option value="$PROJECT_DIR$/app/data/buses.php" />
         <option value="$PROJECT_DIR$/app/pages/buses.html" />
-        <option value="$PROJECT_DIR$/app/index.php" />
         <option value="$PROJECT_DIR$/app/data/findnearstop.php" />
         <option value="$PROJECT_DIR$/app/data/findpath.php" />
         <option value="$PROJECT_DIR$/app/pages/evaluate.html" />
@@ -493,8 +373,9 @@
         <option value="$PROJECT_DIR$/app/locale/en.locale.js" />
         <option value="$PROJECT_DIR$/app/pages/home.html" />
         <option value="$PROJECT_DIR$/app/locale/ja.locale.js" />
-        <option value="$PROJECT_DIR$/lib/app.inc.php" />
         <option value="$PROJECT_DIR$/app/pages/about.html" />
+        <option value="$PROJECT_DIR$/lib/app.inc.php" />
+        <option value="$PROJECT_DIR$/app/index.php" />
       </list>
     </option>
   </component>
@@ -508,8 +389,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="width" value="1616" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -526,6 +407,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -636,8 +519,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -767,18 +648,19 @@
       <workItem from="1486598989422" duration="15847000" />
       <workItem from="1486651296438" duration="2300000" />
       <workItem from="1486714836108" duration="343000" />
+      <workItem from="1486741040889" duration="2142000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="103460000" />
+    <option name="totallyTimeSpent" value="105602000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1749634" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.174375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -807,7 +689,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="15" />
+      <option name="time" value="18" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1046,14 +928,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="39" column="89" lean-forward="false" selection-start-line="39" selection-start-column="89" selection-end-line="39" selection-end-column="89" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/data/findpath.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
@@ -1072,10 +946,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
           <caret line="38" column="75" lean-forward="false" selection-start-line="38" selection-start-column="75" selection-end-line="38" selection-end-column="75" />
-          <folding>
-            <element signature="n#style#0;n#button#0;n#sup#0;n#h2#0;n#center#0;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#thead#0;n#table#0;n#div#2;n#div#1;n#div#1;n#!!top" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1083,131 +954,82 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="15" lean-forward="false" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
-          <folding>
-            <element signature="e#6317#6402#0" expanded="false" />
-            <element signature="e#6441#6508#0" expanded="false" />
-            <element signature="e#6558#6623#0" expanded="false" />
-            <element signature="e#6665#6746#0" expanded="false" />
-            <element signature="e#6790#7474#0" expanded="false" />
-            <marker date="1486619024194" expanded="true" signature="7190:7221" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/locale/en.locale.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
-          <caret line="5" column="46" lean-forward="false" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="46" />
+          <caret line="5" column="34" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
           <folding>
-            <element signature="e#4545#4863#0" expanded="false" />
-            <element signature="e#4910#5452#0" expanded="false" />
-            <element signature="e#5497#5744#0" expanded="false" />
-            <element signature="e#5782#6102#0" expanded="false" />
-            <element signature="e#6147#6429#0" expanded="false" />
-            <element signature="e#6474#6553#0" expanded="false" />
-            <element signature="e#6592#6661#0" expanded="false" />
-            <element signature="e#6711#6779#0" expanded="false" />
-            <element signature="e#6821#6898#0" expanded="false" />
-            <element signature="e#6942#8026#0" expanded="false" />
-            <marker date="1486623494470" expanded="true" signature="7498:7529" ph="..." />
+            <marker date="1486623494000" expanded="true" signature="5740:5744" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/pages/search_result.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="32" lean-forward="false" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
-          <folding>
-            <element signature="n#style#0;n#button#0;n#p#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#sup#0;n#li#0;n#ol#0;n#div#1;n#li#0;n#ul#0;n#div#1;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="238">
+          <caret line="14" column="32" lean-forward="false" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/img/mini-loading.gif" />
-    <entry file="file://$PROJECT_DIR$/app/assets/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2584">
-          <caret line="722" column="30" lean-forward="false" selection-start-line="722" selection-start-column="30" selection-end-line="722" selection-end-column="30" />
-          <folding>
-            <element signature="e#2222#2429#0" expanded="false" />
-            <element signature="e#2488#2668#0" expanded="false" />
-            <element signature="e#2761#5019#0" expanded="false" />
-            <element signature="e#5117#8833#0" expanded="false" />
-            <element signature="e#8898#8933#0" expanded="false" />
-            <element signature="e#9047#14551#0" expanded="false" />
-            <element signature="e#16936#19096#0" expanded="false" />
-            <element signature="e#19196#20114#0" expanded="false" />
-            <element signature="e#20199#20507#0" expanded="false" />
-            <element signature="e#20605#21594#0" expanded="false" />
-            <element signature="e#21678#22348#0" expanded="false" />
-            <element signature="e#22424#22977#0" expanded="false" />
-            <element signature="e#23051#23523#0" expanded="false" />
-            <element signature="e#23589#23627#0" expanded="false" />
-            <element signature="e#23722#24201#0" expanded="false" />
-            <element signature="e#24246#24280#0" expanded="false" />
-            <element signature="e#24328#24473#0" expanded="false" />
-            <element signature="e#24516#24625#0" expanded="false" />
-            <element signature="e#24674#24840#0" expanded="false" />
-            <element signature="e#24882#25123#0" expanded="false" />
-            <element signature="n#!!block;n#setCookie#0" expanded="false" />
-            <element signature="n#!!block;n#getCookieValue#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/img/loading.gif">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/pages/home.html">
+    <entry file="file://$PROJECT_DIR$/app/locale/ja.locale.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="42" column="128" lean-forward="false" selection-start-line="42" selection-start-column="128" selection-end-line="42" selection-end-column="128" />
+        <state relative-caret-position="2499">
+          <caret line="147" column="37" lean-forward="false" selection-start-line="147" selection-start-column="37" selection-end-line="147" selection-end-column="37" />
           <folding>
-            <element signature="n#style#0;n#a#0;n#p#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#a#1;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <marker date="1486653627000" expanded="true" signature="4831:4835" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/pages/about.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="42" lean-forward="false" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="806" column="15" lean-forward="false" selection-start-line="806" selection-start-column="15" selection-end-line="806" selection-end-column="15" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/css/styles.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
+        <state relative-caret-position="508">
           <caret line="54" column="0" lean-forward="false" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/locale/ja.locale.js">
+    <entry file="file://$PROJECT_DIR$/app/pages/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="124" column="37" lean-forward="false" selection-start-line="124" selection-start-column="37" selection-end-line="124" selection-end-column="37" />
-          <folding>
-            <element signature="e#3779#4096#0" expanded="false" />
-            <element signature="e#4143#4545#0" expanded="false" />
-            <element signature="e#4590#4835#0" expanded="false" />
-            <element signature="e#4873#5051#0" expanded="false" />
-            <element signature="e#5096#5301#0" expanded="false" />
-            <element signature="e#5346#5426#0" expanded="false" />
-            <element signature="e#5465#5530#0" expanded="false" />
-            <element signature="e#5580#5638#0" expanded="false" />
-            <element signature="e#5680#5752#0" expanded="false" />
-            <element signature="e#5796#6458#0" expanded="false" />
-            <marker date="1486653627197" expanded="true" signature="6189:6220" ph="..." />
-          </folding>
+        <state relative-caret-position="596">
+          <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/app.inc.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="871" column="10" lean-forward="false" selection-start-line="871" selection-start-column="10" selection-end-line="871" selection-end-column="10" />
+        <state relative-caret-position="494">
+          <caret line="242" column="31" lean-forward="false" selection-start-line="242" selection-start-column="31" selection-end-line="242" selection-end-column="31" />
           <folding>
             <element signature="e#7#28#0#PHP" expanded="false" />
-            <element signature="n#Stop#0;n#!!top" expanded="false" />
             <element signature="e#198#247#0#PHP" expanded="false" />
             <element signature="n#__get#0;n#Stop#0;n#!!top" expanded="false" />
             <element signature="e#309#363#0#PHP" expanded="false" />
@@ -1221,198 +1043,152 @@
             <element signature="e#1756#1970#0#PHP" expanded="false" />
             <element signature="n#FindPathsTo#0;n#Stop#0;n#!!top" expanded="false" />
             <element signature="e#5385#5595#0#PHP" expanded="false" />
-            <element signature="e#12855#13030#0#PHP" expanded="false" />
+            <element signature="n#TimeTable#0;n#Stop#0;n#!!top" expanded="false" />
+            <element signature="e#11311#11486#0#PHP" expanded="false" />
             <element signature="n#PassedTimetable#0;n#Stop#0;n#!!top" expanded="false" />
-            <element signature="e#13897#14226#0#PHP" expanded="false" />
+            <element signature="e#12353#12682#0#PHP" expanded="false" />
             <element signature="n#DailyTimeTable#0;n#Stop#0;n#!!top" expanded="false" />
-            <element signature="e#17694#17815#0#PHP" expanded="false" />
+            <element signature="e#16130#16251#0#PHP" expanded="false" />
             <element signature="n#PassingRoutes#0;n#Stop#0;n#!!top" expanded="false" />
-            <element signature="e#18507#18543#0#PHP" expanded="false" />
+            <element signature="e#16943#16979#0#PHP" expanded="false" />
             <element signature="n#Session#0;n#!!top" expanded="false" />
-            <element signature="e#18639#18688#0#PHP" expanded="false" />
+            <element signature="e#17075#17124#0#PHP" expanded="false" />
             <element signature="n#__get#0;n#Session#0;n#!!top" expanded="false" />
-            <element signature="e#18750#18807#0#PHP" expanded="false" />
+            <element signature="e#17186#17243#0#PHP" expanded="false" />
             <element signature="n#__construct#0;n#Session#0;n#!!top" expanded="false" />
-            <element signature="e#19203#19320#0#PHP" expanded="false" />
+            <element signature="e#17639#17756#0#PHP" expanded="false" />
             <element signature="n#LastRecord#0;n#Session#0;n#!!top" expanded="false" />
-            <element signature="e#19737#20101#0#PHP" expanded="false" />
+            <element signature="e#18173#18537#0#PHP" expanded="false" />
             <element signature="n#GetStatus#0;n#Session#0;n#!!top" expanded="false" />
-            <element signature="e#22994#23016#0#PHP" expanded="false" />
+            <element signature="e#21430#21452#0#PHP" expanded="false" />
             <element signature="n#Route#0;n#!!top" expanded="false" />
-            <element signature="e#23082#23154#0#PHP" expanded="false" />
-            <element signature="e#23176#23225#0#PHP" expanded="false" />
+            <element signature="e#21518#21590#0#PHP" expanded="false" />
+            <element signature="e#21612#21661#0#PHP" expanded="false" />
             <element signature="n#__get#0;n#Route#0;n#!!top" expanded="false" />
-            <element signature="e#23287#23342#0#PHP" expanded="false" />
+            <element signature="e#21723#21778#0#PHP" expanded="false" />
             <element signature="n#__construct#0;n#Route#0;n#!!top" expanded="false" />
-            <element signature="e#24097#24118#0#PHP" expanded="false" />
+            <element signature="e#22533#22554#0#PHP" expanded="false" />
             <element signature="n#Node#0;n#!!top" expanded="false" />
-            <element signature="e#24294#24343#0#PHP" expanded="false" />
-            <element signature="n#__get#0;n#Node#0;n#!!top" expanded="false" />
-            <element signature="e#24402#24488#0#PHP" expanded="false" />
-            <element signature="n#__construct#0;n#Node#0;n#!!top" expanded="false" />
-            <element signature="e#24618#24780#0#PHP" expanded="false" />
-            <element signature="n#CompareAndAdd#0;n#Node#0;n#!!top" expanded="false" />
-            <element signature="e#25199#25281#0#PHP" expanded="false" />
-            <element signature="n#LastTimeStamp#0;n#Node#0;n#!!top" expanded="false" />
-            <element signature="e#25442#25558#0#PHP" expanded="false" />
-            <element signature="n#AllMarked#0;n#Node#0;n#!!top" expanded="false" />
-            <element signature="e#25750#25771#0#PHP" expanded="false" />
+            <element signature="e#24186#24207#0#PHP" expanded="false" />
             <element signature="n#Path#0;n#!!top" expanded="false" />
-            <element signature="e#25789#25940#0#PHP" expanded="false" />
-            <element signature="e#26065#26114#0#PHP" expanded="false" />
-            <element signature="n#__get#0;n#Path#0;n#!!top" expanded="false" />
-            <element signature="e#26173#26259#0#PHP" expanded="false" />
-            <element signature="n#__construct#0;n#Path#0;n#!!top" expanded="false" />
-            <element signature="e#26418#26496#0#PHP" expanded="false" />
-            <element signature="n#LastSequence#0;n#Path#0;n#!!top" expanded="false" />
-            <element signature="e#26633#26786#0#PHP" expanded="false" />
-            <element signature="n#AddSequence#0;n#Path#0;n#!!top" expanded="false" />
-            <element signature="e#27138#27256#0#PHP" expanded="false" />
-            <element signature="n#IsBetterThan#0;n#Path#0;n#!!top" expanded="false" />
-            <element signature="e#27543#27761#0#PHP" expanded="false" />
-            <element signature="n#Readable#0;n#Path#0;n#!!top" expanded="false" />
-            <element signature="e#29430#29450#0#PHP" expanded="false" />
+            <element signature="e#27866#27886#0#PHP" expanded="false" />
             <element signature="n#Day#0;n#!!top" expanded="false" />
-            <element signature="e#29532#29581#0#PHP" expanded="false" />
-            <element signature="n#__get#0;n#Day#0;n#!!top" expanded="false" />
-            <element signature="e#29655#29709#0#PHP" expanded="false" />
-            <element signature="n#__construct#0;n#Day#0;n#!!top" expanded="false" />
-            <element signature="e#30733#30798#0#PHP" expanded="false" />
-            <element signature="n#TypeToString#0;n#Day#0;n#!!top" expanded="false" />
-            <element signature="e#31080#31134#0#PHP" expanded="false" />
-            <element signature="n#SetTypeTo#0;n#Day#0;n#!!top" expanded="false" />
-            <element signature="e#31355#31413#0#PHP" expanded="false" />
-            <element signature="n#SetDetail#0;n#Day#0;n#!!top" expanded="false" />
-            <element signature="e#31644#31729#0#PHP" expanded="false" />
-            <element signature="n#GetFinal#0;n#Day#0;n#!!top" expanded="false" />
-            <element signature="e#31817#31842#0#PHP" expanded="false" />
+            <element signature="e#30253#30278#0#PHP" expanded="false" />
             <element signature="n#Location#0;n#!!top" expanded="false" />
-            <element signature="e#31899#31988#0#PHP" expanded="false" />
-            <element signature="n#__construct#0;n#Location#0;n#!!top" expanded="false" />
-            <element signature="e#32126#32247#0#PHP" expanded="false" />
-            <element signature="n#DistanceTo#0;n#Location#0;n#!!top" expanded="false" />
-            <element signature="e#32562#32884#0#PHP" expanded="false" />
-            <element signature="n#DistanceToLine#0;n#Location#0;n#!!top" expanded="false" />
-            <element signature="e#33814#33960#0#PHP" expanded="false" />
-            <element signature="n#DegreeTo#0;n#Location#0;n#!!top" expanded="false" />
-            <element signature="e#34389#34505#0#PHP" expanded="false" />
-            <element signature="n#DegreeDiff#0;n#Location#0;n#!!top" expanded="false" />
-            <element signature="e#34659#34748#0#PHP" expanded="false" />
+            <element signature="e#33095#33184#0#PHP" expanded="false" />
             <element signature="n#get_latest_day_on_type#0;n#!!top" expanded="false" />
-            <element signature="e#34970#35192#0#PHP" expanded="false" />
+            <element signature="e#33481#33703#0#PHP" expanded="false" />
             <element signature="n#estimated_time#0;n#!!top" expanded="false" />
-            <element signature="e#35820#36052#0#PHP" expanded="false" />
+            <element signature="e#34331#34563#0#PHP" expanded="false" />
             <element signature="n#estimated_time_between#0;n#!!top" expanded="false" />
-            <element signature="e#36933#37106#0#PHP" expanded="false" />
+            <element signature="e#35416#35589#0#PHP" expanded="false" />
             <element signature="n#sql_query#0;n#!!top" expanded="false" />
-            <element signature="e#37888#38079#0#PHP" expanded="false" />
+            <element signature="e#36371#36562#0#PHP" expanded="false" />
             <element signature="n#wait_time_at#0;n#!!top" expanded="false" />
-            <element signature="e#38895#39083#0#PHP" expanded="false" />
+            <element signature="e#37378#37566#0#PHP" expanded="false" />
             <element signature="n#get_single_path_at#0;n#!!top" expanded="false" />
-            <element signature="e#41203#41311#0#PHP" expanded="false" />
+            <element signature="e#39686#39794#0#PHP" expanded="false" />
             <element signature="n#sort_by#0;n#!!top" expanded="false" />
-            <element signature="e#41516#41637#0#PHP" expanded="false" />
+            <element signature="e#39999#40120#0#PHP" expanded="false" />
             <element signature="n#shift_day#0;n#!!top" expanded="false" />
-            <element signature="e#41817#41894#0#PHP" expanded="false" />
+            <element signature="e#40300#40377#0#PHP" expanded="false" />
             <element signature="n#get_day_from_timestamp#0;n#!!top" expanded="false" />
-            <element signature="e#42058#42137#0#PHP" expanded="false" />
+            <element signature="e#40541#40620#0#PHP" expanded="false" />
             <element signature="n#get_routes_at#0;n#!!top" expanded="false" />
-            <element signature="e#43560#43882#0#PHP" expanded="false" />
+            <element signature="e#42043#42365#0#PHP" expanded="false" />
             <element signature="n#thai_date#0;n#!!top" expanded="false" />
-            <element signature="e#45846#45916#0#PHP" expanded="false" />
+            <element signature="e#44329#44399#0#PHP" expanded="false" />
             <element signature="n#get_start_day#0;n#!!top" expanded="false" />
-            <element signature="e#46003#46173#0#PHP" expanded="false" />
+            <element signature="e#44486#44656#0#PHP" expanded="false" />
             <element signature="n#get_language_id#0;n#!!top" expanded="false" />
-            <element signature="e#47613#47673#0#PHP" expanded="false" />
+            <element signature="e#46096#46156#0#PHP" expanded="false" />
             <element signature="n#set_language_id#0;n#!!top" expanded="false" />
-            <element signature="e#47768#47910#0#PHP" expanded="false" />
+            <element signature="e#46251#46393#0#PHP" expanded="false" />
             <element signature="n#get_text#0;n#!!top" expanded="false" />
-            <element signature="e#50083#50155#0#PHP" expanded="false" />
+            <element signature="e#48566#48638#0#PHP" expanded="false" />
             <element signature="n#show_distance#0;n#!!top" expanded="false" />
-            <element signature="e#50377#50511#0#PHP" expanded="false" />
+            <element signature="e#48860#48994#0#PHP" expanded="false" />
             <element signature="n#search#0;n#!!top" expanded="false" />
-            <element signature="e#54402#54540#0#PHP" expanded="false" />
+            <element signature="e#52885#53023#0#PHP" expanded="false" />
             <element signature="n#find_where_name_like#0;n#!!top" expanded="false" />
-            <element signature="e#55655#55789#0#PHP" expanded="false" />
+            <element signature="e#54138#54272#0#PHP" expanded="false" />
             <element signature="n#find_where_tag_like#0;n#!!top" expanded="false" />
-            <element signature="e#57254#57382#0#PHP" expanded="false" />
+            <element signature="e#55737#55865#0#PHP" expanded="false" />
             <element signature="n#result_find#0;n#!!top" expanded="false" />
-            <element signature="e#57562#57706#0#PHP" expanded="false" />
+            <element signature="e#56045#56189#0#PHP" expanded="false" />
             <element signature="n#result_push#0;n#!!top" expanded="false" />
-            <element signature="e#57902#57937#0#PHP" expanded="false" />
+            <element signature="e#56385#56420#0#PHP" expanded="false" />
             <element signature="n#estimate#0;n#!!top" expanded="false" />
-            <element signature="e#58027#58092#0#PHP" expanded="false" />
+            <element signature="e#56510#56575#0#PHP" expanded="false" />
             <element signature="n#estimate_on#0;n#!!top" expanded="false" />
-            <element signature="e#63577#63737#0#PHP" expanded="false" />
+            <element signature="e#62060#62220#0#PHP" expanded="false" />
             <element signature="n#calculate_wait_time_at#0;n#!!top" expanded="false" />
-            <element signature="e#65450#65583#0#PHP" expanded="false" />
+            <element signature="e#63933#64066#0#PHP" expanded="false" />
             <element signature="n#find_period#0;n#!!top" expanded="false" />
-            <element signature="e#65806#65957#0#PHP" expanded="false" />
+            <element signature="e#64289#64440#0#PHP" expanded="false" />
             <element signature="n#generate_query#0;n#!!top" expanded="false" />
-            <marker date="1486714877501" expanded="true" signature="531:621" ph="SELECT `name... stops" />
-            <marker date="1486714877501" expanded="true" signature="2464:2488" ph="SELECT `id` stops" />
-            <marker date="1486714877501" expanded="true" signature="6344:6460" ph="SELECT `dist... route_paths" />
-            <marker date="1486714877501" expanded="true" signature="6740:6894" ph="SELECT `id`,... buses" />
-            <marker date="1486714877501" expanded="true" signature="7143:7197" ph="SELECT `star... sessions" />
-            <marker date="1486714877501" expanded="true" signature="7333:7418" ph="SELECT `date... records" />
-            <marker date="1486714877501" expanded="true" signature="9758:9854" ph="SELECT `star... sessions" />
-            <marker date="1486714877501" expanded="true" signature="13152:13245" ph="SELECT `sess... records" />
-            <marker date="1486714877501" expanded="true" signature="14737:14851" ph="SELECT `date... days" />
-            <marker date="1486714877501" expanded="true" signature="15327:15475" ph="SELECT MIN(`... sessions" />
-            <marker date="1486714877501" expanded="true" signature="16149:16233" ph="SELECT COUNT... route_paths" />
-            <marker date="1486714877501" expanded="true" signature="18013:18072" ph="SELECT DISTI... route_paths" />
-            <marker date="1486714877501" expanded="true" signature="18884:18956" ph="SELECT `busn... sessions" />
-            <marker date="1486714877501" expanded="true" signature="19367:19460" ph="SELECT `stop... records" />
-            <marker date="1486714877501" expanded="true" signature="20224:20285" ph="SELECT `sess... buses" />
-            <marker date="1486714877501" expanded="true" signature="20565:20649" ph="SELECT `stop... records" />
-            <marker date="1486714877501" expanded="true" signature="21322:21448" ph="SELECT `stop... route_paths" />
-            <marker date="1486714877501" expanded="true" signature="23444:23495" ph="SELECT `name... routes" />
-            <marker date="1486714877501" expanded="true" signature="23713:23844" ph="SELECT `stop... route_paths" />
-            <marker date="1486714877501" expanded="true" signature="29885:29937" ph="SELECT `type... days" />
-            <marker date="1486714877501" expanded="true" signature="30296:30358" ph="INSERT INTO `days`... " />
-            <marker date="1486714877501" expanded="true" signature="30885:30930" ph="SELECT `name... day_types" />
-            <marker date="1486714877501" expanded="true" signature="31197:31242" ph="UPDATE `days... " />
-            <marker date="1486714877501" expanded="true" signature="31478:31525" ph="UPDATE `days... " />
-            <marker date="1486714877501" expanded="true" signature="34802:34833" ph="SELECT `date... days" />
-            <marker date="1486714877501" expanded="true" signature="34802:34873" ph="SELECT `date... days" />
-            <marker date="1486714877501" expanded="true" signature="35286:35409" ph="SELECT `esti... time_estimation" />
-            <marker date="1486714877501" expanded="true" signature="36163:36278" ph="SELECT `dist... route_paths" />
-            <marker date="1486714877501" expanded="true" signature="38279:38394" ph="SELECT `wait... time_estimation" />
-            <marker date="1486714877501" expanded="true" signature="39308:39402" ph="SELECT `stop... connections" />
-            <marker date="1486714877501" expanded="true" signature="40166:40289" ph="SELECT `dist... route_paths" />
-            <marker date="1486714877501" expanded="true" signature="40625:40728" ph="SELECT `stop... route_paths" />
-            <marker date="1486714877501" expanded="true" signature="42295:42403" ph="SELECT `id`,... routes" />
-            <marker date="1486714877501" expanded="true" signature="42600:42732" ph="SELECT `set_... route_available_switchers" />
-            <marker date="1486714877501" expanded="true" signature="46398:46456" ph="SELECT COUNT... languages" />
-            <marker date="1486714877501" expanded="true" signature="47247:47310" ph="SELECT `id` languages" />
-            <marker date="1486714877501" expanded="true" signature="48196:48237" ph="SELECT `name... stops" />
-            <marker date="1486714877501" expanded="true" signature="48553:48595" ph="SELECT `name... routes" />
-            <marker date="1486714877501" expanded="true" signature="48927:49010" ph="SELECT `text... texts" />
-            <marker date="1486714877501" expanded="true" signature="49519:49602" ph="SELECT `text... texts" />
-            <marker date="1486714877501" expanded="true" signature="54675:54738" ph="SELECT `id`,... stops" />
-            <marker date="1486714877501" expanded="true" signature="55114:55261" ph="SELECT `ref_... texts" />
-            <marker date="1486714877501" expanded="true" signature="55923:55982" ph="SELECT `stop... stops_tags" />
-            <marker date="1486714877501" expanded="true" signature="56128:56186" ph="SELECT `id`,... stops" />
-            <marker date="1486714877501" expanded="true" signature="56560:56663" ph="SELECT `ref_... texts" />
-            <marker date="1486714877501" expanded="true" signature="56821:56873" ph="SELECT `name... stops" />
-            <marker date="1486714877501" expanded="true" signature="58703:58841" ph="DELETE FROM " />
-            <marker date="1486714877501" expanded="true" signature="59127:59247" ph="SELECT `rout... route_available_switchers" />
-            <marker date="1486714877501" expanded="true" signature="59575:59691" ph="SELECT `date... days" />
-            <marker date="1486714877501" expanded="true" signature="60191:60252" ph="SELECT `id`,... sessions" />
-            <marker date="1486714877501" expanded="true" signature="60664:60782" ph="SELECT `id`,... records" />
-            <marker date="1486714877501" expanded="true" signature="63170:63447" ph="INSERT INTO `time_estimation`... " />
-            <marker date="1486714877501" expanded="true" signature="64267:64379" ph="SELECT `date... days" />
-            <marker date="1486714877501" expanded="true" signature="64744:64895" ph="SELECT COUNT... records" />
-            <marker date="1486714877501" expanded="true" signature="65128:65210" ph="SELECT COUNT... route_paths" />
-            <marker date="1486714877501" expanded="true" signature="65445:65448" ph="{...}" />
+            <marker date="1486742721992" expanded="true" signature="531:621" ph="SELECT `name... stops" />
+            <marker date="1486742721992" expanded="true" signature="2464:2488" ph="SELECT `id` stops" />
+            <marker date="1486742721992" expanded="true" signature="6351:6467" ph="SELECT `dist... route_paths" />
+            <marker date="1486742721992" expanded="true" signature="6747:6901" ph="SELECT `id`,... buses" />
+            <marker date="1486742721992" expanded="true" signature="7150:7204" ph="SELECT `star... sessions" />
+            <marker date="1486742721992" expanded="true" signature="7340:7425" ph="SELECT `date... records" />
+            <marker date="1486742721992" expanded="true" signature="9765:9861" ph="SELECT `star... sessions" />
+            <marker date="1486742721992" expanded="true" signature="11608:11701" ph="SELECT `sess... records" />
+            <marker date="1486742721992" expanded="true" signature="13168:13251" ph="SELECT `date... days" />
+            <marker date="1486742721992" expanded="true" signature="13763:13911" ph="SELECT MIN(`... sessions" />
+            <marker date="1486742721992" expanded="true" signature="14585:14669" ph="SELECT COUNT... route_paths" />
+            <marker date="1486742721992" expanded="true" signature="16449:16508" ph="SELECT DISTI... route_paths" />
+            <marker date="1486742721992" expanded="true" signature="17320:17392" ph="SELECT `busn... sessions" />
+            <marker date="1486742721992" expanded="true" signature="17803:17896" ph="SELECT `stop... records" />
+            <marker date="1486742721992" expanded="true" signature="18660:18721" ph="SELECT `sess... buses" />
+            <marker date="1486742721992" expanded="true" signature="19001:19085" ph="SELECT `stop... records" />
+            <marker date="1486742721992" expanded="true" signature="19758:19884" ph="SELECT `stop... route_paths" />
+            <marker date="1486742721992" expanded="true" signature="21880:21931" ph="SELECT `name... routes" />
+            <marker date="1486742721992" expanded="true" signature="22149:22280" ph="SELECT `stop... route_paths" />
+            <marker date="1486742721992" expanded="true" signature="28321:28373" ph="SELECT `type... days" />
+            <marker date="1486742721992" expanded="true" signature="28732:28794" ph="INSERT INTO `days`... " />
+            <marker date="1486742721992" expanded="true" signature="29321:29366" ph="SELECT `name... day_types" />
+            <marker date="1486742721992" expanded="true" signature="29633:29678" ph="UPDATE `days... " />
+            <marker date="1486742721992" expanded="true" signature="29914:29961" ph="UPDATE `days... " />
+            <marker date="1486742721992" expanded="true" signature="33238:33324" ph="SELECT `date... days" />
+            <marker date="1486742721992" expanded="true" signature="33797:33920" ph="SELECT `esti... time_estimation" />
+            <marker date="1486742721992" expanded="true" signature="34646:34761" ph="SELECT `dist... route_paths" />
+            <marker date="1486742721992" expanded="true" signature="36762:36877" ph="SELECT `wait... time_estimation" />
+            <marker date="1486742721992" expanded="true" signature="37791:37885" ph="SELECT `stop... connections" />
+            <marker date="1486742721992" expanded="true" signature="38649:38772" ph="SELECT `dist... route_paths" />
+            <marker date="1486742721992" expanded="true" signature="39108:39211" ph="SELECT `stop... route_paths" />
+            <marker date="1486742721992" expanded="true" signature="40778:40886" ph="SELECT `id`,... routes" />
+            <marker date="1486742721992" expanded="true" signature="41083:41215" ph="SELECT `set_... route_available_switchers" />
+            <marker date="1486742721992" expanded="true" signature="44881:44939" ph="SELECT COUNT... languages" />
+            <marker date="1486742721992" expanded="true" signature="45730:45793" ph="SELECT `id` languages" />
+            <marker date="1486742721992" expanded="true" signature="46679:46720" ph="SELECT `name... stops" />
+            <marker date="1486742721992" expanded="true" signature="47036:47078" ph="SELECT `name... routes" />
+            <marker date="1486742721992" expanded="true" signature="47410:47493" ph="SELECT `text... texts" />
+            <marker date="1486742721992" expanded="true" signature="48002:48085" ph="SELECT `text... texts" />
+            <marker date="1486742721992" expanded="true" signature="53158:53221" ph="SELECT `id`,... stops" />
+            <marker date="1486742721992" expanded="true" signature="53597:53744" ph="SELECT `ref_... texts" />
+            <marker date="1486742721992" expanded="true" signature="54406:54465" ph="SELECT `stop... stops_tags" />
+            <marker date="1486742721992" expanded="true" signature="54611:54669" ph="SELECT `id`,... stops" />
+            <marker date="1486742721992" expanded="true" signature="55043:55146" ph="SELECT `ref_... texts" />
+            <marker date="1486742721992" expanded="true" signature="55304:55356" ph="SELECT `name... stops" />
+            <marker date="1486742721992" expanded="true" signature="57186:57324" ph="DELETE FROM " />
+            <marker date="1486742721992" expanded="true" signature="57610:57730" ph="SELECT `rout... route_available_switchers" />
+            <marker date="1486742721992" expanded="true" signature="58058:58174" ph="SELECT `date... days" />
+            <marker date="1486742721992" expanded="true" signature="58674:58735" ph="SELECT `id`,... sessions" />
+            <marker date="1486742721992" expanded="true" signature="59147:59265" ph="SELECT `id`,... records" />
+            <marker date="1486742721992" expanded="true" signature="61653:61930" ph="INSERT INTO `time_estimation`... " />
+            <marker date="1486742721992" expanded="true" signature="62750:62862" ph="SELECT `date... days" />
+            <marker date="1486742721992" expanded="true" signature="63227:63378" ph="SELECT COUNT... records" />
+            <marker date="1486742721992" expanded="true" signature="63611:63693" ph="SELECT COUNT... route_paths" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/pages/about.html">
+    <entry file="file://$PROJECT_DIR$/app/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
+        <state relative-caret-position="323">
+          <caret line="31" column="17" lean-forward="false" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
           <folding />
         </state>
       </provider>

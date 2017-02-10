@@ -263,7 +263,7 @@ class Stop
 
 		if($Hr > 21)
         {
-            $tomorrow = new Day(mktime(24, 0, 0));
+            $tomorrow = new Day(mktime(0, 0, 0) + 86400);
 
             if($day->Type != $tomorrow->Type)
             {
@@ -405,53 +405,6 @@ class Stop
 						}
 					}
 				}
-				//else if($num_in_route_paths == 2 && $count == 0)
-				//{
-				//	$sql = "SELECT `start_datetime` FROM `sessions` WHERE `route` = ? ORDER BY `start_datetime` DESC LIMIT 1";
-				//	$result = sql_query($sql, "i", array($route['id']));
-				//	if(mysqli_num_rows($result) > 0)
-				//	{
-				//		$lastSessionData = mysqli_fetch_array($result);
-				//		$wait_time = ceil(wait_time_at($this->ID, $route['id'], $now));
-				//		$estimatedTime = $lastSessionData['start_datetime'] + $wait_time;
-				//		if($estimatedTime - $now < $wait_time)
-				//		{
-				//			$estimatedTime = $now + $wait_time;
-				//		}
-				//
-				//		foreach($info as $info_route)
-				//		{
-				//			if($info_route['route'] == $route['id'])
-				//			{
-				//				if($estimatedTime > $info_route['estimated_last'])
-				//				{
-				//					$estimatedTime = $info_route['estimated_first'] + 86400;;
-				//				}
-				//				if($estimatedTime < $info_route['estimated_first'])
-				//				{
-				//					$estimatedTime = $info_route['estimated_first'];
-				//				}
-				//
-				//				break;
-				//			}
-				//		}
-				//
-				//		array_push($function_result,
-				//			array(
-				//				"busno" => null,
-				//				"route" => $route['id'],
-				//				"remaining_distance" => null,
-				//				"estimated_time" => $estimatedTime,
-				//				"estimated_time_readable" => date("H:i", $estimatedTime),
-				//				"remaining_time" => $estimatedTime - $now,
-				//				"last_stopid" => null,
-				//				"last_update" => null,
-				//				"session" => null,
-				//				"origin" => true
-				//			)
-				//		);
-				//	}
-				//}
 			}
 		}
 
@@ -502,8 +455,6 @@ class Stop
      */
 	public function DailyTimeTable($day = false)
 	{
-		global $connection;
-		
 		$function_result = array();
 		
 		if($this->BusStop == null)
@@ -533,8 +484,8 @@ class Stop
 		
 		$days = array();
 		
-		$sql = "SELECT `date` FROM `days` WHERE type = {$today->Type} AND `date` < {$today->Timestamp} ORDER BY `date` DESC LIMIT $day_to_calculate";
-		$results = mysqli_query($connection, $sql);
+		$sql = "SELECT `date` FROM `days` WHERE type = ? AND `date` < ? ORDER BY `date` DESC LIMIT $day_to_calculate";
+        $results = sql_query($sql, "ii", array($today->Type, $today->Timestamp));
 		while($dayData = mysqli_fetch_array($results))
 		{
 			array_push($days, $dayData['date']);
@@ -1345,10 +1296,11 @@ class Location
  */
 function get_latest_day_on_type($type)
 {
-    $sql = "SELECT `date` FROM `days` WHERE `date` < ? ORDER BY `date` DESC LIMIT 1";
-    $result = sql_query($sql, "i", mktime(0, 0, 0));
+    $sql = "SELECT `date` FROM `days` WHERE `type` = ? AND `date` < ? ORDER BY `date` DESC LIMIT 1";
+    $result = sql_query($sql, "ii", array($type, mktime(0, 0, 0)));
+    $dayData = mysqli_fetch_array($result);
 
-    return new Day($result['date']);
+    return new Day($dayData['date']);
 }
 
 /**
@@ -1390,7 +1342,7 @@ function estimated_time($route, $stop, $timestamp, $recursivelyCalled = false)
  * @param bool $recursivelyCalled = false
  * @return mixed
  */
-function estimated_time_between($route, $stop1, $stop2, $timestamp, $recursivelyCalled = false)
+function estimated_time_between($route, $stop1, $stop2, $timestamp)
 {
     $sql = "SELECT `distance_from_start` FROM `route_paths` WHERE `route` = ? AND `stop` = ? ORDER BY `distance_from_start` ASC";
     $result = sql_query($sql, "ii", array($route, $stop1));
