@@ -260,11 +260,10 @@ class Stop
 		$out = ($Hr >= 21 || $Hr <= 6);
 
 		$day = new Day(mktime(0, 0, 0));
+        $tomorrow = new Day(mktime(0, 0, 0) + 86400);
 
 		if($Hr > 21)
         {
-            $tomorrow = new Day(mktime(0, 0, 0) + 86400);
-
             if($day->Type != $tomorrow->Type)
             {
                 $day = get_latest_day_on_type($tomorrow->Type);
@@ -275,6 +274,12 @@ class Stop
 		if($out)
 		{
 			$info = $this->DailyTimeTable($day);
+			
+			if($day->Type != $tomorrow->Type) foreach($info as $key => $value)
+			{
+				$info[$key]['estimated_first'] = shift_day($info[$key]['estimated_first'], $tomorrow);
+				$info[$key]['estimated_last'] = shift_day($info[$key]['estimated_last'], $tomorrow);
+			}
 		}
 		
 		$now = mktime();
@@ -1320,7 +1325,16 @@ function estimated_time($route, $stop, $timestamp, $recursivelyCalled = false)
     {
         if($recursivelyCalled == true)
         {
-            return null;
+			$sql = "SELECT `distance_from_start` FROM `route_paths` WHERE `route` = ? AND `stop` = ? ORDER BY `distance_from_start` DESC";
+			$result = sql_query($sql, "ii", array($route, $stop));
+			if(mysqli_num_rows($result) == 0)
+			{			
+				return null;
+			}
+			
+			$distanceData = mysqli_fetch_array($result);
+			
+			return $distanceData['distance_from_start'] / 5.12;
         }
         else
         {

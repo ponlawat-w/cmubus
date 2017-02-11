@@ -159,12 +159,13 @@ function update_data()
 	$buses = array();
 	$i = 0;
 	
-	$sql = "SELECT `refid` FROM `routes` WHERE `available` = 1 AND `refid` > 0 ORDER BY `refid` ASC";
+	$sql = "SELECT `id`, `refid` FROM `routes` WHERE `available` = 1 AND `refid` > 0 ORDER BY `refid` ASC";
 	$results = mysqli_query($connection, $sql);
 	while($routedata = mysqli_fetch_array($results))
 	{
-		$route = $routedata['refid'];
-		$buses_data = download_data($routedata['refid']);
+		$route = $routedata['id'];
+		$routeRefID = $routedata['refid'];
+		$buses_data = download_data($routeRefID);
 		/*$buses_data = download_data(1);
 		$buses_data = array_merge($buses_data, download_data(2));
 		$buses_data = array_merge($buses_data, download_data(3));
