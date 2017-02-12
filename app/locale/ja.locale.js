@@ -26,18 +26,18 @@ app.controller("localeController", function($scope)
 			"eta": "時間",
 			"place": "現在位置",
 			"distance": "残りの距離",
-			"timeleft": "到着時間",
-			"arrivalTimetable": "到着時間",
-			"passedTimetable": "到着済み",
-			"timetable": "時刻表",
+			"timeleft": "到着時刻",
+			"arrivalTimetable": "到着予想時刻",
+			"passedTimetable": "過去の到着時刻",
+			"timetable": "到着時刻",
 			"info": "情報",
-			"firstRound": "始発予定",
-			"lastRound": "終電予定",
-			"waittingTime": "バス待ち時間",
+			"firstRound": "予想始発時刻",
+			"lastRound": "予想終初時刻",
+			"waittingTime": "予想バス待ち時間",
 			"fromHere": "ここから検索",
 			"toHere": "ここまで検索",
 			"viewMap": "地図で見る",
-			"connections": "周辺"
+			"connections": "周辺スポット"
 		},
 		pleaseWait: "しばらくお待ち下さい",
 		search: {
@@ -45,16 +45,17 @@ app.controller("localeController", function($scope)
 			"from": "出発",
 			"to": "到着",
 			"detail": "バス停、施設、ビル名等",
+			//検索履歴、お気に入り
 			"submit_btn": "検索",
 			"searching": "検索中",
             "searchingMore": "さらに検索中",
-            "edit": "編集"
+            "edit": "戻る"
 		},
 		settings: {
 			"title": "設定",
 			"language": "言語 / Language",
 			"report": {
-				"title": "通報",
+				"title": "問題報告",
 				"type": "問題の種類をお選びください。",
 				"applicationUsage": "アプリの利用問題について",
 				"incorrectData": "間違いのデータや誤報などについて",
@@ -62,13 +63,13 @@ app.controller("localeController", function($scope)
 				"bus": "バスの問題について（タイ語のみ）",
 				"name": "氏名",
 				"email": "メール",
-				"message": "通報の内容をご入力ください…",
-				"submit": "通報",
+				"message": "報告の内容をご入力ください…",
+				"submit": "報告",
 				"error": {
 					"noInput": "全てを入力してください。"
 				},
-				"success": "問題を通報しました。ご協力ありがとうございます。",
-                "optional": "オプショナル"
+				"success": "問題を報告しました。ご協力ありがとうございます。",
+                "optional": "任意"
 			}
 		},
         menu: {
@@ -78,9 +79,9 @@ app.controller("localeController", function($scope)
             "viewRoutes": "ルート一覧",
             "viewBuses": "バス一覧",
             "evaluateApp": "アプリ評価",
-            "problemReport": "問題通報",
+            "problemReport": "問題報告",
             "languageSettings": "言語設定 (Language)",
-			"about": "このアプリについて…"
+			"about": "このアプリについて"
         },
         evaluationSurvey: {
             "title": "アプリ評価",
@@ -88,16 +89,16 @@ app.controller("localeController", function($scope)
             roles: {
                 "student": "チェンマイ大学の大学生",
                 "staff": "チェンマイ大学の先生・スタッフ",
-                "visitor": "大学の客・訪問者",
+                "visitor": "チェンマイ大学の客・訪問者",
                 "other": "その他"
             },
             "name": "氏名",
             "email": "メール",
             "usefulness": "このアプリはどのくらい役に立ちますか。",
-            "easyToUse": "このアプリが使いやすいですか。",
-            "accuracy": "このアプリのデータ正確性がどのくらい認められますか。",
-            "performance": "このアプリの性能はどのくらいだと思いますか。",
-            "satisfaction": "ご利用はご満足ですか",
+            "easyToUse": "このアプリは使いやすいですか。",
+            "accuracy": "このアプリのデータ正確性がどの程度認められますか。",
+            "performance": "このアプリの性能はどの程度だと思いますか。",
+            "satisfaction": "総合評価",
             "comment": "コメント",
             "typeHere": "ご意見があれば、こちらにご入力ください…",
             "levels": [
@@ -112,7 +113,7 @@ app.controller("localeController", function($scope)
             "success": "ご協力ありがとうございます。"
         },
         buses: {
-            "title": "バスの一覧",
+            "title": "バス一覧",
             "busno": "番号",
             "status": "状態",
             "offline": "情報無し"
@@ -121,9 +122,9 @@ app.controller("localeController", function($scope)
             title: "このアプリについて",
             textJustify: "auto",
             message: [
-                "当アプリケーション、「ＣＭＵ　ＢＵＳ」は、2559年度のチェンマイ大学工学部計算機工学科の261491 Project Surveyと261492 Projectの「University Bus Information System」（6/2559）というプロジェクトの一部であります。",
-                "当アプリケーションの時刻情報（到着時間やバス待ち時間など）がチェンマイ大学のバス運行会社（ขส.มช.）からではなく、前日保存した時刻のデータを利用して機械に自動的に計算された情報であります。そのため、当アプリケーションの開発者が間違いの予算時刻や誤報などからの欠損を否認をさせていただきます。",
-				"当アプリケーションでは、周辺バス停を探す為、ユーザーの位置情報が要求されていますが、位置情報が保存される事がありません。しかし、バスの利用の参考の為にユーザーの検索情報を保存しております。"
+                "当アプリケーション、「ＣＭＵ　ＢＵＳ」は、2559年度のチェンマイ大学工学部計算機工学科の261491 Project Surveyと261492 Projectの「University Bus Information System」（6/2559）というプロジェクトの一部です。",
+                "当アプリケーションの時刻情報（予想到着時刻やバス待ち時間など）はチェンマイ大学のバス運行会社（ขส.มช.）からではなく、前日保存した時刻のデータを利用して機械で自動的に計算された情報です。そのため、当アプリケーションの開発者は予想時刻の間違いから生じた出来事について一切の責任を負いません。",
+                "当アプリケーションでは、周辺バス停を探す為、ユーザーの位置情報が要求されていますが、位置情報が保存される事はありません。しかし、バスの利用の参考の為にユーザーの検索情報を保存させていただきます。"
             ]
         }
 	};
@@ -147,7 +148,7 @@ app.filter("distance", function()
 		{
 			distance = Math.round(distance / 10);
 			distance = distance / 100;
-			distance = distance + "㌔";
+			distance = distance + "km";
 		}
 		return distance;
 	};
@@ -233,7 +234,7 @@ app.filter("pathArrivalTime", function()
 {
 	return function(path)
 	{		
-		return "到着時間：" + path[path.length-1].time;
+		return "予想到着時刻：" + path[path.length-1].time;
 	};
 });
 
@@ -259,7 +260,7 @@ app.filter("resultNumber", function()
 	{
 		index++;
 		
-		return "結果＃" + index;
+		return "検索結果＃" + index;
 	};
 });
 
