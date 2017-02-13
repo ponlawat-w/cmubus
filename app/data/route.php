@@ -20,7 +20,7 @@ foreach($routes as $key => $route)
 	}
 	
 	$routes[$key]['name'] = get_text("route", $route['id'], get_language_id());
-	unset($routes[$key]['refid']);
+	//unset($routes[$key]['refid']);
 	unset($routes[$key]['detail']);
 	unset($routes[$key]['available']);
 	

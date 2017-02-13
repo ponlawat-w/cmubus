@@ -3,23 +3,33 @@ app.controller("localeController", function($scope)
 	$scope.txt = {
 		header: "ＣＭＵバス",
 		home: {
-			"search": "チェンマイ大学のバス乗換案内",
-			"viewroutes": "ルート一覧",
-			"searchingNear": "周辺バス停の情報を読み込み中",
-			"nearStops": "周辺バス停",
-			"searchDetail": "バス停検索",
-            "click2cTimeTable": "時刻表を見る",
-            "evaluationSurvey": {
-                "title": "アプリ評価",
-                "message": "アプリ評価のご協力をお願いします。",
-                "evaluationButton": "　評価　",
-                "laterButton": "後で",
-                "neverButton": "今後、表示しない"
+			search: "チェンマイ大学のバス乗換案内",
+            viewTimeTable: "予想時刻表を見る",
+			searchingNear: "周辺バス停の情報を読み込み中",
+            searchingNearError: {
+                title: "周辺バス停の情報を読み込めません。",
+                message: "只今ＧＰＳからの現在位置の情報を読み込めません、それとも位置情報の設定がオフにされています。"
+            },
+			nearStops: "周辺バス停",
+			searchDetail: "バス停、施設、ビルの検索",
+            click2cTimeTable: "時刻表を見る",
+            evaluationSurvey: {
+                title: "アプリ評価",
+                message: "アプリ評価のご協力をお願いします。",
+                evaluationButton: "　評価　",
+                laterButton: "後で",
+                neverButton: "今後、表示しない"
             },
             recommendedPlaces: {
                 title: "おすすめスポット"
             }
 		},
+        route: {
+            viewMap: "ルートを地図で見る"
+        },
+        stops: {
+            title: "バス停の予想時刻表を見る"
+        },
 		stop: {
 			"route": "ルート",
 			"busno": "バス番号",
@@ -49,7 +59,11 @@ app.controller("localeController", function($scope)
 			"submit_btn": "検索",
 			"searching": "検索中",
             "searchingMore": "さらに検索中",
-            "edit": "戻る"
+            "edit": "戻る",
+            viewWalkRouteOnMap: "地図で見る",
+            viewRouteInfo: "ルートの情報",
+            viewTimetable: "時刻表",
+            noTimetableData: "時刻情報なし"
 		},
 		settings: {
 			"title": "設定",
@@ -200,7 +214,12 @@ app.filter("currentStopText", function()
 app.filter("timeText", function()
 {
 	return function(time)
-	{		
+	{
+        if(time == null)
+        {
+            return "情報なし";
+        }
+
 		time = Math.ceil(time / 60);
 		
 		if(time >= 60)
@@ -285,7 +304,10 @@ app.filter("connectionInfo", function()
 				waittime = Math.ceil(waittime / 60);
 			
 				txt += "　<span style='color:#" + node.routecolor + ";'><i class='fa fa-bus'></i><strong> " + node.routename + "</strong><br>";
-				txt += "　　<small>" + waittime + "分バス待ち</small> /";
+				if(waittime > 0)
+				{
+                    txt += "　　<small>" + waittime + "分バス待ち</small> /";
+                }
 				txt += " <small>" + traveltime + "分乗車</small></span><br>";
 			}
 			

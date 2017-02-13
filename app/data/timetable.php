@@ -6,6 +6,12 @@ session_write_close();
 
 $stopid = (int)$_GET['stopid'];
 
+$passedTimetable = "false";
+if(isset($_GET['passed']))
+{
+    $passedTimetable = $_GET['passed'];
+}
+
 $final_timetable = array();
 
 $stop = new Stop($stopid);
@@ -43,10 +49,19 @@ foreach($timetable as $key => $round)
 	array_push($final_timetable, $timetable[$key]);
 }
 
-$page_result = array(
-	"arrival_timetable" => $final_timetable,
-	"passed_timetable" => $stop->PassedTimetable(5)
-);
+if($passedTimetable == "true")
+{
+    $page_result = array(
+        "arrival_timetable" => $final_timetable,
+        "passed_timetable" => $stop->PassedTimetable(5)
+    );
+}
+else
+{
+    $page_result = array(
+        "arrival_timetable" => $final_timetable
+    );
+}
 
 echo json_encode($page_result);
 	

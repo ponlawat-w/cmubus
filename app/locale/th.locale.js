@@ -3,22 +3,32 @@ app.controller("localeController", function($scope)
 	$scope.txt = {
 		header: "CMU BUS",
 		home: {
-			"search": "ค้นหาเส้นทางใน มช.",
-            "viewroutes": "ดูเส้นทางทั้งหมด",
-            "searchingNear": "กำลังค้นหาข้อมูลป้ายที่อยู่ใกล้",
-			"nearStops": "ป้ายที่อยู่ใกล้",
-			"searchDetail": "ค้นหาสถานที่",
-			"click2cTimeTable": "คลิกเพื่อดูตารางเวลา",
-            "evaluationSurvey": {
-                "title": "ประเมินแอปพลิเคชัน",
-                "message": "ขอความร่วมมือตอบแบบประเมินการใช้งานแอปฯ",
-                "evaluationButton": "ประเมิน",
-                "laterButton": "ถามทีหลัง",
-                "neverButton": "อย่าถามอีก"
+			search: "ค้นหาเส้นทางใน มช.",
+			viewTimeTable: "ดูเวลารถ",
+            searchingNear: "กำลังค้นหาข้อมูลป้ายใกล้เคียง",
+			searchingNearError: {
+				title: "ไม่สามารถค้นหาป้ายใกล้เคียงได้",
+				message: "กรุณาตรวจสอบการตั้งค่าการใช้ตำแหน่งของอุปกรณ์ หรือในขณะนี้อุปกรณ์ไม่สามารถรับข้อมูลพิกัดที่แน่นอนได้"
+			},
+			nearStops: "ป้ายใกล้เคียง",
+			searchDetail: "ค้นหาป้ายหยุดรถ สถานที่ ใน มช.",
+			click2cTimeTable: "คลิกเพื่อดูตารางเวลา",
+            evaluationSurvey: {
+                title: "ประเมินแอปพลิเคชัน",
+                message: "ขอความร่วมมือตอบแบบประเมินการใช้งานแอปฯ",
+                evaluationButton: "ประเมิน",
+                laterButton: "ถามทีหลัง",
+                neverButton: "อย่าถามอีก"
             },
 			recommendedPlaces: {
 				title: "สถานที่แนะนำ"
 			}
+		},
+		route: {
+			viewMap: "ดูเส้นทางบนแผนที่"
+		},
+		stops: {
+			title: "กรุณาเลือกป้ายที่ต้องการดูเวลารถ"
 		},
 		stop: {
 			"route": "เส้นทาง",
@@ -48,7 +58,11 @@ app.controller("localeController", function($scope)
 			"submit_btn": "ค้นหา",
 			"searching": "กำลังค้นหา",
 			"searchingMore": "กำลังค้นหาเพิ่มเติม",
-			"edit": "แก้ไขการค้นหา"
+			"edit": "แก้ไขการค้นหา",
+			viewWalkRouteOnMap: "ดูเส้นทางเดินบนแผนที่",
+			viewRouteInfo: "ดูข้อมูลเส้นทาง",
+			viewTimetable: "ดูเวลารถ",
+			noTimetableData: "ไม่มีข้อมูลเวลารถ"
 		},
 		settings: {
 			"title": "ตั้งค่า",
@@ -200,6 +214,12 @@ app.filter("timeText", function()
 {
 	return function(time)
 	{
+		if(time == null)
+		{
+			return "ไม่ทราบ";
+		}
+
+
 		time = Math.ceil(time / 60);
 
 		if(time >= 60)
@@ -276,7 +296,10 @@ app.filter("connectionInfo", function()
 				waittime = Math.ceil(waittime / 60);
 			
 				txt += "　<span style='color:#" + node.routecolor + ";'><i class='fa fa-bus'></i><strong> " + node.routename + "</strong><br>";
-				txt += "　　<small>รอรถ " + waittime + " นาที</small> /";
+				if(waittime > 0)
+				{
+                    txt += "　　<small>รอรถ " + waittime + " นาที</small> /";
+                }
 				txt += " <small>เดินทาง " + traveltime + " นาที</small></span><br>";
 			}
 			

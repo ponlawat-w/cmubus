@@ -11,7 +11,7 @@
 <div ng-show="finished == false"><div class="well"><center><img src="assets/img/loading.gif"><br>{{txt.search.searching}}</center></div></div>
 <div ng-show="finished == true">
 	<ul class="list-group">
-		<li class="list-group-item" ng-repeat="path in paths">
+		<li class="list-group-item" ng-repeat="path in paths" ng-init="pathIndex = $index">
 			<div class="path-detail"><strong>{{$index|resultNumber}}</strong> ({{path|totalTravelTime}})</div>
 			<div class="dots-list">
 				<ol>
@@ -24,13 +24,49 @@
 							<strong>{{sequence.stopname}}</strong>
 						</a>
 
-						<sup><a href="javascript:void(0)" class="btn btn-default btn-xs" style="border-radius: 1em;" ng-click="openMap(sequence.stoplocation)" ><i class="fa fa-map-marker"></i></a></sup>
+						<sup><a href="javascript:void(0)" class="btn btn-default btn-xs" ng-click="openMap(sequence.stoplocation)" ><i class="fa fa-map-marker"></i></a></sup>
 
-						<a href="javascript:void(0);" ng-click="goHow(path[$index + 1].route, path[$index].stopid, path[$index+1].stopid, path[$index].stoplocation, path[$index+1].stoplocation)" ng-show="$index < path.length - 1">
-							<br>
-							<div ng-bind-html="path[$index + 1] | connectionInfo | trustedHTML">
+						<div ng-if="$index < path.length - 1">
+							<div class="row" style="padding-left: 1em; margin-top: 0.7em;">
+								<div ng-bind-html="path[$index + 1] | connectionInfo | trustedHTML" class="pull-left">
+								</div>
+								<div class="pull-right" style="margin-right : 10px;">
+									<button class="btn btn-xs btn-default" ng-click="showInfo(pathIndex, $index)">
+										<i ng-if="showedInfo.pathIndex == pathIndex && showedInfo.sequenceIndex == $index" class="fa fa-caret-up"></i>
+										<i ng-if="showedInfo.pathIndex != pathIndex || showedInfo.sequenceIndex != $index" class="fa fa-caret-down"></i>
+									</button>
+								</div>
 							</div>
-						</a>
+							<div class="btn-group-vertical" ng-if="showedInfo.pathIndex == pathIndex && showedInfo.sequenceIndex == $index" style="width: 100%; margin-top: 1em;">
+								<a href="javascript:void(0);" class="btn btn-default btn-sm"
+								   style="text-align: left;"
+								   ng-if="path[$index + 1].route == null"
+								   ng-click="goHow(path[$index + 1].route, path[$index].stopid, path[$index+1].stopid, path[$index].stoplocation, path[$index+1].stoplocation)">
+									<i class="fa fa-location-arrow"></i> {{txt.search.viewWalkRouteOnMap}}
+								</a>
+								<a href="javascript:void(0);" class="btn btn-default btn-sm"
+								   style="text-align: left;"
+								   ng-if="path[$index + 1].route != null"
+								   ng-click="goHow(path[$index + 1].route, path[$index].stopid, path[$index+1].stopid, path[$index].stoplocation, path[$index+1].stoplocation)">
+									<i class="fa fa-info"></i> {{txt.search.viewRouteInfo}}
+								</a>
+								<a href="javascript:void(0);" class="btn btn-default btn-sm"
+								   style="text-align: left;"
+								   ng-if="path[$index + 1].route != null"
+								   ng-click="loadTimetable(path[$index + 1].route, path[$index].stopid, pathIndex, $index)"
+								>
+									<i class="fa fa-clock-o"></i> {{txt.search.viewTimetable}}
+								</a>
+							</div>
+							<div class="panel panel-default" ng-show="showLoading.pathIndex == pathIndex && showLoading.sequenceIndex == $index" style="text-align: center;">
+								<img src="assets/img/loading.gif"><br>
+								{{txt.pleaseWait}}
+							</div>
+							<div class="list-group" ng-show="timetable.pathIndex == pathIndex && timetable.sequenceIndex == $index" style="margin-left: 1em; font-size: 0.9em;">
+								<div class="list-group-item" style="padding: 2px 5px; color: #666666;" ng-if="(showLoading.pathIndex != pathIndex || showLoading.sequenceIndex != $index) && timetable.estimatedTime.length == 0">{{txt.search.noTimetableData}}</div>
+								<a href="javascript:void(0);" class="list-group-item" style="padding: 2px 5px;" ng-repeat="time in timetable.estimatedTime" ng-click="goSession(time.session)">{{time.estimated_time_readable}}</a>
+							</div>
+						</div>
 					</li>
 				</ol>
 			</div>
@@ -51,7 +87,6 @@ a:hover
 	text-decoration: none;
 }
 
-// SOURCE: http://www.divithemeexamples.com/divi-timeline-with-css/
 .dots-list
 {
 }
@@ -98,3 +133,7 @@ a:hover
 }
 
 </style>
+
+<!--
+	SOURCE: http://www.divithemeexamples.com/divi-timeline-with-css/
+-->

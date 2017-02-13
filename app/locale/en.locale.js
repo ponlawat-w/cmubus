@@ -3,23 +3,33 @@ app.controller("localeController", function($scope)
 	$scope.txt = {
 		header: "CMU BUS",
 		home: {
-			"search": "Where do you want to go in CMU",
-			"viewroutes": "View all routes",
-			"searchingNear": "Searching near bus stops",
-			"nearStops": "Near bus stops",
-			"searchDetail": "or search a place",
-            "click2cTimeTable": "Click to see timetable",
-			"evaluationSurvey": {
-				"title": "Do you have some time?",
-				"message": "Please help us evaluate this application",
-				"evaluationButton": "Evaluate",
-				"laterButton": "Later",
-				"neverButton": "Don't ask me again"
+			search: "Search bus route in CMU",
+            viewTimeTable: "View estimated bus timetables",
+			searchingNear: "Searching near bus stops",
+            searchingNearError: {
+                title: "Unable to find near bus stops",
+                message: "Please check your location settings. Otherwise the device is currently not able to obtain your certain position."
+            },
+			nearStops: "Near bus stops",
+			searchDetail: "Search a bus stop, a place in CMU",
+            click2cTimeTable: "Click to see timetable",
+			evaluationSurvey: {
+				title: "Do you have some time?",
+				message: "Please help us evaluate this application",
+				evaluationButton: "Evaluate",
+				laterButton: "Later",
+				neverButton: "Don't ask me again"
 			},
             recommendedPlaces: {
                 title: "Recommended Places"
             }
 		},
+        route: {
+            viewMap: "View this route on map"
+        },
+        stops: {
+            title: "Select a bus stop to see timetable"
+        },
 		stop: {
 			"route": "Route",
 			"busno": "Bus no.",
@@ -27,7 +37,7 @@ app.controller("localeController", function($scope)
 			"place": "Location",
 			"distance": "Distance",
 			"timeleft": "Time left",
-			"arrivalTimetable": "Arrivals",
+			"arrivalTimetable": "Estimated Arrival Time",
 			"passedTimetable": "Departed",
 			"timetable": "TIMETABLE",
 			"info": "INFORMATION",
@@ -48,7 +58,11 @@ app.controller("localeController", function($scope)
 			"submit_btn": "Search",
 			"searching": "Please wait",
             "searchingMore": "Searching more",
-            "edit": "Edit search"
+            "edit": "Edit search",
+            viewWalkRouteOnMap: "View walking route on map",
+            viewRouteInfo: "View route info",
+            viewTimetable: "View timetable",
+            noTimetableData: "No timetable data"
 		},
 		settings: {
 			"title": "Settings",
@@ -207,7 +221,12 @@ app.filter("currentStopText", function()
 app.filter("timeText", function()
 {
 	return function(time)
-	{		
+	{
+        if(time == null)
+        {
+            return "N/A";
+        }
+
 		time = Math.ceil(time / 60);
 		
 		if(time >= 60)
@@ -320,14 +339,16 @@ app.filter("connectionInfo", function()
 				waittime = Math.ceil(waittime / 60);
 			
 				txt += "　<span style='color:#" + node.routecolor + ";'><i class='fa fa-bus'></i><strong> " + node.routename + "</strong><br>";
-				if(waittime == 1)
+
+				if(waittime > 0)
 				{
-					txt += "　　<small>wait " + waittime + " min</small> /";
-				}
-				else
-				{
-					txt += "　　<small>wait " + waittime + " mins</small> /";
-				}
+                    if (waittime == 1) {
+                        txt += "　　<small>wait " + waittime + " min</small> /";
+                    }
+                    else {
+                        txt += "　　<small>wait " + waittime + " mins</small> /";
+                    }
+                }
 				
 				if(traveltime == 1)
 				{

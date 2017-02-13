@@ -260,9 +260,9 @@ class Stop
 		$out = ($Hr >= 21 || $Hr <= 6);
 
 		$day = new Day(mktime(0, 0, 0));
-        $tomorrow = new Day(mktime(0, 0, 0) + 86400);
+        $tomorrow = new Day(mktime(24, 0, 0));
 
-		if($Hr > 21)
+		if($Hr >= 21)
         {
             if($day->Type != $tomorrow->Type)
             {
@@ -275,7 +275,7 @@ class Stop
 		{
 			$info = $this->DailyTimeTable($day);
 			
-			if($day->Type != $tomorrow->Type) foreach($info as $key => $value)
+			foreach($info as $key => $value)
 			{
 				$info[$key]['estimated_first'] = shift_day($info[$key]['estimated_first'], $tomorrow);
 				$info[$key]['estimated_last'] = shift_day($info[$key]['estimated_last'], $tomorrow);
@@ -368,6 +368,10 @@ class Stop
 						{
 							$lastSessionData = mysqli_fetch_array($result);
 							$wait_time = ceil(wait_time_at($this->ID, $route['id'], $now));
+							if($wait_time == null)
+                            {
+                                $wait_time = 0;
+                            }
 							$estimatedTime = $lastSessionData['start_datetime'] + $wait_time + $estimatedTimeAtThisStop;
 							
 							if($estimatedTime - $now < $estimatedTimeAtThisStop)
@@ -1044,6 +1048,10 @@ class Path
 			$route = $sequence['route'];
 			$timestamp = $sequence['timestamp'];
 			$waittime = $sequence['waittime'];
+			if($waittime == null)
+            {
+                $waittime = 0;
+            }
 			$traveltime = $sequence['timestamp'] - $lastTimestamp - $waittime;
 			
 			$routename = null;
@@ -1432,10 +1440,10 @@ function sql_query($sqlParseText, $variableTypes = "", $variableValuesArray = ar
  * @param $stop
  * @param $route
  * @param int|bool $datetime
- * @param bool $temporaryWaitTime
+ * @param bool $recursivelyCalled
  * @return int
  */
-function wait_time_at($stop, $route, $datetime = false, $temporaryWaitTime = false)
+function wait_time_at($stop, $route, $datetime = false, $recursivelyCalled = false)
 {	
 	global $connection;	
 	
@@ -1454,9 +1462,9 @@ function wait_time_at($stop, $route, $datetime = false, $temporaryWaitTime = fal
 	}
 	else
 	{
-	    if($temporaryWaitTime == true)
+	    if($recursivelyCalled == true)
         {
-            return 0;
+            return null;
         }
 
 		return wait_time_at($stop, $route, mktime(12, 0, 0), true);

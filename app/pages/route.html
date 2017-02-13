@@ -4,6 +4,7 @@
 </center></p></div>
 <div ng-show="!loading">
 	<h3 style="color:#{{route.route_info.color}};"><a href="javascript:void(0);" ng-click="goRoute()">{{route.route_info.name}}</a></h3>
+	<a ng-if="highlightIndex.from == 0 && highlightIndex.to == route.path.length - 1" href="http://cmutransit.com/mapshow.php?rid={{route.route_info.refid}}" class="btn btn-default" style="width: 100%;">{{txt.route.viewMap}}</a>
 	<table class="table table-hover cursor-pointer" style="border-left: #{{route.route_info.color}} 2px solid;">
 		<tbody>
 			<tr ng-repeat="sequence in route.path" ng-click="goStop(sequence.stop)">

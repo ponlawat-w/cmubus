@@ -55,6 +55,10 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 			templateUrl: "pages/routes.html",
 			controller: "routesController"
 		})
+        .when('/stops', {
+            templateUrl: "pages/stops.html",
+            controller: "stopsController"
+        })
         .when('/buses', {
             templateUrl: "pages/buses.html",
             controller: "busesController"
@@ -207,6 +211,15 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
     $scope.nearStopsMore = [];
     $scope.recommendedPlaces = [];
 
+
+    $http.get("data/recommended_places.php").then(function(response)
+    {
+        $scope.recommendedPlaces = response.data;
+
+    }, function(response)
+    {
+    });
+
     $scope.loadData = function()
     {
         $scope.loading = true;
@@ -229,10 +242,12 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 				});
 			}, function()
 			{
+                $scope.loading = false;
 			});
 		}
 		else
 		{
+            $scope.loading = false;
 		}
 	};
 
@@ -264,19 +279,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 				}
 				else
 				{
-                    $http.get("data/recommended_places.php").then(function(response)
-                    {
-                        $scope.recommendedPlaces = response.data;
-
-                        $scope.loading = false;
-                        $scope.requesting = false;
-
-                        $interval.cancel(appInterval);
-
-                    }, function(response)
-                    {
-                        $scope.loading = false;
-                    });
+					$scope.loading = false;
 				}
 
             }, function(response)
@@ -666,22 +669,103 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	};
 });
 
-app.controller("searchResultController", function($scope, $routeParams, $http, $location, $interval)
-{
+app.controller("searchResultController", function($scope, $routeParams, $http, $location, $interval) {
     $interval.cancel(appInterval);
 
-	$scope.info = {
-		fromName: "",
-		toName: ""
+    $scope.info = {
+        fromName: "",
+        toName: ""
+    };
+    $scope.paths = [];
+
+    $scope.from_id = $routeParams.from_id;
+    $scope.to_id = $routeParams.to_id;
+
+    $scope.showedInfo = {
+        pathIndex: null,
+        sequenceIndex: null
+    };
+
+    $scope.showLoading = {
+        pathIndex: null,
+        sequenceIndex: null
+    };
+
+    $scope.timetable = {
+        pathIndex: null,
+        sequenceIndex: null,
+        estimatedTime: []
+    };
+
+    $scope.finished = false;
+    $scope.searchingMore = false;
+
+    $scope.showInfo = function (pathIndex, sequenceIndex) {
+        if ($scope.showedInfo.pathIndex == pathIndex && $scope.showedInfo.sequenceIndex == sequenceIndex) {
+            $scope.showedInfo.pathIndex = null;
+            $scope.showedInfo.sequenceIndex = null;
+        }
+        else {
+            $scope.showedInfo.pathIndex = pathIndex;
+            $scope.showedInfo.sequenceIndex = sequenceIndex;
+        }
+    };
+
+    $scope.loadTimetable = function (routeID, stopID, pathIndex, sequenceIndex) {
+        $scope.showLoading.pathIndex = pathIndex;
+        $scope.showLoading.sequenceIndex = sequenceIndex;
+
+        $scope.timetable.estimatedTime = [];
+        $scope.timetable.pathIndex = pathIndex;
+        $scope.timetable.sequenceIndex = sequenceIndex;
+
+        $http.get("data/route.php?id=" + routeID).then(function(response)
+		{
+			if(response.data.path[0].stop == stopID)
+			{
+                $scope.showLoading.pathIndex = null;
+                $scope.showLoading.sequenceIndex = null;
+                $scope.showedInfo.pathIndex = null;
+                $scope.showedInfo.sequenceIndex = null;
+			}
+			else
+			{
+                $http.get("data/timetable.php?stopid=" + stopID + "&passed=false&temp=" + Date.now()).then(function (response) {
+                    $scope.showLoading.pathIndex = null;
+                    $scope.showLoading.sequenceIndex = null;
+
+                    var j;
+                    j = 0;
+                    for (i = 0; i < response.data.arrival_timetable.length; i++) {
+                        if (response.data.arrival_timetable[i].route == routeID) {
+                            $scope.timetable.estimatedTime[j] = response.data.arrival_timetable[i];
+
+                            j++;
+                        }
+                    }
+
+                    $scope.showedInfo.pathIndex = null;
+                    $scope.showedInfo.sequenceIndex = null;
+                }, function (response) {
+                    $scope.showLoading.pathIndex = null;
+                    $scope.showLoading.sequenceIndex = null;
+                });
+            }
+
+		}, function(response)
+		{
+
+		});
+    };
+
+    $scope.goSession = function (sessionID)
+	{
+		if(sessionID > 0)
+		{
+			$location.path("session/" + sessionID);
+		}
 	};
-	$scope.paths = [];
-	
-	$scope.from_id = $routeParams.from_id;
-	$scope.to_id = $routeParams.to_id;
-	
-	$scope.finished = false;
-	$scope.searchingMore = false;
-	
+
 	$scope.switchFromTo = function()
 	{
 		$location.path("search/" + $scope.to_id + "/" + $scope.from_id);
@@ -712,10 +796,10 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 						$scope.paths[$scope.paths.length] = response.data[i];
 					}
 
-					$scope.paths.sort(function(a, b)
-					{
-						return totalTravelTime(a).localeCompare(totalTravelTime(b));
-					});
+					//$scope.paths.sort(function(a, b)
+					//{
+					//	return totalTravelTime(a).localeCompare(totalTravelTime(b));
+					//});
 
 				}, function(response) { });
 			}, function(reponse) {  });			
@@ -776,7 +860,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		{
 			$scope.requesting = true;
 
-			$http.get("data/timetable.php?stopid=" + $scope.id + "&temp=" + Date.now()).then(function(response)
+			$http.get("data/timetable.php?stopid=" + $scope.id + "&passed=true&temp=" + Date.now()).then(function(response)
 			{
 				$scope.requesting = false;
 				$scope.timetableLoading = false;
@@ -929,6 +1013,73 @@ app.controller("routesController", function($scope, $http, $location, $interval)
 	{
 		$location.path("route/" + id);
 	};
+});
+
+app.controller("stopsController", function($scope, $http, $location, $anchorScroll, $interval)
+{
+    $interval.cancel(appInterval);
+
+    $scope.allStops = [];
+    $scope.keyword = "";
+
+    $scope.loading = true;
+
+    $scope.scrollTo = function(id)
+    {
+        var old = $location.hash();
+        $location.hash(id);
+        $anchorScroll();
+        $location.hash(old);
+    };
+
+    $scope.$watch("keyword", function()
+    {
+        if($scope.keyword == "")
+        {
+            for(i = 0; i < $scope.allStops.length; i++)
+            {
+                $scope.allStops[i].show = true;
+            }
+        }
+        else
+        {
+            $http.get("data/search.php?keyword=" + $scope.keyword).then(function(response)
+            {
+                for(i = 0; i < $scope.allStops.length; i++)
+                {
+                    $scope.allStops[i].show = false;
+                }
+
+                for(i = 0; i < response.data.length; i++)
+                {
+                    for(j = 0; j < $scope.allStops.length; j++)
+                    {
+                        if(response.data[i].id == $scope.allStops[j].id)
+                        {
+                            $scope.allStops[j].show = true;
+                        }
+                    }
+                }
+            }, function(response)
+            {
+            });
+        }
+    });
+
+    $http.get("data/stops.php").then(function(response)
+    {
+        $scope.allStops = response.data;
+
+        for(i = 0; i < $scope.allStops.length; i++)
+        {
+            $scope.allStops[i].show = true;
+        }
+
+        $scope.loading = false;
+    }, function(response)
+    {
+
+    });
 });
 
 app.controller("routeController", function($scope, $http, $location, $routeParams, $interval)

@@ -1,6 +1,7 @@
-<p>
+<div class="btn-group-vertical" style="width: 100%;">
 	<a href="/search" class="btn btn-lg btn-default" style="width: 100%;">{{txt.home.search}}</a>
-</p>
+	<a href="/stops" class="btn btn-default" style="width: 100%;">{{txt.home.viewTimeTable}}</a>
+</div>
 <p>
 	<div class="input-group">
 		<span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -19,7 +20,7 @@
 		<a href="javascript:void(0);" class="list-group-item" ng-repeat="stop in nearStops" ng-click="goStop(stop.id)">
 			<p><i class="fa fa-bus"></i> {{stop.name}}<br>　<small>{{stop.distance|distance}}</small></p>
 			<div class="content-panel" ng-repeat="route in stop.routes">
-				<span style="color:#{{route.color}};"><strong>{{route.name}}</strong></span>
+				<span style="color:{{'#' + route.color}};"><strong>{{route.name}}</strong></span>
 				<span ng-repeat="time in route.timetable" class="{{time.session|timetableTimeClass}}">{{time.estimated_time_readable}}</span>
 			</div>
 		</a>
@@ -36,7 +37,15 @@
 	{{txt.home.searchingNear}}
 </center></p></div>
 
-<div ng-show="!loading && nearStops.length == 0 && recommendedPlaces.length > 0">
+
+<div ng-show="!loading && nearStops.length == 0" class="alert alert-warning">
+	<h4>{{txt.home.searchingNearError.title}}</h4>
+	<p>
+		{{txt.home.searchingNearError.message}}
+	</p>
+</div>
+
+<div ng-show="!loading && recommendedPlaces.length > 0">
 	<p>
 	<h3>{{txt.home.recommendedPlaces.title}}</h3>
 	<div class="list-group">
