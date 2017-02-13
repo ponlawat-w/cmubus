@@ -25,7 +25,7 @@
       <file leaf-file-name="th.locale.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/locale/th.locale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2312">
+            <state relative-caret-position="136">
               <caret line="8" column="15" lean-forward="false" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
               <folding>
                 <marker date="1486619024194" expanded="true" signature="7190:7221" ph="..." />
@@ -37,20 +37,20 @@
       <file leaf-file-name="ja.locale.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/locale/ja.locale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="29">
-              <caret line="262" column="18" lean-forward="false" selection-start-line="262" selection-start-column="18" selection-end-line="262" selection-end-column="18" />
+            <state relative-caret-position="17">
+              <caret line="15" column="36" lean-forward="false" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
               <folding>
-                <marker date="1486875525974" expanded="true" signature="6230:6261" ph="..." />
+                <marker date="1486883003460" expanded="true" signature="6230:6261" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="en.locale.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="en.locale.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/locale/en.locale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="24" column="31" lean-forward="true" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+            <state relative-caret-position="-4967">
+              <caret line="24" column="31" lean-forward="false" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
               <folding>
                 <marker date="1486623494470" expanded="true" signature="7498:7529" ph="..." />
               </folding>
@@ -61,7 +61,7 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/assets/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="13702">
               <caret line="806" column="15" lean-forward="false" selection-start-line="806" selection-start-column="15" selection-end-line="806" selection-end-column="15" />
               <folding />
             </state>
@@ -71,14 +71,14 @@
       <file leaf-file-name="about.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/pages/about.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="8" lean-forward="true" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
+            <state relative-caret-position="255">
+              <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.inc.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="app.inc.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/app.inc.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="544">
@@ -123,6 +123,61 @@
                 <element signature="n#calculate_wait_time_at#0;n#!!top" expanded="false" />
                 <element signature="n#find_period#0;n#!!top" expanded="false" />
                 <element signature="n#generate_query#0;n#!!top" expanded="false" />
+                <marker date="1486822382000" expanded="true" signature="531:621" ph="SELECT `name... stops" />
+                <marker date="1486822382000" expanded="true" signature="2464:2488" ph="SELECT `id` stops" />
+                <marker date="1486822382000" expanded="true" signature="6610:6726" ph="SELECT `dist... route_paths" />
+                <marker date="1486822382000" expanded="true" signature="7006:7160" ph="SELECT `id`,... buses" />
+                <marker date="1486822382000" expanded="true" signature="7409:7463" ph="SELECT `star... sessions" />
+                <marker date="1486822382000" expanded="true" signature="7599:7684" ph="SELECT `date... records" />
+                <marker date="1486822382000" expanded="true" signature="10024:10120" ph="SELECT `star... sessions" />
+                <marker date="1486822382000" expanded="true" signature="11867:11960" ph="SELECT `sess... records" />
+                <marker date="1486822382000" expanded="true" signature="13427:13510" ph="SELECT `date... days" />
+                <marker date="1486822382000" expanded="true" signature="14022:14170" ph="SELECT MIN(`... sessions" />
+                <marker date="1486822382000" expanded="true" signature="14844:14928" ph="SELECT COUNT... route_paths" />
+                <marker date="1486822382000" expanded="true" signature="16708:16767" ph="SELECT DISTI... route_paths" />
+                <marker date="1486822382000" expanded="true" signature="17579:17651" ph="SELECT `busn... sessions" />
+                <marker date="1486822382000" expanded="true" signature="18062:18155" ph="SELECT `stop... records" />
+                <marker date="1486822382000" expanded="true" signature="18919:18980" ph="SELECT `sess... buses" />
+                <marker date="1486822382000" expanded="true" signature="19260:19344" ph="SELECT `stop... records" />
+                <marker date="1486822382000" expanded="true" signature="20017:20143" ph="SELECT `stop... route_paths" />
+                <marker date="1486822382000" expanded="true" signature="22139:22190" ph="SELECT `name... routes" />
+                <marker date="1486822382000" expanded="true" signature="22408:22539" ph="SELECT `stop... route_paths" />
+                <marker date="1486822382000" expanded="true" signature="28580:28632" ph="SELECT `type... days" />
+                <marker date="1486822382000" expanded="true" signature="28991:29053" ph="INSERT INTO `days`... " />
+                <marker date="1486822382000" expanded="true" signature="29580:29625" ph="SELECT `name... day_types" />
+                <marker date="1486822382000" expanded="true" signature="29892:29937" ph="UPDATE `days... " />
+                <marker date="1486822382000" expanded="true" signature="30173:30220" ph="UPDATE `days... " />
+                <marker date="1486822382000" expanded="true" signature="33497:33583" ph="SELECT `date... days" />
+                <marker date="1486822382000" expanded="true" signature="34056:34179" ph="SELECT `esti... time_estimation" />
+                <marker date="1486822382000" expanded="true" signature="34359:34475" ph="SELECT `dist... route_paths" />
+                <marker date="1486822382000" expanded="true" signature="35246:35361" ph="SELECT `dist... route_paths" />
+                <marker date="1486822382000" expanded="true" signature="37362:37477" ph="SELECT `wait... time_estimation" />
+                <marker date="1486822382000" expanded="true" signature="38391:38485" ph="SELECT `stop... connections" />
+                <marker date="1486822382000" expanded="true" signature="39249:39372" ph="SELECT `dist... route_paths" />
+                <marker date="1486822382000" expanded="true" signature="39708:39811" ph="SELECT `stop... route_paths" />
+                <marker date="1486822382000" expanded="true" signature="41378:41486" ph="SELECT `id`,... routes" />
+                <marker date="1486822382000" expanded="true" signature="41683:41815" ph="SELECT `set_... route_available_switchers" />
+                <marker date="1486822382000" expanded="true" signature="45481:45539" ph="SELECT COUNT... languages" />
+                <marker date="1486822382000" expanded="true" signature="46330:46393" ph="SELECT `id` languages" />
+                <marker date="1486822382000" expanded="true" signature="47279:47320" ph="SELECT `name... stops" />
+                <marker date="1486822382000" expanded="true" signature="47636:47678" ph="SELECT `name... routes" />
+                <marker date="1486822382000" expanded="true" signature="48010:48093" ph="SELECT `text... texts" />
+                <marker date="1486822382000" expanded="true" signature="48602:48685" ph="SELECT `text... texts" />
+                <marker date="1486822382000" expanded="true" signature="53758:53821" ph="SELECT `id`,... stops" />
+                <marker date="1486822382000" expanded="true" signature="54197:54344" ph="SELECT `ref_... texts" />
+                <marker date="1486822382000" expanded="true" signature="55006:55065" ph="SELECT `stop... stops_tags" />
+                <marker date="1486822382000" expanded="true" signature="55211:55269" ph="SELECT `id`,... stops" />
+                <marker date="1486822382000" expanded="true" signature="55643:55746" ph="SELECT `ref_... texts" />
+                <marker date="1486822382000" expanded="true" signature="55904:55956" ph="SELECT `name... stops" />
+                <marker date="1486822382000" expanded="true" signature="57786:57924" ph="DELETE FROM " />
+                <marker date="1486822382000" expanded="true" signature="58210:58330" ph="SELECT `rout... route_available_switchers" />
+                <marker date="1486822382000" expanded="true" signature="58658:58774" ph="SELECT `date... days" />
+                <marker date="1486822382000" expanded="true" signature="59274:59335" ph="SELECT `id`,... sessions" />
+                <marker date="1486822382000" expanded="true" signature="59747:59865" ph="SELECT `id`,... records" />
+                <marker date="1486822382000" expanded="true" signature="62253:62530" ph="INSERT INTO `time_estimation`... " />
+                <marker date="1486822382000" expanded="true" signature="63350:63462" ph="SELECT `date... days" />
+                <marker date="1486822382000" expanded="true" signature="63827:63978" ph="SELECT COUNT... records" />
+                <marker date="1486822382000" expanded="true" signature="64211:64293" ph="SELECT COUNT... route_paths" />
               </folding>
             </state>
           </provider>
@@ -237,8 +292,8 @@
         <option value="$PROJECT_DIR$/app/pages/home.html" />
         <option value="$PROJECT_DIR$/lib/app.inc.php" />
         <option value="$PROJECT_DIR$/app/index.php" />
-        <option value="$PROJECT_DIR$/app/pages/about.html" />
         <option value="$PROJECT_DIR$/app/locale/ja.locale.js" />
+        <option value="$PROJECT_DIR$/app/pages/about.html" />
       </list>
     </option>
   </component>
@@ -250,9 +305,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
-    <option name="width" value="893" />
-    <option name="height" value="735" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -306,6 +362,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CMUBUS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CMUBUS" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="locale" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -461,23 +535,24 @@
       <workItem from="1486651296438" duration="2300000" />
       <workItem from="1486714836108" duration="343000" />
       <workItem from="1486741040889" duration="2142000" />
-      <workItem from="1486873050448" duration="2354000" />
+      <workItem from="1486873050448" duration="2835000" />
+      <workItem from="1486882970404" duration="1241000" />
+      <workItem from="1486962203224" duration="924000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107956000" />
+    <option name="totallyTimeSpent" value="110602000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="893" height="735" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34891677" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22401172" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2823344" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -490,6 +565,7 @@
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1955836" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2823344" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
     </layout>
@@ -779,7 +855,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="918">
           <caret line="54" column="0" lean-forward="false" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -787,7 +862,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1105">
           <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -801,46 +875,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="13702">
           <caret line="806" column="15" lean-forward="false" selection-start-line="806" selection-start-column="15" selection-end-line="806" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/locale/th.locale.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2312">
-          <caret line="8" column="15" lean-forward="false" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
-          <folding>
-            <marker date="1486619024194" expanded="true" signature="7190:7221" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/locale/ja.locale.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="262" column="18" lean-forward="false" selection-start-line="262" selection-start-column="18" selection-end-line="262" selection-end-column="18" />
-          <folding>
-            <marker date="1486875525974" expanded="true" signature="6230:6261" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/locale/en.locale.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="31" lean-forward="true" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
-          <folding>
-            <marker date="1486623494470" expanded="true" signature="7498:7529" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/pages/about.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="8" lean-forward="true" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -889,6 +925,99 @@
             <element signature="n#calculate_wait_time_at#0;n#!!top" expanded="false" />
             <element signature="n#find_period#0;n#!!top" expanded="false" />
             <element signature="n#generate_query#0;n#!!top" expanded="false" />
+            <marker date="1486822382000" expanded="true" signature="531:621" ph="SELECT `name... stops" />
+            <marker date="1486822382000" expanded="true" signature="2464:2488" ph="SELECT `id` stops" />
+            <marker date="1486822382000" expanded="true" signature="6610:6726" ph="SELECT `dist... route_paths" />
+            <marker date="1486822382000" expanded="true" signature="7006:7160" ph="SELECT `id`,... buses" />
+            <marker date="1486822382000" expanded="true" signature="7409:7463" ph="SELECT `star... sessions" />
+            <marker date="1486822382000" expanded="true" signature="7599:7684" ph="SELECT `date... records" />
+            <marker date="1486822382000" expanded="true" signature="10024:10120" ph="SELECT `star... sessions" />
+            <marker date="1486822382000" expanded="true" signature="11867:11960" ph="SELECT `sess... records" />
+            <marker date="1486822382000" expanded="true" signature="13427:13510" ph="SELECT `date... days" />
+            <marker date="1486822382000" expanded="true" signature="14022:14170" ph="SELECT MIN(`... sessions" />
+            <marker date="1486822382000" expanded="true" signature="14844:14928" ph="SELECT COUNT... route_paths" />
+            <marker date="1486822382000" expanded="true" signature="16708:16767" ph="SELECT DISTI... route_paths" />
+            <marker date="1486822382000" expanded="true" signature="17579:17651" ph="SELECT `busn... sessions" />
+            <marker date="1486822382000" expanded="true" signature="18062:18155" ph="SELECT `stop... records" />
+            <marker date="1486822382000" expanded="true" signature="18919:18980" ph="SELECT `sess... buses" />
+            <marker date="1486822382000" expanded="true" signature="19260:19344" ph="SELECT `stop... records" />
+            <marker date="1486822382000" expanded="true" signature="20017:20143" ph="SELECT `stop... route_paths" />
+            <marker date="1486822382000" expanded="true" signature="22139:22190" ph="SELECT `name... routes" />
+            <marker date="1486822382000" expanded="true" signature="22408:22539" ph="SELECT `stop... route_paths" />
+            <marker date="1486822382000" expanded="true" signature="28580:28632" ph="SELECT `type... days" />
+            <marker date="1486822382000" expanded="true" signature="28991:29053" ph="INSERT INTO `days`... " />
+            <marker date="1486822382000" expanded="true" signature="29580:29625" ph="SELECT `name... day_types" />
+            <marker date="1486822382000" expanded="true" signature="29892:29937" ph="UPDATE `days... " />
+            <marker date="1486822382000" expanded="true" signature="30173:30220" ph="UPDATE `days... " />
+            <marker date="1486822382000" expanded="true" signature="33497:33583" ph="SELECT `date... days" />
+            <marker date="1486822382000" expanded="true" signature="34056:34179" ph="SELECT `esti... time_estimation" />
+            <marker date="1486822382000" expanded="true" signature="34359:34475" ph="SELECT `dist... route_paths" />
+            <marker date="1486822382000" expanded="true" signature="35246:35361" ph="SELECT `dist... route_paths" />
+            <marker date="1486822382000" expanded="true" signature="37362:37477" ph="SELECT `wait... time_estimation" />
+            <marker date="1486822382000" expanded="true" signature="38391:38485" ph="SELECT `stop... connections" />
+            <marker date="1486822382000" expanded="true" signature="39249:39372" ph="SELECT `dist... route_paths" />
+            <marker date="1486822382000" expanded="true" signature="39708:39811" ph="SELECT `stop... route_paths" />
+            <marker date="1486822382000" expanded="true" signature="41378:41486" ph="SELECT `id`,... routes" />
+            <marker date="1486822382000" expanded="true" signature="41683:41815" ph="SELECT `set_... route_available_switchers" />
+            <marker date="1486822382000" expanded="true" signature="45481:45539" ph="SELECT COUNT... languages" />
+            <marker date="1486822382000" expanded="true" signature="46330:46393" ph="SELECT `id` languages" />
+            <marker date="1486822382000" expanded="true" signature="47279:47320" ph="SELECT `name... stops" />
+            <marker date="1486822382000" expanded="true" signature="47636:47678" ph="SELECT `name... routes" />
+            <marker date="1486822382000" expanded="true" signature="48010:48093" ph="SELECT `text... texts" />
+            <marker date="1486822382000" expanded="true" signature="48602:48685" ph="SELECT `text... texts" />
+            <marker date="1486822382000" expanded="true" signature="53758:53821" ph="SELECT `id`,... stops" />
+            <marker date="1486822382000" expanded="true" signature="54197:54344" ph="SELECT `ref_... texts" />
+            <marker date="1486822382000" expanded="true" signature="55006:55065" ph="SELECT `stop... stops_tags" />
+            <marker date="1486822382000" expanded="true" signature="55211:55269" ph="SELECT `id`,... stops" />
+            <marker date="1486822382000" expanded="true" signature="55643:55746" ph="SELECT `ref_... texts" />
+            <marker date="1486822382000" expanded="true" signature="55904:55956" ph="SELECT `name... stops" />
+            <marker date="1486822382000" expanded="true" signature="57786:57924" ph="DELETE FROM " />
+            <marker date="1486822382000" expanded="true" signature="58210:58330" ph="SELECT `rout... route_available_switchers" />
+            <marker date="1486822382000" expanded="true" signature="58658:58774" ph="SELECT `date... days" />
+            <marker date="1486822382000" expanded="true" signature="59274:59335" ph="SELECT `id`,... sessions" />
+            <marker date="1486822382000" expanded="true" signature="59747:59865" ph="SELECT `id`,... records" />
+            <marker date="1486822382000" expanded="true" signature="62253:62530" ph="INSERT INTO `time_estimation`... " />
+            <marker date="1486822382000" expanded="true" signature="63350:63462" ph="SELECT `date... days" />
+            <marker date="1486822382000" expanded="true" signature="63827:63978" ph="SELECT COUNT... records" />
+            <marker date="1486822382000" expanded="true" signature="64211:64293" ph="SELECT COUNT... route_paths" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/locale/ja.locale.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="15" column="36" lean-forward="false" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
+          <folding>
+            <marker date="1486883003460" expanded="true" signature="6230:6261" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/locale/th.locale.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="15" lean-forward="false" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+          <folding>
+            <marker date="1486619024194" expanded="true" signature="7190:7221" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/pages/about.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/locale/en.locale.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4967">
+          <caret line="24" column="31" lean-forward="false" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+          <folding>
+            <marker date="1486623494470" expanded="true" signature="7498:7529" ph="..." />
           </folding>
         </state>
       </provider>

@@ -32,7 +32,7 @@ app.controller("localeController", function($scope)
 			"timetable": "到着時刻",
 			"info": "情報",
 			"firstRound": "予想始発時刻",
-			"lastRound": "予想終初時刻",
+			"lastRound": "予想終発時刻",
 			"waittingTime": "予想バス待ち時間",
 			"fromHere": "ここから検索",
 			"toHere": "ここまで検索",
