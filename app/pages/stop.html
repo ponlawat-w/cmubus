@@ -3,7 +3,7 @@
 	{{txt.pleaseWait}}
 </center></div>
 <div ng-show="!loading">
-	<center><h2>{{stopInfo.name}}<sup><button class="btn btn-default btn-sm" style="border-radius: 1em;" ng-click="openMap()"> <i class="fa fa-map-marker"></i></button></sup></h2></center>
+	<center><h2>{{stopInfo.name}} <sup><button class="btn btn-default btn-xs" ng-click="openMap()"> <i class="fa fa-map-marker"></i></button></sup></h2></center>
 	<div class="btn-group btn-group-justified" data-toggle="buttons" ng-show="busstop">
 		<label class="btn btn-primary btn-sm" ng-class="{'active':(view=='timetable')}">
 			<input type="radio" name="view" ng-model="view" value="timetable" checked="checked"><i class="fa fa-th"></i> {{txt.stop.timetable}}

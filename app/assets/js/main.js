@@ -539,6 +539,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 						$scope.from_keyword = response.data[0].name;
 					}, function(response)
 					{
+						$scope.loading = false;
 					});
 				});
 			}, function()
@@ -641,6 +642,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 						$scope.to_keyword = response.data[0].name;
 					}, function(response)
 					{
+                        $scope.loading = false;
 					});
 				});
 			}, function()
@@ -669,7 +671,8 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	};
 });
 
-app.controller("searchResultController", function($scope, $routeParams, $http, $location, $interval) {
+app.controller("searchResultController", function($scope, $routeParams, $http, $location, $interval)
+{
     $interval.cancel(appInterval);
 
     $scope.info = {
