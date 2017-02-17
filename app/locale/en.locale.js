@@ -326,11 +326,11 @@ app.filter("connectionInfo", function()
 			{
 				if(traveltime == 1)
 				{
-					txt += "　<i class='map-icon map-icon-walking'></i> walking " + traveltime + " minute";
+					txt += "　<i class='map-icon map-icon-walking'></i> walk " + traveltime + " minute";
 				}
 				else
 				{
-					txt += "　<i class='map-icon map-icon-walking'></i> walking " + traveltime + " minutes";
+					txt += "　<i class='map-icon map-icon-walking'></i> walk " + traveltime + " minutes";
 				}
 			}
 			else
@@ -340,23 +340,25 @@ app.filter("connectionInfo", function()
 			
 				txt += "　<span style='color:#" + node.routecolor + ";'><i class='fa fa-bus'></i><strong> " + node.routename + "</strong><br>";
 
+				txt += "　　";
+				
 				if(waittime > 0)
 				{
                     if (waittime == 1) {
-                        txt += "　　<small>wait " + waittime + " min</small> /";
+                        txt += "<small>wait " + waittime + " min</small> / ";
                     }
                     else {
-                        txt += "　　<small>wait " + waittime + " mins</small> /";
+                        txt += "<small>wait " + waittime + " mins</small> / ";
                     }
                 }
 				
 				if(traveltime == 1)
 				{
-					txt += " <small>bus " + traveltime + " min</small></span><br>";
+					txt += "<small>bus " + traveltime + " min</small></span><br>";
 				}
 				else
 				{
-					txt += " <small>bus " + traveltime + " mins</small></span><br>";
+					txt += "<small>bus " + traveltime + " mins</small></span><br>";
 				}
 			}
 			

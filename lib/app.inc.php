@@ -2220,6 +2220,32 @@ function estimate()
 }
 
 /**
+ * @param Day $day
+ * @return array
+ */
+function get_available_route_on($day)
+{
+    $function_results = array();
+
+    foreach(get_routes_at($day->Timestamp) as $routeData) if($routeData['available'] == 1)
+    {
+        array_push($function_results, $routeData);
+    }
+
+    $sql = "SELECT DISTINCT `date` FROM `route_available_switchers` WHERE `set_available_to` = 1 AND `date` BETWEEN ? AND ?";
+    $results = sql_query($sql, "ii", array($day->Timestamp + 1, $day->Timestamp + 86399));
+    while($timestampData = mysqli_fetch_array($results))
+    {
+        foreach(get_routes_at($timestampData['date']) as $routeData) if($routeData['available'] == 1 && !in_array($routeData, $function_results))
+        {
+            array_push($function_results, $routeData);
+        }
+    }
+
+    return $function_results;
+}
+
+/**
  * Estimate timetable on specified day
  * @param Day $day
  */
@@ -2262,7 +2288,7 @@ function estimate_on($day)
     {
         if($route['available'] == 1)
         {
-            $route_ids[$i] = $route['id'];
+            array_push($route_ids, $route['id']);
         }
 
         $i++;
@@ -2274,7 +2300,7 @@ function estimate_on($day)
     {
         if(!in_array($switcherdata['route'], $route_ids))
         {
-            $route_ids[$i] = $switcherdata['route'];
+            array_push($route_ids, $switcherdata['route']);
             $i++;
         }
     }
@@ -2336,6 +2362,8 @@ function estimate_on($day)
         array_push($data[$sessiondata['route']][$lower][$upper][$recorddata['stop']], $recorddata['datetime'] - $sessiondata['start_datetime']);
     }
 
+    $noEstimatedDataRouteIDs = array();
+
     $i = 0;
     $estimateds = array();
     foreach($data as $route => $route_)
@@ -2381,6 +2409,13 @@ function estimate_on($day)
                         );
                         $i++;
                     }
+                    else if($n == 0)
+                    {
+                        if(!in_array($route, $noEstimatedDataRouteIDs))
+                        {
+                            array_push($noEstimatedDataRouteIDs, $route);
+                        }
+                    }
                 }
             }
         }
@@ -2390,6 +2425,19 @@ function estimate_on($day)
     {
         $sql = "INSERT INTO `time_estimation` (`id`, `route`, `start_time`, `end_time`, `stop`, `estimated_time`, `waittime`) VALUES (0, {$estimated['route']}, {$estimated['start_time']}, {$estimated['end_time']}, {$estimated['stop']}, {$estimated['estimated_time']}, {$estimated['waittime']})";
         mysqli_query($connection, $sql);
+    }
+
+    foreach ($noEstimatedDataRouteIDs as $routeID)
+    {
+        $sql = "SELECT `stop`, `distance_from_start` FROM `route_paths` WHERE `route` = {$routeID} AND `stop` IS NOT NULL AND `distance_from_start` > 0 ORDER BY `distance_from_start` ASC";
+        $results = sql_query($sql);
+        while($stopData = mysqli_fetch_array($results))
+        {
+            $estimatedTime = $stopData['distance_from_start'] / 5.12;
+
+            $sql = "INSERT INTO `time_estimation` (`id`, `route`, `start_time`, `end_time`, `stop`, `estimated_time`, `waittime`) VALUES (0, $routeID, $starttime, $endtime, {$stopData['id']}, $estimatedTime, NULL)";
+            sql_query($sql);
+        }
     }
 
     echo "Time Estimation (" . date("Y-m-d", $day->Timestamp) . ") - OK\n";

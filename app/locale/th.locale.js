@@ -296,11 +296,14 @@ app.filter("connectionInfo", function()
 				waittime = Math.ceil(waittime / 60);
 			
 				txt += "　<span style='color:#" + node.routecolor + ";'><i class='fa fa-bus'></i><strong> " + node.routename + "</strong><br>";
+				
+				txt += "　　";
+				
 				if(waittime > 0)
 				{
-                    txt += "　　<small>รอรถ " + waittime + " นาที</small> /";
+                    txt += "<small>รอรถ " + waittime + " นาที</small> / ";
                 }
-				txt += " <small>เดินทาง " + traveltime + " นาที</small></span><br>";
+				txt += "<small>เดินทาง " + traveltime + " นาที</small></span><br>";
 			}
 			
 			return txt;

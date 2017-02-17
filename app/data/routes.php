@@ -6,9 +6,9 @@ session_write_close();
 
 $page_result = array();
 
-$routes = get_routes_at(mktime());
+$routes = get_available_route_on(new Day(mktime(0, 0, 0)));
 
-foreach($routes as $key => $route) if($route['available'] == 1)
+foreach($routes as $key => $route)
 {
 	$routes[$key]['name'] = get_text("route", $route['id'], get_language_id());
 	unset($routes[$key]['refid']);
