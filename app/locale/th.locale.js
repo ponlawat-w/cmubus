@@ -24,65 +24,69 @@ app.controller("localeController", function($scope)
 				title: "สถานที่แนะนำ"
 			}
 		},
+		routes: {
+			pleaseSelect: "กรุณาเลือกเส้นทาง"
+		},
 		route: {
 			viewMap: "ดูเส้นทางบนแผนที่"
 		},
 		stops: {
+			viewAll: "ดูจุดจอดรถทั้งหมด",
 			title: "กรุณาเลือกป้ายที่ต้องการดูเวลารถ"
 		},
 		stop: {
-			"route": "เส้นทาง",
-			"busno": "เลขรถ",
-			"eta": "เวลา",
-			"place": "ตำแหน่งรถ",
-			"distance": "ระยะทาง",
-			"timeleft": "เวลา",
-			"arrivalTimetable": "รถที่จะถึง",
-			"passedTimetable": "รถที่เพิ่งผ่าน",
-			"timetable": "ตารางเวลา",
-			"info": "ข้อมูล",
-			"firstRound": "เวลารอบแรกโดยประมาณ",
-			"lastRound": "เวลารอบสุดท้ายโดยประมาณ",
-			"waittingTime": "เวลารอรถโดยประมาณ",
-			"fromHere": "ค้นหาเส้นทางจากที่นี่",
-			"toHere": "ค้นหาเส้นทางถึงที่นี่",
-			"viewMap": "ดูแผนที่",
-			"connections": "สถานที่ใกล้เคียง"
+			route: "เส้นทาง",
+			busno: "เลขรถ",
+			eta: "เวลา",
+			place: "ตำแหน่งรถ",
+			distance: "ระยะทาง",
+			timeleft: "เวลา",
+			arrivalTimetable: "รถที่จะถึง",
+			passedTimetable: "รถที่เพิ่งผ่าน",
+			timetable: "ตารางเวลา",
+			info: "ข้อมูล",
+			firstRound: "เวลารอบแรกโดยประมาณ",
+			lastRound: "เวลารอบสุดท้ายโดยประมาณ",
+			waittingTime: "เวลารอรถโดยประมาณ",
+			fromHere: "ค้นหาเส้นทางจากที่นี่",
+			toHere: "ค้นหาเส้นทางถึงที่นี่",
+			viewMap: "ดูแผนที่",
+			connections: "สถานที่ใกล้เคียง"
 		},
 		pleaseWait: "กรุณารอสักครู่",
 		search: {
-			"title": "ค้นหาเส้นทาง",
-			"from": "จาก",
-			"to": "ถึง",
-			"detail": "ค้นหาสถานที่",
-			"submit_btn": "ค้นหา",
-			"searching": "กำลังค้นหา",
-			"searchingMore": "กำลังค้นหาเพิ่มเติม",
-			"edit": "แก้ไขการค้นหา",
+			title: "ค้นหาเส้นทาง",
+			from: "จาก",
+			to: "ถึง",
+			detail: "ค้นหาสถานที่",
+			submit_btn: "ค้นหา",
+			searching: "กำลังค้นหา",
+			searchingMore: "กำลังค้นหาเพิ่มเติม",
+			edit: "แก้ไขการค้นหา",
 			viewWalkRouteOnMap: "ดูเส้นทางเดินบนแผนที่",
 			viewRouteInfo: "ดูข้อมูลเส้นทาง",
 			viewTimetable: "ดูเวลารถ",
 			noTimetableData: "ไม่มีข้อมูลเวลารถ"
 		},
 		settings: {
-			"title": "ตั้งค่า",
-			"language": "ภาษา / Language",
-			"report": {
-				"title": "รายงานปัญหา",
-				"type": "กรุณาเลือกชนิดปัญหา",
-				"applicationUsage": "การใช้งานแอปฯ",
-				"incorrectData": "ข้อมูลผิดพลาด",
-				"mistranslation": "การแปลไม่ถูกต้อง",
-				"bus": "ปัญหาเกี่ยวกับรถโดยสาร",
-				"name": "ชื่อ",
-				"email": "อีเมล",
-				"message": "กรอกข้อความที่นี่…",
-				"submit": "ส่ง",
-				"error": {
-					"noInput": "กรุณากรอกข้อมูลให้ครบ"
+			title: "ตั้งค่า",
+			language: "ภาษา / Language",
+			report: {
+				title: "รายงานปัญหา",
+				type: "กรุณาเลือกชนิดปัญหา",
+				applicationUsage: "การใช้งานแอปฯ",
+				incorrectData: "ข้อมูลผิดพลาด",
+				mistranslation: "การแปลไม่ถูกต้อง",
+				bus: "ปัญหาเกี่ยวกับรถโดยสาร",
+				name: "ชื่อ",
+				email: "อีเมล",
+				message: "กรอกข้อความที่นี่…",
+				submit: "ส่ง",
+				error: {
+					noInput: "กรุณากรอกข้อมูลให้ครบ"
 				},
-				"success": "ขอบคุณสำหรับข้อมูล ข้อความถูกส่งไปยังผู้ดูแลระบบแล้ว",
-				"optional": "ไม่บังคับ"
+				success: "ขอบคุณสำหรับข้อมูล ข้อความถูกส่งไปยังผู้ดูแลระบบแล้ว",
+				optional: "ไม่บังคับ"
 			}
 		},
         menu: {

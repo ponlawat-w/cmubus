@@ -24,10 +24,14 @@ app.controller("localeController", function($scope)
                 title: "おすすめスポット"
             }
 		},
+        routes: {
+            pleaseSelect: "ルートを選択してください"
+        },
         route: {
             viewMap: "ルートを地図で見る"
         },
         stops: {
+            viewAll: "バス停一覧",
             title: "バス停の予想時刻表を見る"
         },
 		stop: {

@@ -3,7 +3,7 @@
 	{{txt.pleaseWait}}
 </center></p></div>
 <div ng-show="!loading">
-	<h3>{{txt.menu.viewRoutes}}</h3>
+	<h3>{{txt.routes.pleaseSelect}}</h3>
 	
 	<div class="list-group">
 		<a class="list-group-item" href="javascript:void(0);" ng-repeat="route in routes" ng-click="goRoute(route.id)" style="color:#{{route.color}};">
@@ -11,4 +11,8 @@
 			<div ng-repeat="stop in route.sampled_stops"><h5 style="margin: 0px; padding: 0px;"><small>　{{stop.name}}</small></h5></div>
 		</a>
 	</div>
+
+	<p>
+		<a href="/stops" class="btn btn-default" style="width: 100%;">{{txt.stops.viewAll}}</a>
+	</p>
 </div>

@@ -24,10 +24,14 @@ app.controller("localeController", function($scope)
                 title: "Recommended Places"
             }
 		},
+        routes: {
+            pleaseSelect: "Please select route"
+        },
         route: {
             viewMap: "View this route on map"
         },
         stops: {
+            viewAll: "View bus stops list",
             title: "Select a bus stop to see timetable"
         },
 		stop: {

@@ -1326,7 +1326,9 @@ function get_latest_day_on_type($type)
  */
 function estimated_time($route, $stop, $timestamp, $recursivelyCalled = false)
 {
-    $sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`)";
+    $now = mktime();
+
+    $sql = "SELECT `estimated_time` FROM `time_estimation` WHERE `route` = ? AND `stop` = ? AND (? BETWEEN `start_time` AND `end_time`) ORDER BY ABS(`start_time` - $now) ASC, ABS(`end_time` - $now) ASC";
     $result = sql_query($sql, "iii", array($route, $stop, $timestamp));
 
     if(mysqli_num_rows($result) == 0)
