@@ -1,0 +1,3 @@
+variables = {
+    gaUsing: false
+}

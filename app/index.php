@@ -1,6 +1,11 @@
-<?php session_start(); ob_start(); ?>
+<?php session_start(); ob_start();
+    include_once("../mysql_connection.inc.php");
+    include_once("../lib/app.inc.php");
+    get_language_id();
+    session_write_close();
+?>
 <!doctype html>
-<html ng-app="cmubus" ng-controller="localeController">
+<html ng-app="cmubus" ng-controller="localeController" lang="<?php echo get_language_id(); ?>">
 	<head>
 		<meta charset="utf-8">
 
@@ -10,27 +15,25 @@
 		<meta name="application-name" content="CMUBUS">
 		<meta name="description" content="Chiang Mai University Bus Information System | ระบบให้ข้อมูลรถ ขส.มช.">
 		<meta name="keywords" content="CMU,มช,ม.ช.,รถม่วง,ขสมช,ขส.มช.,Chiang Mai University">
-		<?php
-		include_once("../mysql_connection.inc.php");
-		include_once("../lib/app.inc.php");
-		get_language_id();
-		session_write_close();
-		?>
 		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/map-icons.min.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
 		<title>CMU BUS</title>
+        <script src="vars.js"></script>
         <script>
             var language = "<?php echo get_language_id(); ?>";
         </script>
 		<script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-		  ga('create', 'UA-91670758-1', 'auto');
-		  ga('send', 'pageview');
+            if(variables.gaUsing)
+            {
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+              ga('create', 'UA-91670758-1', 'auto');
+              ga('send', 'pageview');
+            }
 		</script>
         <script src="assets/js/angular.min.js"></script>
         <script src="assets/js/angular-route.min.js"></script>
