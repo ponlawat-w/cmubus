@@ -274,11 +274,18 @@ class Stop
 		if($out)
 		{
 			$info = $this->DailyTimeTable($day);
+
+			$nextDay = $day;
+
+			if($Hr >= 21)
+            {
+                $nextDay = $tomorrow;
+            }
 			
 			foreach($info as $key => $value)
 			{
-				$info[$key]['estimated_first'] = shift_day($info[$key]['estimated_first'], $tomorrow);
-				$info[$key]['estimated_last'] = shift_day($info[$key]['estimated_last'], $tomorrow);
+				$info[$key]['estimated_first'] = shift_day($info[$key]['estimated_first'], $nextDay);
+				$info[$key]['estimated_last'] = shift_day($info[$key]['estimated_last'], $nextDay);
 			}
 		}
 		
