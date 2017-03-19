@@ -22,7 +22,8 @@ app.controller("localeController", function($scope)
 			},
             recommendedPlaces: {
                 title: "Recommended Places"
-            }
+            },
+            useThisLanguage: "Use English"
 		},
         routes: {
             pleaseSelect: "Please select route"
@@ -142,7 +143,12 @@ app.controller("localeController", function($scope)
                 "The application \"CMU BUS\" is a part of project \"University Bus Information System\" (6/2559) which is in 261491 Project Survey and 261492 Project course in Department of Computer Engineering, Faculty of Engineering, Chiang Mai University in academic year 2559.",
                 "All information about time in this application (estimated arrival time, estimated waiting time) are calculated automatically by machine using recorded data in previous days. The mentioned data do not come from the university bus organization (ขส.มช.) directly. Therefore, the developer disclaims any damage that is caused by any incorrect data.",
 				"This application requires user geolocation in order to calculate the near bus stops. However, user's latitude and longitude will not be collected. But user's search data will be collected for being reference of bus usage."
-            ]
+            ],
+            index: {
+                title: "CMUBUS.com Project",
+                message: "This project is developed as a part of study in 261492 course, in Department of Computer Engineering, Faculty of Engineering and in order to be reference for university transportation system improvement.",
+                readMore: "Read more"
+            }
         }
 	};
 });

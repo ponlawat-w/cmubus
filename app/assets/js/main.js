@@ -170,6 +170,10 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
                 $scope.closeSuggestion();
             }, 60000);
         }
+        else if(getCookieValue("showAppInfo") != "yes")
+		{
+			$scope.showAppInfo();
+		}
     }, 500);
 
     $scope.setToThai = function()
@@ -205,8 +209,20 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
         $timeout(function()
         {
             $scope.bottomNavbar = "";
+            $scope.showAppInfo();
         }, 1000);
 	};
+
+    $scope.showAppInfo = function()
+	{
+		if(getCookieValue("showAppInfo") != "yes")
+		{
+			$scope.bottomNavbar = "appInfo";
+			$scope.showBottomNavbar = true;
+
+			setCookie("showAppInfo", "yes", 5184000000);
+		}
+	}
 });
 
 app.controller("homeController", function($scope, $http, $location, $anchorScroll, $interval)

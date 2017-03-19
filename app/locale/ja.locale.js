@@ -22,7 +22,8 @@ app.controller("localeController", function($scope)
             },
             recommendedPlaces: {
                 title: "おすすめスポット"
-            }
+            },
+            useThisLanguage: "日本語で利用します"
 		},
         routes: {
             pleaseSelect: "ルートを選択してください"
@@ -143,7 +144,12 @@ app.controller("localeController", function($scope)
                 "当アプリケーション、「ＣＭＵ　ＢＵＳ」は、2559年度のチェンマイ大学工学部計算機工学科の261491 Project Surveyと261492 Projectの「University Bus Information System」（6/2559）というプロジェクトの一部です。",
                 "当アプリケーションの時刻情報（予想到着時刻やバス待ち時間など）はチェンマイ大学のバス運行会社（ขส.มช.）からではなく、前日保存した時刻のデータを利用して機械で自動的に計算された情報です。そのため、当アプリケーションの開発者は予想時刻の間違いから生じた出来事について一切の責任を負いません。",
                 "当アプリケーションでは、周辺バス停を探す為、ユーザーの位置情報が要求されていますが、位置情報が保存される事はありません。しかし、バスの利用の参考の為にユーザーの検索情報を保存させていただきます。"
-            ]
+            ],
+            index: {
+                title: "CMUBUS.comプロジェクト",
+                message: "This project is developed as a part of study in 261492 course, in Department of Computer Engineering, Faculty of Engineering and in order to be reference for university transportation system improvement.",
+                readMore: "続きを読む"
+            }
         }
 	};
 });

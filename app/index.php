@@ -61,15 +61,27 @@
 		</div>
         <nav class="navbar navbar-fixed-bottom slide-toggle" ng-show="showBottomNavbar">
             <div class="container-fluid col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-xl-2 col-xl-offset-5">
-                <a href="javascript:void(0);" class="close-button" ng-click="closeSuggestion()"><i class="fa fa-times"></i></a>
+                <a href="javascript:void(0);" class="close-button" ng-click="closeSuggestion();"><i class="fa fa-times"></i></a>
                 <div id="navbar-suggest-thai" ng-show="bottomNavbar=='suggestThai'">
                     <p>
                         <h4>ใช้งานภาษาไทยหรือไม่</h4>
                         <div ng-show="!settingToThai">
                             <button class="btn btn-default" ng-click="setToThai();">คลิกที่นี่เพื่อเปลี่ยนเป็นภาษาไทย</button>
+                            <button class="btn btn-default" ng-click="closeSuggestion();">{{txt.home.useThisLanguage}}</button>
                         </div>
                         <div ng-show="settingToThai">
                             กรุณารอสักครู่…
+                        </div>
+                    </p>
+                </div>
+                <div id="navbar-suggest-thai" ng-show="bottomNavbar=='appInfo'">
+                    <p>
+                        <h4>{{txt.about.index.title}}</h4>
+                        <p>
+                            {{txt.about.index.message}}
+                        </p>
+                        <div>
+                            <a href="/about" class="btn btn-default" ng-click="closeSuggestion();">{{txt.about.index.readMore}}</a>
                         </div>
                     </p>
                 </div>
@@ -80,11 +92,11 @@
                             {{txt.home.evaluationSurvey.message}}
                         </p>
                         <p style="padding-bottom: 0.7em;">
-                            <a href="/evaluate" ng-click="closeSuggestion()" class="btn btn-lg btn-success">{{txt.home.evaluationSurvey.evaluationButton}}</a>　
-                            <a href="javascript:void(0)" class="btn btn-default" ng-click="closeSuggestion()"">{{txt.home.evaluationSurvey.laterButton}}</a>
+                            <a href="/evaluate" ng-click="closeSuggestion();" class="btn btn-lg btn-success">{{txt.home.evaluationSurvey.evaluationButton}}</a>　
+                            <a href="javascript:void(0)" class="btn btn-default" ng-click="closeSuggestion();"">{{txt.home.evaluationSurvey.laterButton}}</a>
                         </p>
                         <p>
-                            <a href="javascript:void(0)" class="btn btn-xs btn-secondary" ng-click="neverAskMeSurvey()">{{txt.home.evaluationSurvey.neverButton}}</a>
+                            <a href="javascript:void(0)" class="btn btn-xs btn-secondary" ng-click="neverAskMeSurvey();">{{txt.home.evaluationSurvey.neverButton}}</a>
                         </p>
                     </p>
                 </div>
