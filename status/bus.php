@@ -30,6 +30,15 @@
 			}
 		</style>
 		<script src="jquery-3.1.0.min.js"></script>
+        <script>
+            $(document).ready(function()
+            {
+                $("#date").change(function()
+                {
+                    window.location = $(this).val();
+                });
+            });
+        </script>
 	</head>
 	<body>
 		<a href="explorer.php">≪ กลับ</a>
@@ -48,6 +57,8 @@
 
 			$mintime = mktime(0, 0, 0, $month, $date, $year);
 
+            echo "<select id='date'>";
+            echo "<option>เลือกวันที่</option>";
 			for($i = mktime(0, 0, 0); $i >= $mintime; $i -= 86400)
 			{
 				$start = $i;
@@ -56,9 +67,20 @@
 				$sql = "SELECT COUNT(*) AS `session_num` FROM `sessions` WHERE `busno` = $id AND `start_datetime` BETWEEN $start AND $stop";
 				$result = mysqli_query($connection, $sql);
 				$data = mysqli_fetch_array($result);
-				
-				echo "<a href='bus.php?id=$id&dt=$i'>" . date("Y-m-d", $i) . " ({$data['session_num']})</a><br>";
+
+                if($data['session_num'] == 0)
+                {
+                    continue;
+                }
+
+                echo "<option value='bus.php?id=$id&dt=$i'";
+                if(isset($_GET['dt']) && $_GET['dt'] == $i)
+                {
+                    echo " selected";
+                }
+                echo ">" . thai_date("฿วทวท ฿ด ฿ปป", $i) . " ({$data['session_num']})</option><br>";
 			}
+            echo "</select>";
 			
 			if(isset($_GET['dt']))
 			{
@@ -66,28 +88,36 @@
 				$dt = $_GET['dt'];
 				$dt_ = $dt + 86400;
 				$lasth = null;
-				
-				echo "<h4>" . date("Y-m-d", $dt) . "</h4>";
+
+                echo "<h4>" . thai_date("วัน ฿วว ที่ ฿วท ฿ดด พ.ศ.฿ปปปป", $dt) . "</h4>";
 				
 				echo "<div style='font-size: 0.8em'>";
+                $hrCount = -1;
 				$sql = "SELECT `id`, `start_datetime`, `route` FROM `sessions` WHERE `busno` = $id AND `start_datetime` BETWEEN $dt AND $dt_";
 				$results = mysqli_query($connection, $sql);
 				while($sessiondata = mysqli_fetch_array($results))
 				{
 					$thish = date("G", $sessiondata['start_datetime']);
+                    $hrCount++;
 					
 					if($lasth == null)
 					{
 						$lasth = $thish - 1;
 					}
-					
-					if($lasth != $thish)
-					{
-						$lasth = $thish;
-						echo "<div style='font-size:1.5em; font-weight:bold; margin-top: 0.5em;'>$lasth</div>　";
-					}
+
+                    if($lasth != $thish)
+                    {
+                        $lasth = $thish;
+                        if($hrCount > 0)
+                        {
+                            echo "<br><small>　　(Sum: $hrCount)</small>";
+                            $hrCount = 0;
+                        }
+                        echo "<div style='font-size:1.5em; font-weight:bold; margin-top: 0.5em;'>$lasth</div>　";
+                    }
 					echo " <a href='session.php?id={$sessiondata['id']}'>" . date("i", $sessiondata['start_datetime']) . "<sup style='font-size:0.6em;'>#{$sessiondata['route']}</sup></a>";
 				}
+                echo "<br><small>　　(Sum: " . ($hrCount + 1) . ")</small>";
 				echo "</div>";
 			}
 			

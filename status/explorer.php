@@ -30,13 +30,14 @@
 		</style>
 	</head>
 	<body>
+        <a href="index.php">≪ หน้าแรก</a>
 		<h4>ALL ROUTES</h4>
 		<?php
-			$sql = "SELECT `id` FROM `routes` ORDER BY `id` ASC";
+			$sql = "SELECT `id`, `detail` FROM `routes` ORDER BY `id` ASC";
 			$results = mysqli_query($connection, $sql);
 			while($data = mysqli_fetch_array($results))
 			{
-				echo "　<a href='route.php?id={$data['id']}'>ROUTE#{$data['id']}</a><br>";
+				echo "　<a href='route.php?id={$data['id']}'>" . get_text("route", $data['id'], "th") . " ({$data['detail']})</a><br>";
 			}
 		?>
 		<hr>

@@ -38,7 +38,7 @@
 			$sql = "SELECT `route`, `busno`, `start_datetime` FROM `sessions` WHERE `id` = $id";
 			$result = mysqli_query($connection, $sql);
 			$sessiondata = mysqli_fetch_array($result);
-			echo "<h3><a href='route.php?id={$sessiondata['route']}'>ROUTE#{$sessiondata['route']}</a> <a href='bus.php?id={$sessiondata['busno']}'>BUSNO#{$sessiondata['busno']}</a><br>" . date("Y-m-d", $sessiondata['start_datetime']) . "</h3>";
+			echo "<h3><a href='route.php?id={$sessiondata['route']}'>" . get_text("route", $sessiondata['route'], "th") . "</a> <a href='bus.php?id={$sessiondata['busno']}'>BUSNO#{$sessiondata['busno']}</a><br>" . date("Y-m-d", $sessiondata['start_datetime']) . "</h3>";
 
 			$sql = "SELECT `session`, `last_distance`, `last_update` FROM `buses` WHERE `id` = {$sessiondata['busno']}";
 			$result = mysqli_query($connection, $sql);

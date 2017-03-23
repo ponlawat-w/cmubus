@@ -22,98 +22,100 @@
                     {{txt.evaluationSurvey.roles.other}}
                 </label>
             </div>
-            <p>
-                <div class="input-group">
-                    <span class="input-group-addon">{{txt.evaluationSurvey.name}}</span>
-                    <input name="name" type="text" class="form-control" ng-model="surveyFormData.name" placeholder="{{txt.settings.report.optional}}">
-                </div>
-            </p>
-            <p>
-                <div class="input-group">
-                    <span class="input-group-addon">{{txt.evaluationSurvey.email}}</span>
-                    <input name="email" type="email" class="form-control" ng-model="surveyFormData.email" placeholder="{{txt.settings.report.optional}}">
-                </div>
-            </p>
-
-
-            <div style="text-align: center">
-                <hr>
-
+            <div ng-show="surveyFormData.role != ''">
                 <p>
-                    <p>{{txt.evaluationSurvey.usefulness}}</p>
-                    <div style="font-size: 1.5em">
-                        <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.usefulness = i">
-                            <i class="fa fa-star" ng-show="surveyFormData.usefulness >= i"></i>
-                            <i class="fa fa-star-o" ng-show="surveyFormData.usefulness < i"></i>
-                        </span>
+                    <div class="input-group">
+                        <span class="input-group-addon">{{txt.evaluationSurvey.name}}</span>
+                        <input name="name" type="text" class="form-control" ng-model="surveyFormData.name" placeholder="{{txt.settings.report.optional}}">
                     </div>
-                    <div>{{txt.evaluationSurvey.levels[surveyFormData.usefulness]}}</div>
+                </p>
+                <p>
+                    <div class="input-group">
+                        <span class="input-group-addon">{{txt.evaluationSurvey.email}}</span>
+                        <input name="email" type="email" class="form-control" ng-model="surveyFormData.email" placeholder="{{txt.settings.report.optional}}">
+                    </div>
                 </p>
 
-                <hr>
 
-                <p>
-                <p>{{txt.evaluationSurvey.easyToUse}}</p>
-                <div style="font-size: 1.5em">
-                        <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.easyToUse = i">
-                            <i class="fa fa-star" ng-show="surveyFormData.easyToUse >= i"></i>
-                            <i class="fa fa-star-o" ng-show="surveyFormData.easyToUse < i"></i>
-                        </span>
-                </div>
-                <div>{{txt.evaluationSurvey.levels[surveyFormData.easyToUse]}}</div>
-                </p>
+                <div style="text-align: center">
+                    <hr>
 
-                <hr>
-
-                <p>
-                    <p>{{txt.evaluationSurvey.accuracy}}</p>
-                    <div style="font-size: 1.5em">
-                        <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.accuracy = i">
-                                <i class="fa fa-star" ng-show="surveyFormData.accuracy >= i"></i>
-                                <i class="fa fa-star-o" ng-show="surveyFormData.accuracy < i"></i>
-                         </span>
-                    </div>
-                    <div>{{txt.evaluationSurvey.levels[surveyFormData.accuracy]}}</div>
-                </p>
-
-                <hr>
-
-                <p>
-                    <p>{{txt.evaluationSurvey.performance}}</p>
-                    <div style="font-size: 1.5em">
-                        <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.performance = i">
-                            <i class="fa fa-star" ng-show="surveyFormData.performance >= i"></i>
-                            <i class="fa fa-star-o" ng-show="surveyFormData.performance < i"></i>
-                        </span>
-                    </div>
-                    <div>{{txt.evaluationSurvey.levels[surveyFormData.performance]}}</div>
-                </p>
-
-                <hr>
-
-                <p>
-                <h3><strong>{{txt.evaluationSurvey.satisfaction}}</strong></h3>
-                    <div style="font-size: 1.8em">
-                        <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.satisfaction = i">
-                            <i class="fa fa-star" ng-show="surveyFormData.satisfaction >= i"></i>
-                            <i class="fa fa-star-o" ng-show="surveyFormData.satisfaction < i"></i>
-                        </span>
-                    </div>
-                    <div>{{txt.evaluationSurvey.levels[surveyFormData.satisfaction]}}</div>
+                    <p>
+                        <p>{{txt.evaluationSurvey.usefulness}}</p>
+                        <div style="font-size: 1.5em">
+                            <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.usefulness = i">
+                                <i class="fa fa-star" ng-show="surveyFormData.usefulness >= i"></i>
+                                <i class="fa fa-star-o" ng-show="surveyFormData.usefulness < i"></i>
+                            </span>
+                        </div>
+                        <div>{{txt.evaluationSurvey.levels[surveyFormData.usefulness]}}</div>
+                    </p>
 
                     <hr>
+
+                    <p>
+                    <p>{{txt.evaluationSurvey.easyToUse}}</p>
+                    <div style="font-size: 1.5em">
+                            <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.easyToUse = i">
+                                <i class="fa fa-star" ng-show="surveyFormData.easyToUse >= i"></i>
+                                <i class="fa fa-star-o" ng-show="surveyFormData.easyToUse < i"></i>
+                            </span>
+                    </div>
+                    <div>{{txt.evaluationSurvey.levels[surveyFormData.easyToUse]}}</div>
+                    </p>
+
+                    <hr>
+
+                    <p>
+                        <p>{{txt.evaluationSurvey.accuracy}}</p>
+                        <div style="font-size: 1.5em">
+                            <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.accuracy = i">
+                                    <i class="fa fa-star" ng-show="surveyFormData.accuracy >= i"></i>
+                                    <i class="fa fa-star-o" ng-show="surveyFormData.accuracy < i"></i>
+                             </span>
+                        </div>
+                        <div>{{txt.evaluationSurvey.levels[surveyFormData.accuracy]}}</div>
+                    </p>
+
+                    <hr>
+
+                    <p>
+                        <p>{{txt.evaluationSurvey.performance}}</p>
+                        <div style="font-size: 1.5em">
+                            <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.performance = i">
+                                <i class="fa fa-star" ng-show="surveyFormData.performance >= i"></i>
+                                <i class="fa fa-star-o" ng-show="surveyFormData.performance < i"></i>
+                            </span>
+                        </div>
+                        <div>{{txt.evaluationSurvey.levels[surveyFormData.performance]}}</div>
+                    </p>
+
+                    <hr>
+
+                    <p>
+                    <h3><strong>{{txt.evaluationSurvey.satisfaction}}</strong></h3>
+                        <div style="font-size: 1.8em">
+                            <span style="color: #9276d2; cursor: pointer;" ng-repeat="i in [1, 2, 3, 4, 5]" ng-click="surveyFormData.satisfaction = i">
+                                <i class="fa fa-star" ng-show="surveyFormData.satisfaction >= i"></i>
+                                <i class="fa fa-star-o" ng-show="surveyFormData.satisfaction < i"></i>
+                            </span>
+                        </div>
+                        <div>{{txt.evaluationSurvey.levels[surveyFormData.satisfaction]}}</div>
+
+                        <hr>
+                    </p>
+                </div>
+
+                {{txt.evaluationSurvey.comment}}
+                <p>
+                    <textarea name="comment" class="form-control" ng-model="surveyFormData.comment" placeholder="{{txt.evaluationSurvey.typeHere}}" style="height: 10em; font-size: 16px;"></textarea>
+                </p>
+                <p>
+                    <button class="btn btn-primary" style="width:100%;" ng-disabled="surveyFormData.usefulness < 1 || surveyFormData.accuracy < 1 || surveyFormData.performance < 1 || surveyFormData.satisfaction < 1 || surveyFormData.role == '' || surveyForm.email.$invalid" ng-click="sendData()">
+                        {{txt.evaluationSurvey.submit}}
+                    </button>
                 </p>
             </div>
-
-            {{txt.evaluationSurvey.comment}}
-            <p>
-                <textarea name="comment" class="form-control" ng-model="surveyFormData.comment" placeholder="{{txt.evaluationSurvey.typeHere}}" style="height: 10em; font-size: 16px;"></textarea>
-            </p>
-            <p>
-                <button class="btn btn-primary" style="width:100%;" ng-disabled="surveyFormData.usefulness < 1 || surveyFormData.accuracy < 1 || surveyFormData.performance < 1 || surveyFormData.satisfaction < 1 || surveyFormData.role == '' || surveyForm.email.$invalid" ng-click="sendData()">
-                    {{txt.evaluationSurvey.submit}}
-                </button>
-            </p>
         </form>
         </p>
     </div>

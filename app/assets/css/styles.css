@@ -27,6 +27,18 @@ div.bordered
 		{
 			color: #ffffff;
 		}
+			.navbar-fixed-top div.pull-left .navbar-brand
+			{
+				font-weight: bold;
+			}
+			.navbar-fixed-top div.pull-left a:hover
+			{
+				text-decoration: none;
+			}
+			.navbar-fixed-top ul.pull-right li a:hover
+			{
+				color: #9276d2;
+			}
 	.navbar-fixed-bottom
 	{
 		background-color: #ededed;
