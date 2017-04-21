@@ -11,7 +11,7 @@ $routes = get_available_route_on(new Day(mktime(0, 0, 0)));
 foreach($routes as $key => $route)
 {
 	$routes[$key]['name'] = get_text("route", $route['id'], get_language_id());
-	unset($routes[$key]['refid']);
+//	unset($routes[$key]['refid']);
 	unset($routes[$key]['detail']);
 	unset($routes[$key]['available']);
 	
@@ -57,6 +57,9 @@ foreach($routes as $key => $route)
 
 	array_push($page_result, $routes[$key]);
 }
+
+$page_result = sort_by($page_result, "name", SORT_ASC);
+$page_result = sort_by($page_result, "refid", SORT_ASC);
 
 echo json_encode($page_result);
 

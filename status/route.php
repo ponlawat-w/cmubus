@@ -117,7 +117,7 @@
 					}
 					echo " <a href='session.php?id={$sessiondata['id']}'>" . date("i", $sessiondata['start_datetime']) . "<sup style='font-size:0.6em;'>#{$sessiondata['busno']}</sup></a>";
 				}
-                echo "<br><small>　　(Sum: " . ($hrCount + 1) . ")</small>";
+                echo "<br><small?　　(Sum: " . ($hrCount + 1) . ")</small>";
 				echo "</div>";
 			}
 		?>

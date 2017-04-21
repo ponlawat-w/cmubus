@@ -100,27 +100,13 @@
                   </li>
 
                   <li class="sub-menu">
-                      <a href="javascript:;" <?php echo (isset($_GET['page']) && in_array($_GET['page'], array("sumroutes", "sumstops", "buses", "searchlog", "survey")))?'class="active"':''; ?> >
-                          <i class="fa fa-bar-chart"></i>
-                          <span>ดูข้อมูลสถิติ</span>
-                      </a>
-                      <ul class="sub">
-                          <li <?php echo (isset($_GET['page']) && $_GET['page'] == "sumroutes")?'class="active"':''; ?>><a href="admin.php?page=sumroutes">ข้อมูลเส้นทาง</a></li>
-                          <li <?php echo (isset($_GET['page']) && $_GET['page'] == "sumstops")?'class="active"':''; ?>><a href="admin.php?page=sumstops">ข้อมูลป้ายหยุดรถและสถานที่</a></li>
-                          <li <?php echo (isset($_GET['page']) && $_GET['page'] == "buses")?'class="active"':''; ?>><a href="admin.php?page=buses">ข้อมูลรถประจำทาง</a></li>
-                          <li <?php echo (isset($_GET['page']) && $_GET['page'] == "searchlog")?'class="active"':''; ?>><a href="admin.php?page=searchlog">สถิติการค้นหาของผู้ใช้</a></li>
-                          <li <?php echo (isset($_GET['page']) && $_GET['page'] == "survey")?'class="active"':''; ?>><a href="admin.php?page=survey">ผลลัพธ์แบบประเมิน</a></li>
-					  </ul>
-                  </li>
-
-                  <li class="sub-menu">
                       <a href="javascript:;" <?php echo (isset($_GET['page']) && in_array($_GET['page'], array("languages", "accounts", "language")))?'class="active"':''; ?> >
                           <i class="fa fa-gear"></i>
                           <span>ตั้งค่าระบบ</span>
                       </a>
                       <ul class="sub">
                           <li <?php echo (isset($_GET['page']) && $_GET['page'] == "languages")?'class="active"':''; ?>><a href="admin.php?page=languages">ภาษาและข้อความ</a></li>
-                          <li <?php echo (isset($_GET['page']) && $_GET['page'] == "accounts")?'class="active"':''; ?>><a href="admin.php?page=accounts">จัดการบัญชีผู้ดูแลระบบ</a></li>
+                          <!--<li <?php echo (isset($_GET['page']) && $_GET['page'] == "accounts")?'class="active"':''; ?>><a href="admin.php?page=accounts">จัดการบัญชีผู้ดูแลระบบ</a></li>-->
                       </ul>
                   </li>
               </ul>
