@@ -99,6 +99,14 @@
                       </ul>
                   </li>
 
+
+                  <li class="sub-menu">
+                      <a href="../stats">
+                          <i class="fa fa-bar-chart"></i>
+                          <span>ข้อมูลสถิติ</span>
+                      </a>
+                  </li>
+
                   <li class="sub-menu">
                       <a href="javascript:;" <?php echo (isset($_GET['page']) && in_array($_GET['page'], array("languages", "accounts", "language")))?'class="active"':''; ?> >
                           <i class="fa fa-gear"></i>

@@ -1099,6 +1099,11 @@ class Path
  */
 class Day
 {
+    /**
+     * @var int $Timestamp
+     * @var int $Type
+     * @var string $Detail
+     */
     private $Timestamp;
     private $Type;
     private $Detail;
@@ -1153,6 +1158,30 @@ class Day
             $this->Type = $dayData['type'];
             $this->Detail = $dayData['detail'];
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function GetTimestamp()
+    {
+        return $this->Timestamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function GetType()
+    {
+        return $this->Type;
+    }
+
+    /**
+     * @return string
+     */
+    public function GetDetail()
+    {
+        return $this->Detail;
     }
 
     /**
