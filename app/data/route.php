@@ -10,7 +10,7 @@ $id = (int)$_GET['id'];
 
 $routes = get_routes_at(mktime());
 
-$routedata = array();
+$routedata = false;
 
 foreach($routes as $key => $route)
 {
@@ -37,6 +37,12 @@ foreach($routes as $key => $route)
 	}
 }
 
+if(!$routedata)
+{
+    http_response_code(404);
+    exit;
+}
+
 $path = array();
 
 $sql = "SELECT `stop` FROM `route_paths` WHERE `route` = ? AND `stop` IS NOT NULL ORDER BY `distance_from_start` ASC";
@@ -55,4 +61,4 @@ $page_result['path'] = $path;
 
 echo json_encode($page_result);
 
-mysqli_close($connection); ob_end_flush(); ?>
+mysqli_close($connection); ob_end_flush();

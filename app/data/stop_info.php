@@ -9,6 +9,13 @@ $id = (int)$_GET['id'];
 $page_result = array();
 
 $stop = new Stop($id);
+$stop->GetInfo();
+
+if(!$stop->Name)
+{
+    http_response_code(404);
+    exit;
+}
 
 $page_result = array("routes" => $stop->DailyTimetable(), "connections" => $stop->Connections(false, false, true));
 
@@ -26,4 +33,3 @@ echo json_encode($page_result);
 	
 mysqli_close($connection);
 ob_end_flush();
-?>

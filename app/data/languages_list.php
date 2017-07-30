@@ -16,4 +16,4 @@ while($languagedata = mysqli_fetch_array($results))
 echo json_encode($languages);
 
 mysqli_close($connection);
-ob_end_flush(); ?>
+ob_end_flush();

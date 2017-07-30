@@ -10,10 +10,17 @@ $page_result = array();
 
 $session = new Session($id);
 
+if(!$session->BusNo)
+{
+    http_response_code(404);
+    exit;
+}
+
 $page_result = $session->GetStatus();
+
+$page_result['current_time'] = date('H:i');
 
 echo json_encode($page_result);
 	
 mysqli_close($connection);
 ob_end_flush();
-?>

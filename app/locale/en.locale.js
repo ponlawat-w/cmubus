@@ -8,7 +8,7 @@ app.controller("localeController", function($scope)
 			searchingNear: "Searching near bus stops",
             searchingNearError: {
                 title: "Unable to find near bus stops",
-                message: "Please check your location settings. The device might currently not able to obtain your certain position, or you are now too far from Chiang Mai University."
+                message: "Please check your location settings. The device might currently not be able to obtain your certain position, or you are now too far from Chiang Mai University."
             },
 			nearStops: "Near bus stops",
 			searchDetail: "Search bus stops, places in CMU",
@@ -47,7 +47,12 @@ app.controller("localeController", function($scope)
 			distance: "Distance",
 			timeleft: "Time left",
 			arrivalTimetable: "Estimated Arrival Time",
-			passedTimetable: "Departed",
+			passedTimetable: "Past Timetable",
+            type: {
+                passed: "",
+                departed: "Departed",
+                arrived: "Arrived"
+            },
 			timetable: "TIMETABLE",
 			info: "INFORMATION",
 			firstRound: "Estimated first bus",
@@ -58,6 +63,9 @@ app.controller("localeController", function($scope)
 			viewMap: "View map",
 			connections: "Around here"
 		},
+        session: {
+            finished: "Finished"
+        },
 		pleaseWait: "Please wait",
 		search: {
 			title: "How to go",
@@ -153,6 +161,10 @@ app.controller("localeController", function($scope)
                 message: "This project is developed as a part of study in 261492 course, in Department of Computer Engineering, Faculty of Engineering and in order to be reference for university transportation system improvement.",
                 readMore: "Read more"
             }
+        },
+        error: {
+            title: "Error!",
+            message: "An error occurred. Please retry your action again, or access another page with below links."
         }
 	};
 });

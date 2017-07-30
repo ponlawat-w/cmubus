@@ -26,7 +26,7 @@ app.controller("localeController", function($scope)
             useThisLanguage: "日本語で利用します",
             welcome: {
                 title: "２５６０年度、新学期歓迎！",
-                messages: ["新入生の皆さん、チェンマイ大学へようこそ", "この下で学内の設置、ビルの情報を検索できますよ！↴"]
+                messages: ["新入生の皆さん、チェンマイ大学へようこそ", "この下で学内の設置、ビルなどの情報を検索できます！↴"]
             }
 		},
         routes: {
@@ -48,6 +48,11 @@ app.controller("localeController", function($scope)
 			timeleft: "到着時刻",
 			arrivalTimetable: "到着予想時刻",
 			passedTimetable: "過去の到着時刻",
+            type: {
+                passed: "",
+                departed: "出発",
+                arrived: "終着"
+            },
 			timetable: "到着時刻",
 			info: "情報",
 			firstRound: "予想始発時刻",
@@ -58,6 +63,9 @@ app.controller("localeController", function($scope)
 			viewMap: "地図で見る",
 			connections: "周辺スポット"
 		},
+        session: {
+            finished: "終点に到着"
+        },
 		pleaseWait: "しばらくお待ち下さい",
 		search: {
 			title: "乗換案内",
@@ -153,6 +161,10 @@ app.controller("localeController", function($scope)
                 message: "This project is developed as a part of study in 261492 course, in Department of Computer Engineering, Faculty of Engineering and in order to be reference for university transportation system improvement.",
                 readMore: "続きを読む"
             }
+        },
+        error: {
+            title: "エラーが発生しました。",
+            message: "システムにエラーが発生しました。やり直し、又は下記のリンクで他のページをアクセスしてください。"
         }
 	};
 });

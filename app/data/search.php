@@ -9,4 +9,4 @@ $keyword = str_replace("'", "", $keyword);
 
 echo json_encode(search($keyword, get_language_id(), 10));
 mysqli_close($connection);
-ob_end_flush(); ?>
+ob_end_flush();

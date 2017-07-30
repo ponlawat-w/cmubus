@@ -20,4 +20,4 @@ $sql = "INSERT INTO `evaluation_survey` (`id`, `role`, `name`, `email`, `usefuln
 sql_query($sql, "sssiiiiisi", array($role, $name, $email, $usefulness, $easyToUse, $accuracy, $performance, $satisfaction, $comment, mktime()));
 
 mysqli_close($connection);
-ob_end_flush(); ?>
+ob_end_flush();

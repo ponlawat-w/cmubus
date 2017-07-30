@@ -53,7 +53,7 @@ if($passedTimetable == "true")
 {
     $page_result = array(
         "arrival_timetable" => $final_timetable,
-        "passed_timetable" => $stop->PassedTimetable(5)
+        "passed_timetable" => $stop->PassedTimetable(10)
     );
 }
 else
@@ -62,6 +62,8 @@ else
         "arrival_timetable" => $final_timetable
     );
 }
+
+$page_result['current_time'] = date("H:i");
 
 echo json_encode($page_result);
 	

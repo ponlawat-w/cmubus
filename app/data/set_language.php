@@ -15,5 +15,10 @@ if($data['count'] == 1)
 
 	echo "OK";
 }
+else
+{
+    http_response_code(500);
+    exit;
+}
 
-mysqli_close($connection); ob_end_flush(); ?>
+mysqli_close($connection); ob_end_flush();

@@ -8,6 +8,20 @@
 		<small>　{{sessionInfo.start_datetime_readable|sessionStartDateTime}}</small>
 	</h4>
 	<table class="table table-hover cursor-pointer">
+		<thead>
+			<tr class="text-right">
+				<td colspan="2" style="font-size: 0.8em; padding: 0;">
+					<div ng-if="sessionInfo.online">
+						<img src="assets/img/mini-loading.gif" style="height: 1em; width: auto;" ng-show="requestingSessionInfo">
+						{{sessionInfo.current_time}}
+					</div>
+					<div ng-if="!sessionInfo.online">
+						<i class="fa fa-check"></i>
+						{{txt.session.finished}}
+					</div>
+				</td>
+			</tr>
+		</thead>
 		<tbody>
 			<tr ng-repeat="sequence in sessionInfo.time_sequences" ng-click="goStop(sequence.stop)">
 				<td ng-class="{'estimated':sequence.estimated}" style="white-space: nowrap"><nowrap><span ng-class="{'estimated':sequence.estimated, 'routecolor':!sequence.estimated}">●</span> {{sequence.datetime_readable}}</nowrap></td>

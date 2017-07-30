@@ -53,6 +53,14 @@
 						<td class="{{round.session|timetableTimeClass}}" ng-show="timetableMode=='distace'">{{round.remaining_distance|distance}}</td>
 					</tr>
 				</tbody>
+				<tfoot>
+				<tr>
+					<td colspan="3" style="font-size: 0.8em; padding: 0;" class="text-right">
+						<img src="assets/img/mini-loading.gif" style="height: 1em; width: auto;" ng-show="requestingTimetable">
+						{{updatedTime}}
+					</td>
+				</tr>
+				</tfoot>
 			</table></p>
 		</div>
 		<div ng-show="passedTimetable.length > 0">
@@ -60,11 +68,12 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th colspan="3"><center><strong><big>
+						<th colspan="4"><center><strong><big>
 							{{txt.stop.passedTimetable}}
 						</big></strong></center></th>
 					</tr>
 					<tr>
+						<th></th>
 						<th>{{txt.stop.eta}}</th>
 						<th>{{txt.stop.route}}</th>
 						<th>{{txt.stop.busno}}</th>
@@ -72,8 +81,9 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="round in passedTimetable" ng-click="goSession(round.session)" class="cursor-pointer">
+						<td style="width: 1px; white-space: nowrap; font-size: 0.8em; vertical-align: middle;" class="text-center">{{txt.stop.type[round.type]}}</td>
 						<td>{{round.datetime_readable}}</td>
-						<td style="color:{{round.routecolor}};">{{round.routename}}</td>
+						<td style="color:{{round.routecolor}}; white-space: nowrap;">{{round.routename}}</td>
 						<td>{{round.busno}}</td>
 					</tr>
 				</tbody>

@@ -26,7 +26,7 @@ app.controller("localeController", function($scope)
 			useThisLanguage: "",
 			welcome: {
 				title: "ต้อนรับปีการศึกษาใหม่ 2560!",
-				messages: ["ขอแสดงความยินดีลูกช้างเชือกใหม่ทุกท่าน!", "น้อง ๆ สามารถค้นหาอาคารเรียนหรือสถานที่ต่าง ๆ ใน มช. ได้ด้วยช่องค้นหาด้านล่างนี้ ↴"]
+				messages: ["ขอแสดงความยินดีลูกช้างเชือกใหม่ทุกท่าน!", "คุณสามารถค้นหาอาคารเรียนหรือสถานที่ต่าง ๆ ใน มช. ได้ด้วยช่องค้นหาด้านล่างนี้ ↴"]
 			}
 		},
 		routes: {
@@ -48,6 +48,11 @@ app.controller("localeController", function($scope)
 			timeleft: "เวลา",
 			arrivalTimetable: "รถที่จะถึง",
 			passedTimetable: "รถที่เพิ่งผ่าน",
+            type: {
+                passed: "",
+                departed: "ออก",
+                arrived: "ถึง"
+            },
 			timetable: "ตารางเวลา",
 			info: "ข้อมูล",
 			firstRound: "เวลารอบแรกโดยประมาณ",
@@ -57,6 +62,9 @@ app.controller("localeController", function($scope)
 			toHere: "ค้นหาเส้นทางถึงที่นี่",
 			viewMap: "ดูแผนที่",
 			connections: "สถานที่ใกล้เคียง"
+		},
+		session: {
+			finished: "ถึงปลายทางแล้ว"
 		},
 		pleaseWait: "กรุณารอสักครู่",
 		search: {
@@ -153,6 +161,10 @@ app.controller("localeController", function($scope)
 				message: "แอปพลิเคชันนี้ พัฒนาขึ้นเพื่อสำหรับเป็นกรณีศึกษาสำหรับกระบวนวิชา 261492 ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ และเพื่อเป็นแนวทางการพัฒนาการให้บริการระบบขนส่งมวลชน",
 				readMore: "อ่านเพิ่มเติม"
 			}
+		},
+		error: {
+			title: "พบข้อผิดพลาด",
+			message: "พบข้อผิดพลาดเกิดขึ้นในระบบ กรุณาลองใหม่อีกครั้ง หรือไปยังหน้าอื่นด้วยเมนูด้านล่าง"
 		}
 	};
 });

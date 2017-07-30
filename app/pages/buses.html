@@ -10,7 +10,11 @@
         <thead>
             <tr>
                 <th style="white-space: nowrap;">{{txt.buses.busno}}</th>
-                <th colspan="2">{{txt.buses.status}}</th>
+                <th>{{txt.buses.status}}</th>
+                <th style="font-size: 0.8em; padding: 0; font-weight: normal; vertical-align: middle;" class="text-right">
+                    <img src="assets/img/mini-loading.gif" style="height: 1em; width: auto;" ng-show="requestingBusesData">
+                    {{updatedTime}}
+                </th>
             </tr>
         </thead>
         <tbody>

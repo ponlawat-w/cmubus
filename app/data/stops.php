@@ -37,4 +37,4 @@ $page_result = sort_by($page_result, "name", SORT_ASC);
 
 echo json_encode($page_result);
 
-mysqli_close($connection); ob_end_flush(); ?>
+mysqli_close($connection); ob_end_flush();

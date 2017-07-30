@@ -9,6 +9,8 @@ $page_result = array();
 $sql = "SELECT `id`, `route`, `session`, `last_distance` FROM `buses` ORDER BY `id` ASC";
 $results = sql_query($sql);
 
+$buses = array();
+
 while($busData = mysqli_fetch_array($results))
 {
     $lastStopID = 0;
@@ -26,7 +28,7 @@ while($busData = mysqli_fetch_array($results))
 
     $route = new Route($busData['route']);
 
-    array_push($page_result, array(
+    array_push($buses, array(
             "busno" => $busData['id'],
             "session" => $busData['session'],
             "route" => $busData['route'],
@@ -37,5 +39,10 @@ while($busData = mysqli_fetch_array($results))
         )
     );
 }
+
+$page_result = array(
+    "buses" => $buses,
+    "current_time" => date("H:i")
+);
 
 echo json_encode($page_result);

@@ -78,6 +78,13 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
         .when('/about', {
             templateUrl: "pages/about.html",
             controller: "aboutController"
+        })
+        .when('/error', {
+            templateUrl: "pages/error.html",
+            controller: "errorController"
+        })
+        .otherwise({
+            redirectTo: "/error"
         });
 
     $locationProvider.html5Mode(true);
@@ -181,6 +188,7 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
             window.location.reload();
         }, function(response)
         {
+            $location.path('error');
         });
 	};
 
@@ -237,6 +245,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 
     }, function(response)
     {
+        $location.path('error');
     });
 
     $http.get("data/routes.php").then(function(response)
@@ -244,6 +253,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 		$scope.routes = response.data;
 	}, function(response)
 	{
+        $location.path('error');
 	});
 
     $scope.loadData = function()
@@ -310,7 +320,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 
             }, function(response)
             {
-                $scope.loading = false;
+                $location.path('error');
             });
         }
 	};
@@ -381,7 +391,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 				}
 			}, function(response)
 			{
-				
+                $location.path('error');
 			});
 		}
 	});
@@ -472,6 +482,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 			$scope.from_autocompletes = [];
 		}, function(response)
 		{
+            $location.path('error');
 		});
 	}
 	
@@ -487,6 +498,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 			$scope.to_autocompletes = [];
 		}, function(response)
 		{
+            $location.path('error');
 		});
 	}
 	
@@ -533,7 +545,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 				}
 			}, function(response)
 			{
-				
+                $location.path('error');
 			});
 		}
 	};
@@ -585,7 +597,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
             }
         }, function(response)
         {
-            $scope.loading = false;
+            $location.path('error');
         });
 	};
 	// END FROM
@@ -619,7 +631,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 				}
 			}, function(response)
 			{
-				
+                $location.path('error');
 			});
 		}
 	};
@@ -677,7 +689,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
             }
         }, function(response)
         {
-            $scope.loading = false;
+            $location.path('error');
         });
 	};
 	// END TO
@@ -782,7 +794,7 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 
 		}, function(response)
 		{
-
+            $location.path('error');
 		});
     };
 
@@ -806,7 +818,7 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 		$http.get("data/stop.php?id=" + $scope.to_id).then(function(response)
 		{
 			$scope.info.toName = response.data.name;
-			$http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=1&quick=false").then(function(response)
+			$http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=1&quick=false&record=true").then(function(response)
 			{
 				$scope.finished = true;
 				$scope.paths = response.data;
@@ -829,10 +841,10 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 					//	return totalTravelTime(a).localeCompare(totalTravelTime(b));
 					//});
 
-				}, function(response) { });
-			}, function(reponse) {  });			
-		}, function(response) {});
-	}, function(response) {});
+				}, function(response) { $location.path('error'); });
+			}, function(reponse) { $location.path('error'); });
+		}, function(response) { $location.path('error'); });
+	}, function(response) { $location.path('error'); });
 
 	$scope.goStop = function(id)
 	{
@@ -874,30 +886,33 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 	
 	$scope.busstop = null;
 
-	$scope.requesting = false;
+	$scope.requestingTimetable = false;
 	
 	$scope.timetableMode = "timeLeft";
 	$scope.view = "timetable";
 	
 	$scope.stopTimetable = [];
 	$scope.stopInfo = {};
+
+	$scope.updatedTime = '';
 	
 	$scope.loadTimetable = function()
 	{
-		if($scope.requesting == false)
+		if($scope.requestingTimetable == false)
 		{
-			$scope.requesting = true;
+			$scope.requestingTimetable = true;
 
 			$http.get("data/timetable.php?stopid=" + $scope.id + "&passed=true&temp=" + Date.now()).then(function(response)
 			{
-				$scope.requesting = false;
+				$scope.requestingTimetable = false;
 				$scope.timetableLoading = false;
 				$scope.stopTimetable = response.data.arrival_timetable;
 				$scope.passedTimetable = response.data.passed_timetable;
+				$scope.updatedTime = response.data.current_time;
 
 			}, function(response)
 			{
-				$scope.timetableLoading = false;
+			    $location.path('error');
 			});
 		}
 	};
@@ -915,7 +930,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 				$scope.stopGeneralInfo = response.data;				
 			}, function(response)
 			{
-				$scope.timetableLoading = false;			
+                $location.path('error');
 			});
 		}
 	};
@@ -969,7 +984,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		$scope.loading = false;
 	}, function(response)
 	{
-		
+        $location.path('error');
 	});
 });
 
@@ -981,21 +996,21 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
 	
 	$scope.loading = true;
 
-	$scope.requesting = false;
+	$scope.requestingSessionInfo = false;
 	
 	$scope.sessionInfo = {online: true};
 	
 	$scope.loadSessionInfo = function()
 	{
-		if($scope.sessionInfo.online == true && $scope.requesting == false)
+		if($scope.sessionInfo.online == true && $scope.requestingSessionInfo == false)
 		{
-			$scope.requesting = true;
+			$scope.requestingSessionInfo = true;
 
 			$http.get("data/session.php?id=" + $scope.sessionID + "&temp=" + Date.now()).then(function(response)
 			{
 				$scope.sessionInfo = response.data;
 				$scope.loading = false;
-				$scope.requesting = false;
+				$scope.requestingSessionInfo = false;
 				
 				if($scope.sessionInfo.online == false)
 				{
@@ -1003,6 +1018,7 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
 				}
 			}, function(response)
 			{
+                $location.path('error');
 			});
 		}
 	};
@@ -1035,6 +1051,7 @@ app.controller("routesController", function($scope, $http, $location, $interval)
 		$scope.loading = false;
 	}, function(response)
 	{
+        $location.path('error');
 	});
 	
 	$scope.goRoute = function(id)
@@ -1090,6 +1107,7 @@ app.controller("stopsController", function($scope, $http, $location, $anchorScro
                 }
             }, function(response)
             {
+                $location.path('error');
             });
         }
     });
@@ -1106,7 +1124,7 @@ app.controller("stopsController", function($scope, $http, $location, $anchorScro
         $scope.loading = false;
     }, function(response)
     {
-
+        $location.path('error');
     });
 });
 
@@ -1152,6 +1170,7 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 		$scope.loading = false;
 	}, function(response)
 	{
+        $location.path('error');
 	});
 	
 	$scope.goStop = function(id)
@@ -1169,25 +1188,28 @@ app.controller("busesController", function($scope, $http, $interval, $location)
 {
 	$interval.cancel(appInterval);
 
-	$scope.requesting = false;
+	$scope.requestingBusesData = false;
 	$scope.loading = true;
     $scope.busesData = [];
+    $scope.updatedTime = '';
 
 	$scope.loadBusData = function()
 	{
-		if($scope.requesting == false)
+		if($scope.requestingBusesData == false)
 		{
-			$scope.requesting = true;
+			$scope.requestingBusesData = true;
 
 			$http.get("data/buses.php?temp=" + Date.now()).then(function(response)
 			{
 				$scope.loading = false;
-				$scope.requesting = false;
+				$scope.requestingBusesData = false;
 
-                $scope.busesData = response.data;
+                $scope.busesData = response.data.buses;
+                $scope.updatedTime = response.data.current_time;
 
 			}, function(response)
 			{
+                $location.path('error');
 			});
 		}
 	};
@@ -1233,6 +1255,7 @@ app.controller("evaluateController", function($scope, $http, $interval)
             $scope.surveySendStatus = 2;
         }, function(response)
         {
+            $location.path('error');
         });
 	};
 });
@@ -1261,6 +1284,7 @@ app.controller("reportController", function($scope, $http, $interval)
             $scope.reportSendStatus = 2;
         }, function(response)
         {
+            $location.path('error');
         });
     };
 });
@@ -1285,7 +1309,8 @@ app.controller("languageSettingsController", function($scope, $http, $location, 
 			setCookie("user_language", newLanguageID, 5184000000);
 			window.location.reload();
 		}, function(reponse)
-		{			
+		{
+            $location.path('error');
 		});
 	};
 	
@@ -1294,8 +1319,13 @@ app.controller("languageSettingsController", function($scope, $http, $location, 
 		$scope.languages = response.data;
 	}, function(response)
 	{
-		
+        $location.path('error');
 	});
+});
+
+app.controller("errorController", function($scope, $interval)
+{
+    $interval.cancel(appInterval);
 });
 
 app.filter('trustedHTML', function($sce)

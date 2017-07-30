@@ -439,13 +439,28 @@ class Stop
 		
 		$function_result = array();
 
-
 		$sql = "SELECT `session`, `datetime` FROM `records` WHERE `stop` = ? ORDER BY `datetime` DESC LIMIT ?";
 		$results = sql_query($sql, "ii", array($this->ID, $max_result));
 		while($recordData = mysqli_fetch_array($results))
 		{
 			$session = new Session($recordData['session']);
 			$route = new Route($session->Route);
+
+			$type = 'passed';
+            $sql = "SELECT COUNT(*) AS 'count' FROM `route_paths` WHERE `stop` = ? AND `route` = ?";
+            $result = sql_query($sql, "ii", array($this->ID, $session->Route));
+            $countData = mysqli_fetch_array($result);
+            if($countData['count'] == 2)
+            {
+                if($recordData['datetime'] == $session->StartTimeStamp)
+                {
+                    $type = 'departed';
+                }
+                else
+                {
+                    $type = 'arrived';
+                }
+            }
 			
 			$item = array(
 				"session" => $recordData['session'],
@@ -454,7 +469,8 @@ class Stop
 				"route" => $session->Route,
 				"routename" => get_text("route", $session->Route, get_language_id()),
 				"routecolor" => '#' . $route->Color,
-				"busno" => $session->BusNo
+				"busno" => $session->BusNo,
+                "type" => $type
 			);
 			
 			array_push($function_result, $item);

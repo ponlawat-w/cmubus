@@ -45,7 +45,7 @@
 		<nav class="navbar navbar-fixed-top">
 			<div class="container-fluid col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-xl-2 col-xl-offset-5">
 				<div class="nav navbar-header pull-left">
-					<div class="navbar-brand"><a href="/" ng-bind="txt.header">cmubus.com</a> <small><sub>BETA</sub></small></div>
+					<div class="navbar-brand"><a href="/" ng-bind="txt.header">cmubus.com</a></div>
 				</div>
 				<ul class="nav navbar-nav navbar-right pull-right">
 					<li class="pull-left"><a href="/"><i class='fa fa-home'></i></a></li>

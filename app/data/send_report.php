@@ -15,4 +15,4 @@ $sql = "INSERT INTO `reports` (`id`, `type`, `name`, `email`, `message`, `dateti
 sql_query($sql, "ssssi", array($type, $name, $email, $message, $now));
 
 mysqli_close($connection);
-ob_end_flush(); ?>
+ob_end_flush();

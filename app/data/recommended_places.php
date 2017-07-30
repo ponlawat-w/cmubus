@@ -23,4 +23,4 @@ $page_result = sort_by($page_result, "name", SORT_ASC);
 
 echo json_encode($page_result);
 
-ob_end_flush(); ?>
+ob_end_flush();
