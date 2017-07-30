@@ -14,7 +14,6 @@ foreach($routes as $key => $route)
 	$routes[$key]['color'] = '#' . $routes[$key]['color'];
 //	unset($routes[$key]['refid']);
 	unset($routes[$key]['detail']);
-	unset($routes[$key]['available']);
 	
 	$sql = "SELECT MAX(`distance_from_start`) AS 'total_distance' FROM `route_paths` WHERE `route` = ?";
 	$result = sql_query($sql, "i", array($route['id']));

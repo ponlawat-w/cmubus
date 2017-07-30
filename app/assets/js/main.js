@@ -428,9 +428,29 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	$scope.from_location = false;
 	$scope.to_id = null;
 	$scope.to_location = false;
+
+	$scope.usePosition = false;
+	$scope.locationError = false;
+	$scope.currentLat = null;
+	$scope.currentLon = null;
 	
 	$scope.from_autocompletes = [];
 	$scope.to_autocompletes = [];
+
+    if(navigator.geolocation)
+    {
+        navigator.geolocation.getCurrentPosition(function(position)
+        {
+            $scope.$apply(function() {
+                $scope.usePosition = true;
+                $scope.currentLat = position.coords.latitude;
+                $scope.currentLon = position.coords.longitude;
+            });
+        }, function()
+        {
+            $scope.locationError = true;
+        });
+    }
 	
 	$scope.scrollTo = function(id)
 	{
@@ -545,39 +565,28 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	$scope.location_from = function()
 	{
 		$scope.loading = true;
-		if (navigator.geolocation)
-		{
-			navigator.geolocation.getCurrentPosition(function(position)
-			{
-				$scope.$apply(function()
-				{
-					var lat = position.coords.latitude;
-					var lon = position.coords.longitude;
-					
-					var url = "data/findnearstop.php?lat=" + lat + "&lon=" + lon + "&stoponly=false&limit=1";
-					
-					$http.get(url).then(function(response)
-					{
-						$scope.loading = false;
-						$scope.clicked = true;
-						$scope.from_location = true;
-						$scope.from_id = response.data[0].id;
-						$scope.from_keyword = response.data[0].name;
-					}, function(response)
-					{
-						$scope.loading = false;
-					});
-				});
-			}, function()
-			{
-				$scope.loading = false;
-			});
-		}
-		else
-		{
-			$scope.loading = false;
-			$scope.from_location = true;
-		}
+
+        var url = "data/findnearstop.php?lat=" + $scope.currentLat + "&lon=" + $scope.currentLon + "&stoponly=false&limit=1";
+
+        $http.get(url).then(function(response)
+        {
+            $scope.loading = false;
+            if(response.data.length == 0)
+            {
+                $scope.locationError = true;
+            }
+            else
+            {
+                $scope.locationError = false;
+                $scope.clicked = true;
+                $scope.from_location = true;
+                $scope.from_id = response.data[0].id;
+                $scope.from_keyword = response.data[0].name;
+            }
+        }, function(response)
+        {
+            $scope.loading = false;
+        });
 	};
 	// END FROM
 	
@@ -619,7 +628,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	{
 		$scope.from_autocompletes = [];
 		$scope.to_autocompletes = [];
-	}
+	};
 	
 	$scope.setto = function(id)
 	{
@@ -648,38 +657,28 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	$scope.location_to = function()
 	{
 		$scope.loading = true;
-		if (navigator.geolocation)
-		{
-			navigator.geolocation.getCurrentPosition(function(position)
-			{
-				$scope.$apply(function()
-				{
-					var lat = position.coords.latitude;
-					var lon = position.coords.longitude;
-					
-					var url = "data/findnearstop.php?lat=" + lat + "&lon=" + lon + "&stoponly=false&limit=1";
-					
-					$http.get(url).then(function(response)
-					{
-						$scope.loading = false;
-						$scope.clicked = true;
-						$scope.to_location = true;
-						$scope.to_id = response.data[0].id;
-						$scope.to_keyword = response.data[0].name;
-					}, function(response)
-					{
-                        $scope.loading = false;
-					});
-				});
-			}, function()
-			{
-				$scope.loading = false;
-			});
-		}
-		else
-		{
-			$scope.loading = false;
-		}
+
+        var url = "data/findnearstop.php?lat=" + $scope.currentLat + "&lon=" + $scope.currentLon + "&stoponly=false&limit=1";
+
+        $http.get(url).then(function(response)
+        {
+            $scope.loading = false;
+            if(response.data.length == 0)
+            {
+                $scope.locationError = true;
+            }
+            else
+            {
+                $scope.locationError = false;
+                $scope.clicked = true;
+                $scope.to_location = true;
+                $scope.to_id = response.data[0].id;
+                $scope.to_keyword = response.data[0].name;
+            }
+        }, function(response)
+        {
+            $scope.loading = false;
+        });
 	};
 	// END TO
 	
@@ -807,7 +806,7 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 		$http.get("data/stop.php?id=" + $scope.to_id).then(function(response)
 		{
 			$scope.info.toName = response.data.name;
-			$http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=1&quick=true").then(function(response)
+			$http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=1&quick=false").then(function(response)
 			{
 				$scope.finished = true;
 				$scope.paths = response.data;
@@ -820,9 +819,9 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 
 					//$scope.paths = response.data;
 
-					for(i = 0; i < response.data.length; i++)
+					for(i = $scope.paths.length; i < response.data.length; i++)
 					{
-						$scope.paths[$scope.paths.length] = response.data[i];
+						$scope.paths.push(response.data[i]);
 					}
 
 					//$scope.paths.sort(function(a, b)

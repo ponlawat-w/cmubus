@@ -11,7 +11,7 @@
 			<button class="btn btn-default" ng-show="from_id != null" ng-click="clear_from()">
 				<i class="fa fa-times"></i>
 			</button>
-			<button class="btn btn-default" ng-show="from_id == null && to_location == false" ng-click="location_from()">
+			<button class="btn btn-default" ng-show="from_id == null && to_location == false && usePosition" ng-click="location_from()">
 				<i class="fa fa-location-arrow"></i>
 			</button>
 		</div>
@@ -33,7 +33,7 @@
 			<button class="btn btn-default" ng-show="to_id != null" ng-click="clear_to()">
 				<i class="fa fa-times"></i>
 			</button>
-			<button class="btn btn-default" ng-show="to_id == null && from_location == false" ng-click="location_to()">
+			<button class="btn btn-default" ng-show="to_id == null && from_location == false && usePosition" ng-click="location_to()">
 				<i class="fa fa-location-arrow"></i>
 			</button>
 		</div>
@@ -48,5 +48,11 @@
 <div class="well well-sm" ng-show="loading">
 	<center><img src="assets/img/loading.gif"><br>
 	{{txt.pleaseWait}}</center>
+</div>
+<div ng-show="locationError" class="alert alert-warning">
+	<h4><i class="fa fa-exclamation-triangle"></i> {{txt.home.searchingNearError.title}}</h4>
+	<p>
+		{{txt.home.searchingNearError.message}}
+	</p>
 </div>
 <button class="form-control" ng-click="search()" ng-disabled="from_id == null || to_id == null || from_id == to_id">{{txt.search.submit_btn}}</button>

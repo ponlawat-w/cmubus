@@ -55,7 +55,7 @@
 
 <h3>{{txt.home.viewTimeTable}}</h3>
 	<div class="list-group">
-		<a ng-repeat="route in routes" href="route/{{route.id}}" class="list-group-item" style="color:{{route.color}};">
+		<a ng-repeat="route in routes" href="route/{{route.id}}" ng-if="route.available == 1" class="list-group-item" style="color:{{route.color}};">
 			<i class="fa fa-bus"></i> {{route.name}}
 		</a>
 	</div>

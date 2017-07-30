@@ -8,7 +8,7 @@ app.controller("localeController", function($scope)
 			searchingNear: "周辺バス停の情報を読み込み中",
             searchingNearError: {
                 title: "周辺バス停の情報を読み込めません。",
-                message: "只今ＧＰＳからの現在位置の情報を読み込めません、位置情報の設定を確認してください。又は、只今チェンマイ大学の近くにいません。"
+                message: "只今ＧＰＳからの現在位置の情報を読み込めません、位置情報の設定を確認してください。又は、チェンマイ大学の近くにいません。"
             },
 			nearStops: "周辺バス停",
 			searchDetail: "バス停、施設、ビルの検索",
