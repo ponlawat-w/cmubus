@@ -8,7 +8,7 @@ app.controller("localeController", function($scope)
 			searchingNear: "周辺バス停の情報を読み込み中",
             searchingNearError: {
                 title: "周辺バス停の情報を読み込めません。",
-                message: "只今ＧＰＳからの現在位置の情報を読み込めません、又は位置情報の設定がオフにされています。"
+                message: "只今ＧＰＳからの現在位置の情報を読み込めません、位置情報の設定を確認してください。又は、只今チェンマイ大学の近くにいません。"
             },
 			nearStops: "周辺バス停",
 			searchDetail: "バス停、施設、ビルの検索",
@@ -23,7 +23,11 @@ app.controller("localeController", function($scope)
             recommendedPlaces: {
                 title: "おすすめスポット"
             },
-            useThisLanguage: "日本語で利用します"
+            useThisLanguage: "日本語で利用します",
+            welcome: {
+                title: "２５６０年度、新学期歓迎！",
+                messages: ["新入生の皆さん、チェンマイ大学へようこそ", "この下で学内の設置、ビルの情報を検索できますよ！↴"]
+            }
 		},
         routes: {
             pleaseSelect: "ルートを選択してください"

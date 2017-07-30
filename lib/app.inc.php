@@ -453,7 +453,7 @@ class Stop
 				"datetime_readable" => date("H:i", $recordData['datetime']),
 				"route" => $session->Route,
 				"routename" => get_text("route", $session->Route, get_language_id()),
-				"routecolor" => $route->Color,
+				"routecolor" => '#' . $route->Color,
 				"busno" => $session->BusNo
 			);
 			
@@ -2587,4 +2587,3 @@ function generate_query($array, $field_name)
 
     return implode(" OR ", $txts);
 }
-?>

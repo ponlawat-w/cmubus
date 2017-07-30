@@ -11,6 +11,7 @@ $routes = get_available_route_on(new Day(mktime(0, 0, 0)));
 foreach($routes as $key => $route)
 {
 	$routes[$key]['name'] = get_text("route", $route['id'], get_language_id());
+	$routes[$key]['color'] = '#' . $routes[$key]['color'];
 //	unset($routes[$key]['refid']);
 	unset($routes[$key]['detail']);
 	unset($routes[$key]['available']);

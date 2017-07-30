@@ -8,10 +8,10 @@ app.controller("localeController", function($scope)
 			searchingNear: "Searching near bus stops",
             searchingNearError: {
                 title: "Unable to find near bus stops",
-                message: "Please check your location settings. Otherwise the device is currently not able to obtain your certain position."
+                message: "Please check your location settings. The device might currently not able to obtain your certain position, or you are now too far from Chiang Mai University."
             },
 			nearStops: "Near bus stops",
-			searchDetail: "Search a bus stop, a place in CMU",
+			searchDetail: "Search bus stops, places in CMU",
             click2cTimeTable: "Click to see timetable",
 			evaluationSurvey: {
 				title: "Do you have some time?",
@@ -23,7 +23,11 @@ app.controller("localeController", function($scope)
             recommendedPlaces: {
                 title: "Recommended Places"
             },
-            useThisLanguage: "Use English"
+            useThisLanguage: "Use English",
+            welcome: {
+                title: "Greetings to new academic year 2560!",
+                messages: ["Welcome new students to Chiang Mai University!", "You can use search box below to find places or buildings in CMU ↴"]
+            }
 		},
         routes: {
             pleaseSelect: "Please select route"

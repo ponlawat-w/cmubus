@@ -47,7 +47,7 @@
 				<tbody>
 					<tr ng-repeat="round in stopTimetable" ng-click="goSession(round.session)" ng-class="{'blink':blinker}" class="cursor-pointer {{round | arrivalClassHandler}}">
 						<td class="{{round.session|timetableTimeClass}}" style="white-space: nowrap;">{{round.estimated_time_readable}}</td>
-						<td style="color:{{'#' +round.routecolor}}; white-space: nowrap;">{{round.routename}}</td>
+						<td style="color:{{round.routecolor}}; white-space: nowrap;">{{round.routename}}</td>
 						<td class="{{round.session|timetableTimeClass}}" ng-show="timetableMode=='place'" style="text-overflow: ellipsis;">{{round|currentStopText}}</td>
 						<td class="{{round.session|timetableTimeClass}}" ng-show="timetableMode=='timeLeft'">{{round|remainingTimeText}}</td>
 						<td class="{{round.session|timetableTimeClass}}" ng-show="timetableMode=='distace'">{{round.remaining_distance|distance}}</td>
@@ -73,7 +73,7 @@
 				<tbody>
 					<tr ng-repeat="round in passedTimetable" ng-click="goSession(round.session)" class="cursor-pointer">
 						<td>{{round.datetime_readable}}</td>
-						<td style="color:#{{round.routecolor}};">{{round.routename}}</td>
+						<td style="color:{{round.routecolor}};">{{round.routename}}</td>
 						<td>{{round.busno}}</td>
 					</tr>
 				</tbody>

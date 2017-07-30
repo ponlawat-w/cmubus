@@ -164,11 +164,6 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
         {
             $scope.showBottomNavbar = true;
             $scope.bottomNavbar = "suggestThai";
-
-            $timeout(function()
-            {
-                $scope.closeSuggestion();
-            }, 60000);
         }
         else if(getCookieValue("showAppInfo") != "yes")
 		{
@@ -234,7 +229,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
     $scope.nearStops = [];
     $scope.nearStopsMore = [];
     $scope.recommendedPlaces = [];
-
+    $scope.routes = [];
 
     $http.get("data/recommended_places.php").then(function(response)
     {
@@ -243,6 +238,13 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
     }, function(response)
     {
     });
+
+    $http.get("data/routes.php").then(function(response)
+	{
+		$scope.routes = response.data;
+	}, function(response)
+	{
+	});
 
     $scope.loadData = function()
     {

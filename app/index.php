@@ -59,6 +59,7 @@
 				</div>
 			</div>
 		</div>
+        <div class="modal-bg" ng-if="showBottomNavbar"></div>
         <nav class="navbar navbar-fixed-bottom slide-toggle" ng-show="showBottomNavbar">
             <div class="container-fluid col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-xl-2 col-xl-offset-5">
                 <a href="javascript:void(0);" class="close-button" ng-click="closeSuggestion();"><i class="fa fa-times"></i></a>
