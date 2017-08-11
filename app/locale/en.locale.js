@@ -160,7 +160,8 @@ app.controller("localeController", function($scope)
                 title: "CMUBUS.com Project",
                 message: "This project is developed as a part of study in 261492 course, in Department of Computer Engineering, Faculty of Engineering and in order to be reference for university transportation system improvement.",
                 readMore: "Read more"
-            }
+            },
+            lastUpdated: 'Last updated'
         },
         error: {
             title: "Error!",
@@ -391,5 +392,20 @@ app.filter("connectionInfo", function()
 			return txt;
 		}
 		return "";
+	};
+});
+
+app.filter('dateFormat', function()
+{
+	return function(timestamp)
+	{
+		var inputDate = new Date(timestamp * 1000);
+		var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+		var date = inputDate.getDate().toString();
+		var month = months[inputDate.getMonth()];
+		var year = inputDate.getFullYear().toString();
+
+		return date + ' ' + month + ' ' + year;
 	};
 });

@@ -160,7 +160,8 @@ app.controller("localeController", function($scope)
 				title: "โครงงาน CMUBUS.com",
 				message: "แอปพลิเคชันนี้ พัฒนาขึ้นเพื่อสำหรับเป็นกรณีศึกษาสำหรับกระบวนวิชา 261492 ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ และเพื่อเป็นแนวทางการพัฒนาการให้บริการระบบขนส่งมวลชน",
 				readMore: "อ่านเพิ่มเติม"
-			}
+			},
+			lastUpdated: 'อัปเดตเมื่อ'
 		},
 		error: {
 			title: "พบข้อผิดพลาด",
@@ -335,5 +336,20 @@ app.filter("connectionInfo", function()
 			return txt;
 		}
 		return "";
+	};
+});
+
+app.filter('dateFormat', function()
+{
+	return function(timestamp)
+	{
+		var inputDate = new Date(timestamp * 1000);
+		var months = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+
+		var date = inputDate.getDate().toString();
+		var month = months[inputDate.getMonth()];
+		var year = (parseInt(inputDate.getFullYear()) + 543).toString();
+
+		return date + ' ' + month + ' ' + year;
 	};
 });

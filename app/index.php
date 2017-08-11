@@ -20,7 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="assets/css/map-icons.min.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
 		<title>CMU BUS</title>
-        <script src="vars.js"></script>
+        <script src="vars.js?t=<?php echo time(); ?>"></script>
         <script>
             var language = "<?php echo get_language_id(); ?>";
         </script>
@@ -38,7 +38,7 @@
         <script src="assets/js/angular.min.js"></script>
         <script src="assets/js/angular-route.min.js"></script>
         <script src="assets/js/angular-animate.min.js"></script>
-        <script src="assets/js/main.js"></script>
+        <script src="assets/js/main.js?t=<?php echo time(); ?>"></script>
         <script src="locale/<?php echo get_language_id(); ?>.locale.js"></script>
 	</head>
 	<body ng-controller="mainController">

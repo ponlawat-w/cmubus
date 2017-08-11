@@ -2,6 +2,12 @@ var app = angular.module("cmubus", ['ngRoute', 'ngAnimate']);
 
 var appInterval;
 
+if(parseInt(getCookieValue('version')) !== variables.version.updated)
+{
+	setCookie('version', variables.version.updated, 5184000000);
+	window.location.reload(true);
+}
+
 app.config(function($routeProvider, $locationProvider, $httpProvider)
 {	
 	$httpProvider.defaults.cache = true;
@@ -157,7 +163,7 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
             var newTimeValue = currentTime + 1;
             setCookie("survey_timer", newTimeValue, 5184000000);
 
-            if(newTimeValue > 60 && $scope.bottomNavbar != "suggestSurvey")
+            if(newTimeValue > 30 && $scope.bottomNavbar != "suggestSurvey")
             {
                 $scope.showBottomNavbar = true;
                 $scope.bottomNavbar = "suggestSurvey";
@@ -1292,6 +1298,7 @@ app.controller("reportController", function($scope, $http, $interval)
 app.controller("aboutController", function($scope, $interval)
 {
     $interval.cancel(appInterval);
+	$scope.version = variables.version;
 });
 
 app.controller("languageSettingsController", function($scope, $http, $location, $interval)
