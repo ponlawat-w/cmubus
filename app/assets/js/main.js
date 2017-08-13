@@ -137,11 +137,6 @@ app.run(function($rootScope, $location, $anchorScroll)
 	{
 		$rootScope.stateChanging = false;
 
-		if(variables.gaUsing)
-		{
-			ga("send", "pageview", {page: $location.path()});
-		}
-
 		if($location.hash())
 		{
 			$anchorScroll();
@@ -269,6 +264,7 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
 app.controller("homeController", function($scope, $http, $location, $anchorScroll, $interval, $rootScope)
 {
 	document.title = pageTitles.header + pageTitles.home;
+	sendGA($location.path());
 
     $interval.cancel(appInterval);
 
@@ -463,9 +459,10 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 	$scope.loadData();
 });
 
-app.controller("menuController", function($scope, $interval)
+app.controller("menuController", function($scope, $interval, $location)
 {
 	document.title = pageTitles.header + pageTitles.menu;
+    sendGA($location.path());
 
 	$interval.cancel(appInterval);
 });
@@ -473,6 +470,7 @@ app.controller("menuController", function($scope, $interval)
 app.controller("searchController", function($scope, $http, $location, $anchorScroll, $routeParams, $interval, $rootScope)
 {
 	document.title = pageTitles.header + pageTitles.search;
+    sendGA($location.path());
 
     $interval.cancel(appInterval);
 	$scope.loading = false;
@@ -755,6 +753,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 app.controller("searchResultController", function($scope, $routeParams, $http, $location, $interval, $rootScope)
 {
     document.title = pageTitles.header + pageTitles.searchResult;
+    sendGA($location.path());
 
     $interval.cancel(appInterval);
 
@@ -1016,6 +1015,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		$scope.stopInfo = response.data;
 
 		document.title = pageTitles.header + $scope.stopInfo.name;
+        sendGA($location.path());
 		
 		if($scope.stopInfo.busstop == 1)
 		{
@@ -1038,9 +1038,10 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 	});
 });
 
-app.controller("stopStatsController", function($scope, $http, $routeParams, $interval, $rootScope)
+app.controller("stopStatsController", function($scope, $http, $routeParams, $interval, $rootScope, $location)
 {
 	document.title = pageTitles.header + pageTitles.stopStats;
+    sendGA($location.path());
 
 	$interval.cancel(appInterval);
 
@@ -1084,6 +1085,7 @@ app.controller("stopStatsController", function($scope, $http, $routeParams, $int
 app.controller("sessionController", function($scope, $http, $routeParams, $location, $interval, $rootScope)
 {
     document.title = pageTitles.header + pageTitles.session;
+    sendGA($location.path());
 
     $interval.cancel(appInterval);
 
@@ -1135,6 +1137,7 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
 app.controller("routesController", function($scope, $http, $location, $interval, $rootScope)
 {
     document.title = pageTitles.header + pageTitles.routes;
+    sendGA($location.path());
 
     $interval.cancel(appInterval);
 
@@ -1160,6 +1163,7 @@ app.controller("routesController", function($scope, $http, $location, $interval,
 app.controller("stopsController", function($scope, $http, $location, $anchorScroll, $interval, $rootScope)
 {
     document.title = pageTitles.header + pageTitles.stops;
+    sendGA($location.path());
 
     $interval.cancel(appInterval);
 
@@ -1230,6 +1234,7 @@ app.controller("stopsController", function($scope, $http, $location, $anchorScro
 app.controller("routeController", function($scope, $http, $location, $routeParams, $interval, $rootScope)
 {
     document.title = pageTitles.header + pageTitles.route;
+    sendGA($location.path());
 
     $interval.cancel(appInterval);
 
@@ -1288,6 +1293,7 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 app.controller("busesController", function($scope, $http, $interval, $location, $rootScope)
 {
     document.title = pageTitles.header + pageTitles.buses;
+    sendGA($location.path());
 
 	$interval.cancel(appInterval);
 
@@ -1329,9 +1335,10 @@ app.controller("busesController", function($scope, $http, $interval, $location, 
     appInterval = $interval(function() { $scope.loadBusData(); }, 3000);
 });
 
-app.controller("evaluateController", function($scope, $http, $interval, $rootScope)
+app.controller("evaluateController", function($scope, $http, $interval, $rootScope, $location)
 {
     document.title = pageTitles.header + pageTitles.evaluate;
+    sendGA($location.path());
 
 	$interval.cancel(appInterval);
 
@@ -1365,9 +1372,10 @@ app.controller("evaluateController", function($scope, $http, $interval, $rootSco
 	};
 });
 
-app.controller("reportController", function($scope, $http, $interval, $rootScope)
+app.controller("reportController", function($scope, $http, $interval, $rootScope, $location)
 {
     document.title = pageTitles.header + pageTitles.report;
+    sendGA($location.path());
 
     $interval.cancel(appInterval);
 
@@ -1396,9 +1404,10 @@ app.controller("reportController", function($scope, $http, $interval, $rootScope
     };
 });
 
-app.controller("aboutController", function($scope, $interval)
+app.controller("aboutController", function($scope, $interval, $location)
 {
     document.title = pageTitles.header + pageTitles.about;
+    sendGA($location.path());
 
     $interval.cancel(appInterval);
 	$scope.version = variables.version;
@@ -1407,6 +1416,7 @@ app.controller("aboutController", function($scope, $interval)
 app.controller("languageSettingsController", function($scope, $http, $location, $interval, $rootScope)
 {
     document.title = pageTitles.header + pageTitles.language;
+    sendGA($location.path());
 
 	$interval.cancel(appInterval);
 
@@ -1438,6 +1448,7 @@ app.controller("languageSettingsController", function($scope, $http, $location, 
 app.controller("errorController", function($scope, $interval)
 {
     document.title = pageTitles.header + pageTitles.error;
+    sendGA($location.path());
 
     $interval.cancel(appInterval);
 });
@@ -1504,6 +1515,13 @@ app.filter("busDataColor", function()
         }
     };
 });
+
+function sendGA(path)
+{
+	if(variables.gaUsing) {
+        ga('send', 'pageview', {page: path});
+    }
+}
 
 function setCookie(name, value, expireTimeInMillisecond)
 {
