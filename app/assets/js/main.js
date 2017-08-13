@@ -2,6 +2,12 @@ var app = angular.module("cmubus", ['ngRoute', 'ngAnimate']);
 
 var appInterval;
 
+if(!navigator.cookieEnabled)
+{
+	alert('This website requires cookie, please enable it.\nขออภัย คุณต้องเปิดการใช้งานคุกกี้เพื่อเข้าถึงเว็บไซต์นี้');
+	window.location = 'http://cmu.ac.th/';
+}
+
 if(parseInt(getCookieValue('version')) !== variables.version.updated)
 {
 	setCookie('version', variables.version.updated, 5184000000);
@@ -11,82 +17,88 @@ if(parseInt(getCookieValue('version')) !== variables.version.updated)
 app.config(function($routeProvider, $locationProvider, $httpProvider)
 {	
 	$httpProvider.defaults.cache = true;
-	
+
+	var versionQ = '?v=' + variables.version.updated;
+
 	$routeProvider
 		.when('/', {
-			templateUrl: "pages/home.html",
+			templateUrl: "pages/home.html" + versionQ,
 			controller: "homeController"
 		})
         .when('/menu', {
-            templateUrl: "pages/menu.html",
+            templateUrl: "pages/menu.html" + versionQ,
             controller: "menuController"
         })
 		.when('/search', {
-			templateUrl: "pages/search.html",
+			templateUrl: "pages/search.html" + versionQ,
 			controller: "searchController"
 		})
 		.when('/searchfrom/:from_id/', {
-			templateUrl: "pages/search.html",
+			templateUrl: "pages/search.html" + versionQ,
 			controller: "searchController"
 		})
 		.when('/searchto/:to_id', {
-			templateUrl: "pages/search.html",
+			templateUrl: "pages/search.html" + versionQ,
 			controller: "searchController"
 		})
         .when('/editsearch/:from_id/:to_id', {
-            templateUrl: "pages/search.html",
+            templateUrl: "pages/search.html" + versionQ,
             controller: "searchController"
         })
 		.when('/search/:from_id/:to_id', {
-			templateUrl: "pages/search_result.html",
+			templateUrl: "pages/search_result.html" + versionQ,
 			controller: "searchResultController"
 		})
 		.when('/stop/:id', {
-			templateUrl: "pages/stop.html",
+			templateUrl: "pages/stop.html" + versionQ,
 			controller: "stopController"
 		})
+		.when('/stop/:id/stats/:route', {
+			templateUrl: "pages/stop_stats.html" + versionQ,
+			controller: "stopStatsController"
+        })
 		.when('/session/:id', {
-			templateUrl: "pages/session.html",
+			templateUrl: "pages/session.html" + versionQ,
 			controller: "sessionController"
 		})
 		.when('/route/:id', {
-			templateUrl: "pages/route.html",
+			templateUrl: "pages/route.html" + versionQ,
 			controller: "routeController"
 		})
 		.when('/route/:id/highlight/:from_id/:to_id', {
-			templateUrl: "pages/route.html",
+			templateUrl: "pages/route.html" + versionQ,
 			controller: "routeController"
 		})
 		.when('/routes', {
-			templateUrl: "pages/routes.html",
+			templateUrl: "pages/routes.html" + versionQ,
 			controller: "routesController"
 		})
         .when('/stops', {
-            templateUrl: "pages/stops.html",
+            templateUrl: "pages/stops.html" + versionQ,
             controller: "stopsController"
         })
         .when('/buses', {
-            templateUrl: "pages/buses.html",
+            templateUrl: "pages/buses.html" + versionQ,
             controller: "busesController"
         })
         .when('/evaluate', {
-            templateUrl: "pages/evaluate.html",
+            templateUrl: "pages/evaluate.html" + versionQ,
             controller: "evaluateController"
         })
         .when('/report', {
-            templateUrl: "pages/report.html",
+            templateUrl: "pages/report.html" + versionQ,
             controller: "reportController"
         })
 		.when('/language', {
-			templateUrl: "pages/language_settings.html",
+			templateUrl: "pages/language_settings.html" + versionQ,
 			controller: "languageSettingsController"
 		})
         .when('/about', {
-            templateUrl: "pages/about.html",
+            templateUrl: "pages/about.html" + versionQ,
             controller: "aboutController"
         })
         .when('/error', {
-            templateUrl: "pages/error.html",
+            templateUrl: "pages/error.html" + versionQ,
             controller: "errorController"
         })
         .otherwise({
@@ -113,9 +125,18 @@ app.directive('jpInput', ['$parse', function($parse)
 
 app.run(function($rootScope, $location, $anchorScroll)
 {
+	$rootScope.stateChanging = true;
+
+	$rootScope.$on('$routeChangeStart', function()
+	{
+		$rootScope.stateChanging = true;
+	});
+
 	//when the route is changed scroll to the proper element.
 	$rootScope.$on('$routeChangeSuccess', function(newRoute, oldRoute)
 	{
+		$rootScope.stateChanging = false;
+
 		if(variables.gaUsing)
 		{
 			ga("send", "pageview", {page: $location.path()});
@@ -128,7 +149,7 @@ app.run(function($rootScope, $location, $anchorScroll)
 	});
 });
 
-app.controller("mainController", function($scope, $location, $http, $timeout, $interval)
+app.controller("mainController", function($scope, $location, $http, $timeout, $interval, $rootScope)
 {
 	$interval.cancel(appInterval);
 	$scope.$location = $location;
@@ -136,6 +157,7 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
 	$scope.showBottomNavbar = false;
 	$scope.bottomNavbar = "";
 	$scope.settingToThai = false;
+	$scope.showError = false;
 
 	if(getCookieValue("survey_timer") == "" && getCookieValue("survey_timer") != "never")
     {
@@ -194,7 +216,7 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
             window.location.reload();
         }, function(response)
         {
-            $location.path('error');
+            $rootScope.showError();
         });
 	};
 
@@ -231,11 +253,23 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
 
 			setCookie("showAppInfo", "yes", 5184000000);
 		}
-	}
+	};
+
+    $scope.closeError = function()
+	{
+		$scope.showError = false;
+	};
+    
+    $rootScope.showError = function()
+	{
+		$scope.showError = true;
+	};
 });
 
-app.controller("homeController", function($scope, $http, $location, $anchorScroll, $interval)
+app.controller("homeController", function($scope, $http, $location, $anchorScroll, $interval, $rootScope)
 {
+	document.title = pageTitles.header + pageTitles.home;
+
     $interval.cancel(appInterval);
 
     $scope.requesting = false;
@@ -251,7 +285,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 
     }, function(response)
     {
-        $location.path('error');
+        $rootScope.showError();
     });
 
     $http.get("data/routes.php").then(function(response)
@@ -259,7 +293,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 		$scope.routes = response.data;
 	}, function(response)
 	{
-        $location.path('error');
+        $rootScope.showError();
 	});
 
     $scope.loadData = function()
@@ -307,7 +341,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 
                 if($scope.nearStops.length > 0)
 				{
-					$http.get(url + "&stoponly=true&limit=10&timetable=false").then(function(response)
+					$http.get(url + "&stoponly=true&limit=5&timetable=false").then(function(response)
 					{
 						$scope.nearStopsMore = response.data;
 
@@ -326,7 +360,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 
             }, function(response)
             {
-                $location.path('error');
+                $rootScope.showError();
             });
         }
 	};
@@ -397,7 +431,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 				}
 			}, function(response)
 			{
-                $location.path('error');
+                $rootScope.showError();
 			});
 		}
 	});
@@ -431,11 +465,15 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 
 app.controller("menuController", function($scope, $interval)
 {
+	document.title = pageTitles.header + pageTitles.menu;
+
 	$interval.cancel(appInterval);
 });
 
-app.controller("searchController", function($scope, $http, $location, $anchorScroll, $routeParams, $interval)
+app.controller("searchController", function($scope, $http, $location, $anchorScroll, $routeParams, $interval, $rootScope)
 {
+	document.title = pageTitles.header + pageTitles.search;
+
     $interval.cancel(appInterval);
 	$scope.loading = false;
 	
@@ -488,7 +526,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 			$scope.from_autocompletes = [];
 		}, function(response)
 		{
-            $location.path('error');
+            $rootScope.showError();
 		});
 	}
 	
@@ -504,7 +542,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 			$scope.to_autocompletes = [];
 		}, function(response)
 		{
-            $location.path('error');
+            $rootScope.showError();
 		});
 	}
 	
@@ -551,7 +589,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 				}
 			}, function(response)
 			{
-                $location.path('error');
+                $rootScope.showError();
 			});
 		}
 	};
@@ -603,7 +641,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
             }
         }, function(response)
         {
-            $location.path('error');
+            $rootScope.showError();
         });
 	};
 	// END FROM
@@ -637,7 +675,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 				}
 			}, function(response)
 			{
-                $location.path('error');
+                $rootScope.showError();
 			});
 		}
 	};
@@ -695,7 +733,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
             }
         }, function(response)
         {
-            $location.path('error');
+            $rootScope.showError();
         });
 	};
 	// END TO
@@ -714,8 +752,10 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	};
 });
 
-app.controller("searchResultController", function($scope, $routeParams, $http, $location, $interval)
+app.controller("searchResultController", function($scope, $routeParams, $http, $location, $interval, $rootScope)
 {
+    document.title = pageTitles.header + pageTitles.searchResult;
+
     $interval.cancel(appInterval);
 
     $scope.info = {
@@ -800,7 +840,7 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 
 		}, function(response)
 		{
-            $location.path('error');
+            $rootScope.showError();
 		});
     };
 
@@ -831,7 +871,7 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 
 				$scope.searchingMore = true;
 
-                $http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=3&quick=false").then(function(response)
+                $http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=5&quick=false").then(function(response)
 				{
 					$scope.searchingMore = false;
 
@@ -847,10 +887,10 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 					//	return totalTravelTime(a).localeCompare(totalTravelTime(b));
 					//});
 
-				}, function(response) { $location.path('error'); });
-			}, function(reponse) { $location.path('error'); });
-		}, function(response) { $location.path('error'); });
-	}, function(response) { $location.path('error'); });
+				}, function(response) { $rootScope.showError(); });
+			}, function(reponse) { $rootScope.showError(); });
+		}, function(response) { $rootScope.showError(); });
+	}, function(response) { $rootScope.showError(); });
 
 	$scope.goStop = function(id)
 	{
@@ -880,8 +920,10 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 	};
 });
 
-app.controller("stopController", function($scope, $http, $routeParams, $location, $interval)
+app.controller("stopController", function($scope, $http, $routeParams, $location, $interval, $rootScope)
 {
+	document.title = pageTitles.header;
+
     $interval.cancel(appInterval);
 
 	$scope.id = $routeParams.id;
@@ -918,7 +960,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 
 			}, function(response)
 			{
-			    $location.path('error');
+			    $rootScope.showError();
 			});
 		}
 	};
@@ -936,7 +978,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 				$scope.stopGeneralInfo = response.data;				
 			}, function(response)
 			{
-                $location.path('error');
+                $rootScope.showError();
 			});
 		}
 	};
@@ -972,6 +1014,8 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 	$http.get("data/stop.php?id=" + $scope.id).then(function(response)
 	{
 		$scope.stopInfo = response.data;
+
+		document.title = pageTitles.header + $scope.stopInfo.name;
 		
 		if($scope.stopInfo.busstop == 1)
 		{
@@ -990,12 +1034,57 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		$scope.loading = false;
 	}, function(response)
 	{
-        $location.path('error');
+        $rootScope.showError();
 	});
 });
 
-app.controller("sessionController", function($scope, $http, $routeParams, $location, $interval)
+app.controller("stopStatsController", function($scope, $http, $routeParams, $interval, $rootScope)
 {
+	document.title = pageTitles.header + pageTitles.stopStats;
+
+	$interval.cancel(appInterval);
+
+	$scope.id = $routeParams.id;
+	$scope.route = $routeParams.route;
+	$scope.loading = true;
+	$scope.data = {};
+	$scope.view = '';
+	$scope.timeDiff = 0;
+
+	$http.get('data/stop_stats.php?id=' + $scope.id + '&route=' + $scope.route).then(function(response)
+	{
+        $scope.loading = false;
+        $scope.data = response.data;
+
+        if($scope.data.today.type === 0)
+		{
+			$scope.view = 'weekday';
+			$scope.data.today.type = 'weekday';
+        }
+		else if($scope.data.today.type === -1)
+		{
+			$scope.view = 'weekend';
+            $scope.data.today.type = 'weekend';
+		}
+
+		var userTime = new Date() / 1000;
+        $scope.timeDiff = userTime - $scope.data.serverTime;
+
+        appInterval = $interval(function()
+		{
+			$scope.data.serverTime = (new Date() / 1000) - $scope.timeDiff;
+		}, 500);
+
+    }, function(reponse)
+    {
+		$rootScope.showError();
+	});
+});
+
+app.controller("sessionController", function($scope, $http, $routeParams, $location, $interval, $rootScope)
+{
+    document.title = pageTitles.header + pageTitles.session;
+
     $interval.cancel(appInterval);
 
 	$scope.sessionID = $routeParams.id;
@@ -1024,7 +1113,7 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
 				}
 			}, function(response)
 			{
-                $location.path('error');
+                $rootScope.showError();
 			});
 		}
 	};
@@ -1043,8 +1132,10 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
     appInterval = $interval(function() { $scope.loadSessionInfo(); }, 3000);
 });
 
-app.controller("routesController", function($scope, $http, $location, $interval)
+app.controller("routesController", function($scope, $http, $location, $interval, $rootScope)
 {
+    document.title = pageTitles.header + pageTitles.routes;
+
     $interval.cancel(appInterval);
 
 	$scope.routes = [];
@@ -1057,7 +1148,7 @@ app.controller("routesController", function($scope, $http, $location, $interval)
 		$scope.loading = false;
 	}, function(response)
 	{
-        $location.path('error');
+        $rootScope.showError();
 	});
 	
 	$scope.goRoute = function(id)
@@ -1066,8 +1157,10 @@ app.controller("routesController", function($scope, $http, $location, $interval)
 	};
 });
 
-app.controller("stopsController", function($scope, $http, $location, $anchorScroll, $interval)
+app.controller("stopsController", function($scope, $http, $location, $anchorScroll, $interval, $rootScope)
 {
+    document.title = pageTitles.header + pageTitles.stops;
+
     $interval.cancel(appInterval);
 
     $scope.allStops = [];
@@ -1113,7 +1206,7 @@ app.controller("stopsController", function($scope, $http, $location, $anchorScro
                 }
             }, function(response)
             {
-                $location.path('error');
+                $rootScope.showError();
             });
         }
     });
@@ -1130,12 +1223,14 @@ app.controller("stopsController", function($scope, $http, $location, $anchorScro
         $scope.loading = false;
     }, function(response)
     {
-        $location.path('error');
+        $rootScope.showError();
     });
 });
 
-app.controller("routeController", function($scope, $http, $location, $routeParams, $interval)
+app.controller("routeController", function($scope, $http, $location, $routeParams, $interval, $rootScope)
 {
+    document.title = pageTitles.header + pageTitles.route;
+
     $interval.cancel(appInterval);
 
 	$scope.route = {};
@@ -1176,7 +1271,7 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 		$scope.loading = false;
 	}, function(response)
 	{
-        $location.path('error');
+        $rootScope.showError();
 	});
 	
 	$scope.goStop = function(id)
@@ -1190,8 +1285,10 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 	};
 });
 
-app.controller("busesController", function($scope, $http, $interval, $location)
+app.controller("busesController", function($scope, $http, $interval, $location, $rootScope)
 {
+    document.title = pageTitles.header + pageTitles.buses;
+
 	$interval.cancel(appInterval);
 
 	$scope.requestingBusesData = false;
@@ -1215,7 +1312,7 @@ app.controller("busesController", function($scope, $http, $interval, $location)
 
 			}, function(response)
 			{
-                $location.path('error');
+                $rootScope.showError();
 			});
 		}
 	};
@@ -1232,8 +1329,10 @@ app.controller("busesController", function($scope, $http, $interval, $location)
     appInterval = $interval(function() { $scope.loadBusData(); }, 3000);
 });
 
-app.controller("evaluateController", function($scope, $http, $interval)
+app.controller("evaluateController", function($scope, $http, $interval, $rootScope)
 {
+    document.title = pageTitles.header + pageTitles.evaluate;
+
 	$interval.cancel(appInterval);
 
 	setCookie("survey_timer", "never", 5184000000);
@@ -1261,13 +1360,15 @@ app.controller("evaluateController", function($scope, $http, $interval)
             $scope.surveySendStatus = 2;
         }, function(response)
         {
-            $location.path('error');
+            $rootScope.showError();
         });
 	};
 });
 
-app.controller("reportController", function($scope, $http, $interval)
+app.controller("reportController", function($scope, $http, $interval, $rootScope)
 {
+    document.title = pageTitles.header + pageTitles.report;
+
     $interval.cancel(appInterval);
 
     // REPORT
@@ -1290,19 +1391,23 @@ app.controller("reportController", function($scope, $http, $interval)
             $scope.reportSendStatus = 2;
         }, function(response)
         {
-            $location.path('error');
+            $rootScope.showError();
         });
     };
 });
 
 app.controller("aboutController", function($scope, $interval)
 {
+    document.title = pageTitles.header + pageTitles.about;
+
     $interval.cancel(appInterval);
 	$scope.version = variables.version;
 });
 
-app.controller("languageSettingsController", function($scope, $http, $location, $interval)
+app.controller("languageSettingsController", function($scope, $http, $location, $interval, $rootScope)
 {
+    document.title = pageTitles.header + pageTitles.language;
+
 	$interval.cancel(appInterval);
 
 	// LANGUAGES
@@ -1317,7 +1422,7 @@ app.controller("languageSettingsController", function($scope, $http, $location, 
 			window.location.reload();
 		}, function(reponse)
 		{
-            $location.path('error');
+            $rootScope.showError();
 		});
 	};
 	
@@ -1326,12 +1431,14 @@ app.controller("languageSettingsController", function($scope, $http, $location, 
 		$scope.languages = response.data;
 	}, function(response)
 	{
-        $location.path('error');
+        $rootScope.showError();
 	});
 });
 
 app.controller("errorController", function($scope, $interval)
 {
+    document.title = pageTitles.header + pageTitles.error;
+
     $interval.cancel(appInterval);
 });
 

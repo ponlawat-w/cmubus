@@ -1,17 +1,19 @@
 <?php
 
+date_default_timezone_set('Asia/Bangkok');
+
 /**
  * Class Stop
  */
 class Stop
 {
-	private $ID;
-	private $Name;
-	private $BusStop;
+	public $ID;
+	public $Name;
+	public $BusStop;
 	/** @var Location */
-	private $Location;
-	private $Connections = array();
-	private $WaitTime = null;
+	public $Location;
+	public $Connections = array();
+	public $WaitTime = null;
 
     /**
      * @param $v
@@ -21,6 +23,10 @@ class Stop
 	{
 		return $this->$v;
 	}
+
+	public function __set($name, $value)
+    {
+    }
 
     /**
      * Stop constructor.
@@ -583,8 +589,8 @@ class Stop
                     $estimated_last += $estimatedTimeToThisStopOnLastRound;
                 }
             }
-			
-			if(date("H") < 7 || date("H") > 21)
+
+                if(date("H") < 7 || date("H") > 21)
 			{
 				$waittime = wait_time_at($this->ID, $route['id'], mktime(12, 0, 0));
 			}
@@ -652,10 +658,10 @@ class Stop
  */
 class Session
 {
-	private $ID;
-	private $BusNo;
-	private $Route;
-	private $StartTimeStamp;
+	public $ID;
+	public $BusNo;
+	public $Route;
+	public $StartTimeStamp;
 
     /**
      * @param $v
@@ -665,6 +671,10 @@ class Session
 	{
 		return $this->$v;
 	}
+
+	public function __set($name, $value)
+    {
+    }
 
     /**
      * Session constructor.
@@ -802,14 +812,14 @@ class Session
  */
 class Route
 {
-	private $ID;
-	private $Name;
-	private $Color;
+	public $ID;
+	public $Name;
+	public $Color;
     /**
      * [{stop (obj), distance_from_start}]
      * @var array
      */
-	private $Path;
+	public $Path;
 
     /**
      * @param $v
@@ -819,6 +829,10 @@ class Route
 	{
 		return $this->$v;
 	}
+
+	public function __set($name, $value)
+    {
+    }
 
     /**
      * Route constructor.
@@ -1120,9 +1134,9 @@ class Day
      * @var int $Type
      * @var string $Detail
      */
-    private $Timestamp;
-    private $Type;
-    private $Detail;
+    public $Timestamp;
+    public $Type;
+    public $Detail;
 
     /**
      * @param $v
@@ -1131,6 +1145,10 @@ class Day
     public function __get($v)
     {
         return $this->$v;
+    }
+
+    public function __set($name, $value)
+    {
     }
 
     /**

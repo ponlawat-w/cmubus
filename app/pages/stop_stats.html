@@ -1,0 +1,44 @@
+<div class="panel panel-default" ng-show="loading"><center>
+    <img src="assets/img/loading.gif"><br>
+    {{txt.pleaseWait}}
+</center></div>
+<div ng-show="!loading">
+    <h3 class="text-center">{{data.stop.name}} <sub><a href="stop/{{data.stop.id}}" class="btn btn-default btn-xs"><i class="fa fa-info"></i></a></sub></h3>
+    <h4 class="text-center" style="color: {{data.route.color}}">{{data.route.name}} <sub><a href="route/{{data.route.id}}" class="btn btn-default btn-xs"><i class="fa fa-info"></i></a></sub></h4>
+    <p><small><strong>{{txt.stopStats.today}}:</strong> {{data.today.timestamp|dateFormat}} ({{txt.stopStats.dayType[data.today.type]}})</small></p>
+    <div class="btn-group btn-group-justified" data-toggle="buttons">
+        <label class="btn btn-default btn-sm" ng-class="{'active btn-primary':(view=='weekday')}">
+            <input type="radio" name="view" ng-model="view" value="weekday">{{txt.stopStats.dayType.weekday}}
+        </label>
+        <label class="btn btn-default btn-sm" ng-class="{'active btn-primary':(view=='weekend')}" ng-click="loadInfo()">
+            <input type="radio" name="view" ng-model="view" value="weekend">{{txt.stopStats.dayType.weekend}}
+        </label>
+    </div>
+    <table class="table" style="margin-top: 10px; font-size: 1.2em;">
+        <tbody>
+        <tr>
+            <th>{{txt.stop.firstRound}}</th>
+            <td>{{data.stats[view].estimated_first_readable}}</td>
+        </tr>
+        <tr>
+            <th>{{txt.stop.lastRound}}</th>
+            <td>{{data.stats[view].estimated_last_readable}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+        <tr style="background-color: #9276d2; color: #ffffff;">
+            <th colspan="2" class="text-center">
+                {{txt.stop.waittingTime}}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="waittime in data.waittime[view]" ng-class="{'bg-info': data.today.type == view && data.serverTime%86400 >= waittime.start_time%86400 && data.serverTime%86400 <= waittime.end_time%86400}">
+            <td>{{waittime.start_time_readable}} - {{waittime.end_time_readable}}</td>
+            <td>{{waittime.waittime|timeText}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

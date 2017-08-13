@@ -1,7 +1,7 @@
 variables = {
     version: {
-        release: '1.0.1',
-        updated: 1502384400
+        release: '1.1.0',
+        updated: 1502557200
     },
     gaUsing: false
 };

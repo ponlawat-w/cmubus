@@ -61,8 +61,16 @@ app.controller("localeController", function($scope)
 			fromHere: "Search FROM here",
 			toHere: "Search TO here",
 			viewMap: "View map",
-			connections: "Around here"
+			connections: "Around here",
+            viewMoreInfo: "View more"
 		},
+        stopStats: {
+            today: 'Today',
+            dayType: {
+                weekday: 'Weekdays',
+                weekend: 'Weekends/Holidays'
+            }
+        },
         session: {
             finished: "Finished"
         },
@@ -165,10 +173,30 @@ app.controller("localeController", function($scope)
         },
         error: {
             title: "Error!",
-            message: "An error occurred. Please retry your action again, or access another page with below links."
+            message: "An error occurred. Please retry your action again, or access another page with below links.",
+            retry: "Reload this page"
         }
 	};
 });
+
+var pageTitles = {
+    header: "CMU BUS - ",
+    home: 'Home',
+    menu: 'Menu',
+    about: 'About',
+    buses: 'Buses',
+    error: 'Error',
+    evaluate: 'Evaluation Survey',
+    language: 'Language Settings',
+    report: 'Problem Report',
+    route: 'Route Information',
+    routes: 'Route List',
+    search: 'Search Transfer Information',
+    searchResult: 'Search Result',
+    session: 'Bus Round Record',
+    stopStats: 'Statistics Information',
+    stops: 'Busstop List'
+};
 
 app.filter("distance", function()
 {

@@ -12,3 +12,4 @@
 .idea/
 .idea/*.xml
 .idea/workspace.xml
+mysql_connection.inc.php

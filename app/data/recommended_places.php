@@ -6,7 +6,7 @@ session_write_close();
 
 $page_result = array();
 
-$recommendedStops = array(119, 33, 56, 117, 107, 129);
+$recommendedStops = array(119, 33, 56, 117, 107, 129, 133);
 
 foreach($recommendedStops as $recommendedStop)
 {

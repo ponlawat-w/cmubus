@@ -54,15 +54,23 @@ app.controller("localeController", function($scope)
                 arrived: "終着"
             },
 			timetable: "到着時刻",
-			info: "情報",
+			info: "バス停情報",
 			firstRound: "予想始発時刻",
 			lastRound: "予想終発時刻",
 			waittingTime: "予想バス待ち時間",
 			fromHere: "ここから検索",
 			toHere: "ここまで検索",
 			viewMap: "地図で見る",
-			connections: "周辺スポット"
+			connections: "周辺スポット",
+            viewMoreInfo: "もっと見る"
 		},
+        stopStats: {
+            today: '本日',
+            dayType: {
+                weekday: '平日',
+                weekend: '休日'
+            }
+        },
         session: {
             finished: "終点に到着"
         },
@@ -165,10 +173,30 @@ app.controller("localeController", function($scope)
         },
         error: {
             title: "エラーが発生しました。",
-            message: "システムにエラーが発生しました。やり直し、又は下記のリンクで他のページをアクセスしてください。"
+            message: "システムにエラーが発生しました。やり直し、又は下記のリンクで他のページをアクセスしてください。",
+            retry: "リロードする"
         }
 	};
 });
+
+var pageTitles = {
+    header: "ＣＭＵバス－",
+    home: 'ホーム',
+    menu: 'メニュー',
+    about: 'このアプリについて',
+    buses: 'バス一覧',
+    error: 'エラー',
+    evaluate: 'アプリ評価',
+    language: '言語設定 (Language Settings)',
+    report: '問題警告',
+    route: 'ルート情報',
+    routes: 'ルート一覧',
+    search: '乗換案内',
+    searchResult: '乗換案内（検索結果）',
+    session: 'バス時刻',
+    stopStats: 'バス停統計情報',
+    stops: 'バス停一覧'
+};
 
 app.filter("distance", function()
 {

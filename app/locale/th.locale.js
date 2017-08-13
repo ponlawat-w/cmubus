@@ -53,15 +53,23 @@ app.controller("localeController", function($scope)
                 departed: "ออก",
                 arrived: "ถึง"
             },
-			timetable: "ตารางเวลา",
-			info: "ข้อมูล",
+			timetable: "ดูตารางเวลา",
+			info: "ดูข้อมูลป้ายหยุดรถ",
 			firstRound: "เวลารอบแรกโดยประมาณ",
 			lastRound: "เวลารอบสุดท้ายโดยประมาณ",
 			waittingTime: "เวลารอรถโดยประมาณ",
 			fromHere: "ค้นหาเส้นทางจากที่นี่",
 			toHere: "ค้นหาเส้นทางถึงที่นี่",
 			viewMap: "ดูแผนที่",
-			connections: "สถานที่ใกล้เคียง"
+			connections: "สถานที่ใกล้เคียง",
+			viewMoreInfo: "ดูข้อมูลเพิ่มเติม"
+		},
+		stopStats: {
+			today: 'วันนี้',
+			dayType: {
+				weekday: 'วันธรรมดา',
+				weekend: 'วันหยุด'
+			}
 		},
 		session: {
 			finished: "ถึงปลายทางแล้ว"
@@ -165,10 +173,30 @@ app.controller("localeController", function($scope)
 		},
 		error: {
 			title: "พบข้อผิดพลาด",
-			message: "พบข้อผิดพลาดเกิดขึ้นในระบบ กรุณาลองใหม่อีกครั้ง หรือไปยังหน้าอื่นด้วยเมนูด้านล่าง"
+			message: "พบข้อผิดพลาดเกิดขึ้นในระบบ กรุณาลองใหม่อีกครั้ง หรือไปยังหน้าอื่นด้วยเมนูด้านล่าง",
+			retry: "โหลดใหม่อีกครั้ง"
 		}
 	};
 });
+
+var pageTitles = {
+    header: "CMU BUS - ",
+	home: 'หน้าหลัก',
+	menu: 'เมนู',
+	about: 'เกี่ยวกับ',
+	buses: 'ดูรถทั้งหมด',
+	error: 'ผิดพลาด',
+	evaluate: 'ประเมินแอปพลิเคชัน',
+	language: 'ตั้งค่าภาษา (Language Settings)',
+	report: 'รายงานปัญหา',
+	route: 'ดูข้อมูลเส้นทาง',
+	routes: 'ดูเส้นทางทั้งหมด',
+	search: 'ค้นหาเส้นทาง',
+	searchResult: 'ผลการค้นหา',
+	session: 'ดูข้อมูลรอบรถ',
+	stopStats: 'ข้อมูลสถิติ',
+	stops: 'ดูป้ายทั้งหมด'
+};
 
 app.filter("distance", function()
 {

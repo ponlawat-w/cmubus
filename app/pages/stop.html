@@ -5,11 +5,11 @@
 <div ng-show="!loading">
 	<center><h2>{{stopInfo.name}} <sup><button class="btn btn-default btn-xs" ng-click="openMap()"> <i class="fa fa-map-marker"></i></button></sup></h2></center>
 	<div class="btn-group btn-group-justified" data-toggle="buttons" ng-show="busstop">
-		<label class="btn btn-primary btn-sm" ng-class="{'active':(view=='timetable')}">
-			<input type="radio" name="view" ng-model="view" value="timetable" checked="checked"><i class="fa fa-th"></i> {{txt.stop.timetable}}
+		<label class="btn btn-default btn-sm" ng-class="{'active btn-info':(view=='timetable')}">
+			<input type="radio" name="view" ng-model="view" value="timetable" checked="checked"><i class="fa fa-bus"></i> {{txt.stop.timetable}}
 		</label>
-		<label class="btn btn-primary btn-sm" ng-class="{'active':(view=='info')}" ng-click="loadInfo()">
-			<input type="radio" name="view" ng-model="view" value="info"><i class="fa fa-info"></i> {{txt.stop.info}}
+		<label class="btn btn-default btn-sm" ng-class="{'active btn-info':(view=='info')}" ng-click="loadInfo()">
+			<input type="radio" name="view" ng-model="view" value="info"><i class="fa fa-info-circle"></i> {{txt.stop.info}}
 		</label>
 	</div>
 	<div ng-show="view == 'timetable'"><p>
@@ -18,13 +18,13 @@
 			{{txt.pleaseWait}}</center>
 		</div>
 		<div ng-show="stopTimetable.length > 0" class="btn-group btn-group-justified" data-toggle="buttons">
-			<label class="btn btn-default btn-xs" ng-class="{'active':(timetableMode=='timeLeft')}">
+			<label class="btn btn-default btn-xs" ng-class="{'btn-success active':(timetableMode=='timeLeft')}">
 				<input type="radio" name="timetableMode" ng-model="timetableMode" value="timeLeft" checked="checked"><i class="fa fa-clock-o"></i> {{txt.stop.timeleft}}
 			</label>
-			<label class="btn btn-default btn-xs" ng-class="{'active':(timetableMode=='place')}">
+			<label class="btn btn-default btn-xs" ng-class="{'btn-success active':(timetableMode=='place')}">
 				<input type="radio" name="timetableMode" ng-model="timetableMode" value="place"><i class="fa fa-map-marker"></i> {{txt.stop.place}}
 			</label>
-			<label class="btn btn-default btn-xs" ng-class="{'active':(timetableMode=='distace')}">
+			<label class="btn btn-default btn-xs" ng-class="{'btn-success active':(timetableMode=='distace')}">
 				<input type="radio" name="timetableMode" ng-model="timetableMode" value="distace"><i class="fa fa-tachometer"></i> {{txt.stop.distance}}
 			</label>
 		</div>
@@ -102,12 +102,12 @@
 		<div ng-show="!infoLoading">
 			<p>
 				<div class="btn-group btn-group-justified">
-					<a href="javascript:void(0);" class="btn btn-default" ng-click="goSearch('from', id)">{{txt.stop.fromHere}}</a>
-					<a href="javascript:void(0);" class="btn btn-default" ng-click="goSearch('to', id)">{{txt.stop.toHere}}</a>
+					<a href="searchfrom/{{id}}" class="btn btn-default">{{txt.stop.fromHere}}</a>
+					<a href="searchto/{{id}}" class="btn btn-default">{{txt.stop.toHere}}</a>
 				</div>
 			</p>
 			<p>
-				<button class="btn btn-default" style="width: 100%;" ng-click="openMap()"><i class="fa fa-map-marker"></i> {{txt.stop.viewMap}}</button>
+				<button class="btn btn-primary" style="width: 100%;" ng-click="openMap()"><i class="fa fa-map-marker"></i> {{txt.stop.viewMap}}</button>
 			</p>
 			<table class="table" ng-show="busstop" ng-repeat="route in stopGeneralInfo.routes">
 				<thead>
@@ -128,12 +128,22 @@
 						<th>{{txt.stop.waittingTime}}</th>
 						<td>{{route.waittime|timeText}}</td>
 					</tr>
+					<tr>
+						<td colspan="2">
+							<div>
+								<a href="stop/{{id}}/stats/{{route.route}}" class="btn btn-default" style="width: 100%;"><i class="fa fa-ellipsis-h"></i> {{txt.stop.viewMoreInfo}}</a>
+							</div>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			<hr>
 			<div class="list-group">
 				<div class="list-group-item" style="background-color: #9276d2; color: #ffffff;"><strong><big><i class='map-icon map-icon-walking'></i> {{txt.stop.connections}}</big></strong></div>
-				<a href="javascript:void(0);" class="list-group-item" ng-repeat="connection in stopGeneralInfo.connections" ng-click="goStop(connection.to)">{{connection.name}}<small><sub> {{connection.time|timeText}}</sub></small></a>
+				<a href="javascript:void(0);" class="list-group-item" ng-repeat="connection in stopGeneralInfo.connections" ng-click="goStop(connection.to)">
+					<i class="fa" ng-class="{'fa-map-marker':!connection.busstop, 'fa-bus':connection.busstop}"></i>
+					{{connection.name}}<small><sub> {{connection.time|timeText}}</sub></small>
+				</a>
 			</div>
 		</div>
 	</p></div>

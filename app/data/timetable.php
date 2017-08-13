@@ -69,4 +69,3 @@ echo json_encode($page_result);
 	
 mysqli_close($connection);
 ob_end_flush();
-?>
