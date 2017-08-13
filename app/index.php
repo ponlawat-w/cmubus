@@ -4,6 +4,17 @@
     include_once("../lib/app.inc.php");
     get_language_id();
     session_write_close();
+
+    if(isset($_GET['error']))
+    {
+        echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
+        if($_GET['error'] == 'cookie_disabled')
+        {
+            echo '<p>This website requires cookie, please enable it.<br>ขออภัย คุณต้องเปิดการใช้งานคุกกี้เพื่อเข้าถึงเว็บไซต์นี้</p>';
+            echo '<a href="/">Retry / ลองใหม่</a>';
+            exit;
+        }
+    }
 ?>
 <!doctype html>
 <html ng-app="cmubus" ng-controller="localeController" lang="<?php echo get_language_id(); ?>">

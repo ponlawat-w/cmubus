@@ -4,14 +4,15 @@ var appInterval;
 
 if(!navigator.cookieEnabled)
 {
-	alert('This website requires cookie, please enable it.\nขออภัย คุณต้องเปิดการใช้งานคุกกี้เพื่อเข้าถึงเว็บไซต์นี้');
-	window.location = 'http://cmu.ac.th/';
+	window.location = 'index.php?error=cookie_disabled';
 }
-
-if(parseInt(getCookieValue('version')) !== variables.version.updated)
+else
 {
-	setCookie('version', variables.version.updated, 5184000000);
-	window.location.reload(true);
+    if(parseInt(getCookieValue('version')) !== variables.version.updated)
+    {
+        setCookie('version', variables.version.updated, 5184000000);
+        window.location.reload(true);
+    }
 }
 
 app.config(function($routeProvider, $locationProvider, $httpProvider)
