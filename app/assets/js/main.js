@@ -1446,7 +1446,7 @@ app.controller("languageSettingsController", function($scope, $http, $location, 
 	});
 });
 
-app.controller("errorController", function($scope, $interval)
+app.controller("errorController", function($scope, $interval, $location)
 {
     document.title = pageTitles.header + pageTitles.error;
     sendGA($location.path());
