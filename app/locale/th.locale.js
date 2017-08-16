@@ -30,7 +30,9 @@ app.controller("localeController", function($scope)
 			}
 		},
 		routes: {
-			pleaseSelect: "กรุณาเลือกเส้นทาง"
+			pleaseSelect: "กรุณาเลือกเส้นทาง",
+			since: "ตั้งแต่",
+			until: "สิ้นสุด"
 		},
 		route: {
 			viewMap: "ดูเส้นทางบนแผนที่"
@@ -372,6 +374,9 @@ app.filter('dateFormat', function()
 	return function(timestamp)
 	{
 		var inputDate = new Date(timestamp * 1000);
+		inputDate = inputDate.getTime() + (inputDate.getTimezoneOffset() * 60000);
+		inputDate = new Date(inputDate + (3600000 * 7));
+
 		var months = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 
 		var date = inputDate.getDate().toString();

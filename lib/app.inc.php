@@ -2295,22 +2295,43 @@ function estimate()
  * @param Day $day
  * @return array
  */
-function get_available_route_on($day)
+function get_available_route_since_day($day)
 {
     $function_results = array();
+    $routeIDs = array();
 
     foreach(get_routes_at($day->Timestamp) as $routeData) if($routeData['available'] == 1)
     {
+        $routeData['since'] = null;
+        $routeData['until'] = null;
+
+        $sql = 'SELECT `date` FROM `route_available_switchers` WHERE `set_available_to` = 0 AND `route` = ? AND `date` > ? ORDER BY `date` ASC LIMIT 1';
+        $result = sql_query($sql, 'ii', array($routeData['id'], $day->Timestamp));
+        if($result->num_rows > 0)
+        {
+            $switcherData = $result->fetch_array();
+            $routeData['until'] = $switcherData['date'];
+            if(date('His', $routeData['until']) == '000000')
+            {
+                $routeData['until']--;
+            }
+        }
+
+        array_push($routeIDs, $routeData['id']);
         array_push($function_results, $routeData);
     }
 
-    $sql = "SELECT DISTINCT `date` FROM `route_available_switchers` WHERE `set_available_to` = 1 AND `date` BETWEEN ? AND ?";
-    $results = sql_query($sql, "ii", array($day->Timestamp + 1, $day->Timestamp + 86399));
+    $sql = "SELECT DISTINCT `date` FROM `route_available_switchers` WHERE `set_available_to` = 1 AND `date` > ?";
+    $results = sql_query($sql, "i", array($day->Timestamp));
     while($timestampData = mysqli_fetch_array($results))
     {
-        foreach(get_routes_at($timestampData['date']) as $routeData) if($routeData['available'] == 1 && !in_array($routeData, $function_results))
+        foreach(get_routes_at($timestampData['date']) as $routeData) if($routeData['available'] == 1 && !in_array($routeData['id'], $routeIDs))
         {
+            $routeData['available'] = 0;
+            $routeData['since'] = $timestampData['date'];
+            $routeData['until'] = null;
             array_push($function_results, $routeData);
+            array_push($routeIDs, $routeData['id']);
         }
     }
 

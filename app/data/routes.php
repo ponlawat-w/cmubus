@@ -6,7 +6,7 @@ session_write_close();
 
 $page_result = array();
 
-$routes = get_available_route_on(new Day(mktime(0, 0, 0)));
+$routes = get_available_route_since_day(new Day(mktime(0, 0, 0)));
 
 foreach($routes as $key => $route)
 {

@@ -30,7 +30,9 @@ app.controller("localeController", function($scope)
             }
 		},
         routes: {
-            pleaseSelect: "ルートを選択してください"
+            pleaseSelect: "ルートを選択してください",
+            since: "運行開始日",
+            until: "運行終了日"
         },
         route: {
             viewMap: "ルートを地図で見る"
@@ -378,9 +380,11 @@ app.filter('dateFormat', function()
 {
 	return function(timestamp)
 	{
-		var inputDate = new Date(timestamp * 1000);
+        var inputDate = new Date(timestamp * 1000);
+        inputDate = inputDate.getTime() + (inputDate.getTimezoneOffset() * 60000);
+        inputDate = new Date(inputDate + (3600000 * 7));
 
-		var date = inputDate.getDate().toString();
+        var date = inputDate.getDate().toString();
 		var month = (inputDate.getMonth() + 1).toString();
 		var year = inputDate.getFullYear().toString();
 

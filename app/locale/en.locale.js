@@ -30,7 +30,9 @@ app.controller("localeController", function($scope)
             }
 		},
         routes: {
-            pleaseSelect: "Please select route"
+            pleaseSelect: "Please select route",
+            since: "Since",
+            until: "Until"
         },
         route: {
             viewMap: "View this route on map"
@@ -427,8 +429,11 @@ app.filter('dateFormat', function()
 {
 	return function(timestamp)
 	{
-		var inputDate = new Date(timestamp * 1000);
-		var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var inputDate = new Date(timestamp * 1000);
+        inputDate = inputDate.getTime() + (inputDate.getTimezoneOffset() * 60000);
+        inputDate = new Date(inputDate + (3600000 * 7));
+
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 		var date = inputDate.getDate().toString();
 		var month = months[inputDate.getMonth()];

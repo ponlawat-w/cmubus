@@ -8,6 +8,8 @@
 	<div class="list-group">
 		<a class="list-group-item" href="javascript:void(0);" ng-repeat="route in routes" ng-click="goRoute(route.id)" style="color:{{route.color}};">
 			<big>{{route.name}}</big> <sub><small>({{route.distance|distance}})</small></sub>
+			<div ng-if="route.since" class="small">　(<strong>{{txt.routes.since}}:</strong> {{route.since|dateFormat}})</div>
+			<div ng-if="route.until" class="small">　(<strong>{{txt.routes.until}}:</strong> {{route.until|dateFormat}})</div>
 			<div ng-repeat="stop in route.sampled_stops"><h5 style="margin: 0px; padding: 0px;"><small>　{{stop.name}}</small></h5></div>
 		</a>
 	</div>

@@ -1,6 +1,6 @@
 <?php
 $version = array(
-    'release' =>    '1.1.2a',
-    'updated' =>    1502625600,
+    'release' =>    '1.1.3',
+    'updated' =>    1502816400,
     'development'=> false
 );
