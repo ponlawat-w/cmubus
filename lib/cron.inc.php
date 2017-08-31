@@ -358,35 +358,35 @@ function update_data()
 						}
 					}
 					## Bus is off the route, but at least update its location ##
-					else
-					{
-						$sql = "UPDATE `buses` SET `location_lat` = {$busdata['location_lat']}, `location_lon` = {$busdata['location_lon']}, `rotation` = {$busdata['rotation']} WHERE `id` = {$busdata['busno']}";
-						mysqli_query($connection, $sql);
-						
-						if($location->DistanceTo($last_sequence_location) < 50)
-						{
-							## Update ##
-							update_bus(array(
-								"id" => $busdata['busno'],
-								"route" => $route,
-								"session" => 0,
-								"last_sequence" => 0,
-								"last_distance" => 0,
-								"location_lat" => $busdata['location_lat'],
-								"location_lon" => $busdata['location_lon'],
-								"rotation" => $busdata['rotation']
-							));
-							
-							## Record ##
-							if($last_sequence_data['stop'] == NULL)
-							{
-								$last_sequence_data['stop'] = -1;
-							}
-							
-							$sql = "INSERT INTO `records` (`id`, `session`, `stop`, `datetime`) VALUES (0, $session, {$last_sequence_data['stop']}, $now)";
-							mysqli_query($connection, $sql);
-						}
-					}
+//					else
+//					{
+//						$sql = "UPDATE `buses` SET `location_lat` = {$busdata['location_lat']}, `location_lon` = {$busdata['location_lon']}, `rotation` = {$busdata['rotation']} WHERE `id` = {$busdata['busno']}";
+//						mysqli_query($connection, $sql);
+//
+//						if($location->DistanceTo($last_sequence_location) < 50)
+//						{
+//							## Update ##
+//							update_bus(array(
+//								"id" => $busdata['busno'],
+//								"route" => $route,
+//								"session" => 0,
+//								"last_sequence" => 0,
+//								"last_distance" => 0,
+//								"location_lat" => $busdata['location_lat'],
+//								"location_lon" => $busdata['location_lon'],
+//								"rotation" => $busdata['rotation']
+//							));
+//
+//							## Record ##
+//							if($last_sequence_data['stop'] == NULL)
+//							{
+//								$last_sequence_data['stop'] = -1;
+//							}
+//
+//							$sql = "INSERT INTO `records` (`id`, `session`, `stop`, `datetime`) VALUES (0, $session, {$last_sequence_data['stop']}, $now)";
+//							mysqli_query($connection, $sql);
+//						}
+//					}
 				}
 			}
 		}
