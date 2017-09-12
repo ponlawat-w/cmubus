@@ -1,6 +1,7 @@
 var app = angular.module("cmubus", ['ngRoute', 'ngAnimate']);
 
 var appInterval;
+var geolocationID;
 
 if(!navigator.cookieEnabled)
 {
@@ -304,7 +305,8 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 		
 		if (navigator.geolocation)
 		{
-			navigator.geolocation.watchPosition(function(position)
+			navigator.geolocation.clearWatch(geolocationID);
+			geolocationID = navigator.geolocation.watchPosition(function(position)
 			{
 				$scope.$apply(function()
 				{
@@ -492,7 +494,8 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 
     if(navigator.geolocation)
     {
-        navigator.geolocation.getCurrentPosition(function(position)
+        navigator.geolocation.clearWatch(geolocationID);
+        geolocationID = navigator.geolocation.getCurrentPosition(function(position)
         {
             $scope.$apply(function() {
                 $scope.usePosition = true;
