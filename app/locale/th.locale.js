@@ -23,11 +23,7 @@ app.controller("localeController", function($scope)
 			recommendedPlaces: {
 				title: "สถานที่แนะนำ"
 			},
-			useThisLanguage: "",
-			welcome: {
-				title: "ต้อนรับปีการศึกษาใหม่ 2560!",
-				messages: ["ขอแสดงความยินดีลูกช้างเชือกใหม่ทุกท่าน!", "คุณสามารถค้นหาอาคารเรียนหรือสถานที่ต่าง ๆ ใน มช. ได้ด้วยช่องค้นหาด้านล่างนี้ ↴"]
-			}
+			useThisLanguage: ""
 		},
 		routes: {
 			pleaseSelect: "กรุณาเลือกเส้นทาง",

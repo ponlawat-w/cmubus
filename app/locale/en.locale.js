@@ -23,11 +23,7 @@ app.controller("localeController", function($scope)
             recommendedPlaces: {
                 title: "Recommended Places"
             },
-            useThisLanguage: "Use English",
-            welcome: {
-                title: "Greetings to new academic year 2560!",
-                messages: ["Welcome new students to Chiang Mai University!", "You can use search box below to find places or buildings in CMU ↴"]
-            }
+            useThisLanguage: "Use English"
 		},
         routes: {
             pleaseSelect: "Please select route",

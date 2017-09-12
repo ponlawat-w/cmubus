@@ -3,12 +3,6 @@
 	<a href="/routes" class="btn btn-default" style="width: 100%; background-color: #f0ecf9;">{{txt.home.viewTimeTable}}</a>
 </div>
 
-<div class="panel panel-info bg-info" style="margin-bottom: 0;">
-	<div class="panel-body">
-		<h4 style="color: #c53bff">{{txt.home.welcome.title}}</h4>
-		<div ng-repeat="message in txt.home.welcome.messages">{{message}}</div>
-	</div>
-</div>
 <div class="input-group">
 	<span class="input-group-addon"><i class="fa fa-search"></i></span>
 	<input id="keyword" type="text" class="form-control" placeholder="{{txt.home.searchDetail}}" ng-model="keyword" ng-focus="scrollTo('keyword')" autocomplete="off" jp-input>

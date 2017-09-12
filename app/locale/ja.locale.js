@@ -23,11 +23,7 @@ app.controller("localeController", function($scope)
             recommendedPlaces: {
                 title: "おすすめスポット"
             },
-            useThisLanguage: "日本語で利用します",
-            welcome: {
-                title: "２５６０年度、新学期歓迎！",
-                messages: ["新入生の皆さん、チェンマイ大学へようこそ", "この下で学内の設置、ビルなどの情報を検索できます！↴"]
-            }
+            useThisLanguage: "日本語で利用します"
 		},
         routes: {
             pleaseSelect: "ルートを選択してください",
