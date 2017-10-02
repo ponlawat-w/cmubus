@@ -46,7 +46,8 @@ div.bordered
 	.navbar-fixed-top
 	{
 		z-index: 9;
-		background-color: #9276d2;
+		background-color: #454545;
+		/*background-color: #9276d2;*/
 		color: #ffffff;
 	}
 		.navbar-fixed-top a
