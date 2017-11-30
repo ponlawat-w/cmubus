@@ -1433,7 +1433,7 @@ app.controller("languageSettingsController", function($scope, $http, $location, 
 		$http.get("data/set_language.php?id=" + newLanguageID).then(function(response)
 		{
 			setCookie("user_language", newLanguageID, 5184000000);
-			window.location.reload();
+			window.location = '/';
 		}, function(reponse)
 		{
             $rootScope.showError();

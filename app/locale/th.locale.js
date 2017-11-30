@@ -23,7 +23,16 @@ app.controller("localeController", function($scope)
 			recommendedPlaces: {
 				title: "สถานที่แนะนำ"
 			},
-			useThisLanguage: ""
+			useThisLanguage: "",
+			announcement: {
+				title: "ประกาศปิดให้บริการ",
+				readMore: "อ่านเพิ่มเติม",
+				messages: [
+					"　เว็บไซต์ cmubus.com จะปิดให้บริการในเวลา 0:00 น. ของวันอาทิตย์ ที่ 14 มกราคม พ.ศ. 2561 นี้",
+					"　โดยท่านสามารถใช้บริการตรวจสอบตำแหน่งรถโดยสาร ขส.มช. ได้ โดยผ่านทางเว็บไซต์ <a href='http://cmu.bda.co.th'>cmu.bda.co.th</a> หรือ <a href='http://cmutransit.com/'>cmutransit.com</a> หรือสแกน QR Code ที่ป้ายโดยสารเพื่อดูเวลา <a href='http://youtu.be/zxbxhWIz_AM'>คลิกเพื่อดูวีดิโอวิธีการสแกนเพื่อดูเวลารถ</a>",
+					"　ทางผู้พัฒนา cmubus.com ขอขอบพระคุณทุกท่านที่ใช้งานเว็บไซต์เป็นอย่างดีมาโดยตลอด"
+				]
+			}
 		},
 		routes: {
 			pleaseSelect: "กรุณาเลือกเส้นทาง",

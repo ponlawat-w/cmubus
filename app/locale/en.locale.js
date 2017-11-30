@@ -23,7 +23,16 @@ app.controller("localeController", function($scope)
             recommendedPlaces: {
                 title: "Recommended Places"
             },
-            useThisLanguage: "Use English"
+            useThisLanguage: "Use English",
+            announcement: {
+                title: "Website Shutdown Announcement",
+                readMore: "Read more",
+                messages: [
+                    "　This site, cmubus.com, will be closing at 0:00 on 14 January, 2018.",
+                    "　Alternatively, you can use the following sites to check Chiang Mai University bus location and timetables (all sites are in Thai language only): <a href='http://cmu.bda.co.th'>cmu.bda.co.th</a> or <a href='http://cmutransit.com/'>cmutransit.com</a>, or you can scan QR Code which is attached at bus stops to see timetable of the current bus stop. <a href='http://youtu.be/zxbxhWIz_AM'>Click here watch video and learn more about using QR code.</a>",
+                    "　Thank you for using cmubus.com."
+                ]
+            }
 		},
         routes: {
             pleaseSelect: "Please select route",

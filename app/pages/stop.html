@@ -3,6 +3,11 @@
 	{{txt.pleaseWait}}
 </center></div>
 <div ng-show="!loading">
+	<div class="alert alert-danger">
+		<h4><i class="fa fa-bullhorn"></i> {{txt.home.announcement.title}}</h4>
+		<p>{{txt.home.announcement.messages[0]}}</p>
+		<a href="/" class="btn btn-default">{{txt.home.announcement.readMore}}</a>
+	</div>
 	<center><h2>{{stopInfo.name}} <sup><button class="btn btn-default btn-xs" ng-click="openMap()"> <i class="fa fa-map-marker"></i></button></sup></h2></center>
 	<div class="btn-group btn-group-justified" data-toggle="buttons" ng-show="busstop">
 		<label class="btn btn-default btn-sm" ng-class="{'active btn-info':(view=='timetable')}">

@@ -1,3 +1,8 @@
+<div class="alert alert-danger">
+	<h4><i class="fa fa-bullhorn"></i> {{txt.home.announcement.title}}</h4>
+	<p ng-repeat="message in txt.home.announcement.messages" ng-bind-html="message | trustedHTML"></p>
+</div>
+
 <div class="btn-group-vertical" style="width: 100%; border-color: #140c27; margin-bottom: 20px;">
 	<a href="/search" class="btn btn-lg btn-default" style="width: 100%; color: #28184e; font-weight: bold; background-color: #e0d8f3;">{{txt.home.search}}</a>
 	<a href="/routes" class="btn btn-default" style="width: 100%; background-color: #f0ecf9;">{{txt.home.viewTimeTable}}</a>

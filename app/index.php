@@ -120,6 +120,9 @@
                         <p>
                             {{txt.about.index.message}}
                         </p>
+                        <p>
+                            <i class="fa fa-exclamation-circle"></i>{{txt.home.announcement.messages[0]}}
+                        </p>
                         <div>
                             <a href="/about" class="btn btn-default" ng-click="closeSuggestion();">{{txt.about.index.readMore}}</a>
                         </div>
