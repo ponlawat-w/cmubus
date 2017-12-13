@@ -29,7 +29,7 @@ app.controller("localeController", function($scope)
                 readMore: "続きを読む",
                 messages: [
                     "　2018年1月14日 0:00時に当サイトが閉鎖になります。",
-                    "　当サイトの代わりに、次の大学バス時刻表／位置情報のサイトをご利用ください（全部のサイトはタイ語のみ）。 <a href='http://cmu.bda.co.th'>cmu.bda.co.th</a> 又は <a href='http://cmutransit.com/'>cmutransit.com</a> 又はバス停にて、携帯電話でＱＲコードをスキャンして、時刻表が出てきます。<a href='http://youtu.be/zxbxhWIz_AM'>利用方法の動画はこちら。</a>",
+                    "　当サイトの代わりに、次の大学バス時刻表／位置情報のサイトをご利用ください（全部のサイトはタイ語のみ）。 <a href='http://cmutransit.bda.co.th'>cmutransit.bda.co.th</a> 又は <a href='http://cmutransit.com/'>cmutransit.com</a> 又はバス停にて、携帯電話でＱＲコードをスキャンして、時刻表が出てきます。<a href='http://youtu.be/zxbxhWIz_AM'>利用方法の動画はこちら。</a>",
                     "　いつもcmubus.comをご利用いただき、誠にありがとうございました。"
                 ]
             }
