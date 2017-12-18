@@ -1,1 +1,8 @@
-CMU Bus
+**ระบบให้ข้อมูลเพื่อการใช้งานรถประจำทางในมหาวิทยาลัย (วศ.คพ. 6/2559)**
+
+โครงงานนี้เป็นการพัฒนาระบบสำหรับการให้ข้อมูลเพื่อการใช้งานระบบขนส่งมวลชนมหาวิทยาลัยเชียงใหม่ (ขส.มช.) โดยภายในโครงงานได้แบ่งการทำงานออกเป็นสองส่วนหลัก ได้แก่ ส่วนติดต่อกับผู้ใช้เพื่อให้ข้อมูลที่เป็นประโยชน์ในรูปแบบเว็บแอปพลิเคชัน และส่วนการบันทึกและวิเคราะห์ข้อมูลเวลาเดินรถ โดยแบ่งการใช้งานออกเป็นผู้ดูแลระบบซึ่งสามารถจัดการและดูข้อมูลเกี่ยวกับการเดินรถได้ และ การใช้งานสำหรับผู้ใช้งานทั่วไป ซึ่งจะสามารถค้นหาและดูข้อมูลการเดินรถได้ ในส่วนการบันทึกและวิเคราะห์ข้อมูลเวลาเดินรถได้มีการบันทึกข้อมูลเวลาและตำแหน่งรถลงเซอร์เวอร์เป็นประจำ หลังจากนั้นจะนำข้อมูลเวลาที่ได้มาวิเคราะห์เพื่อประมาณเป็นตารางเวลาเดินรถให้แก่ผู้ใช้งาน ทั้งนี้ ระบบในส่วนติดต่อกับผู้ใช้จะเป็นเว็บแอปพลิเคชัน โดยได้มีการติดตั้งใช้งานจริงในช่วงท้ายของโครงงานเพื่อสำรวจและรับการประเมินจากผู้ใช้ ซึ่งจะนำมาใช้อ้างอิงและปรับปรุงต่อไปในอนาคต
+
+
+**University Bus Information System (CPE 6/2559)**
+
+In this project, the information system for Chiang Mai University bus was developed. The project is divided into two parts. The first part provides useful information to users, such as bus route information, estimated bus arrival timetable. There are two roles in the section; administrators and users. The administrators manage data and see recorded data and summarized statistics. The users can search routes data and see the estimated timetables. The second part involves data recording and analyzing. The system regularly records bus arrival time and analyzes them to generate the estimated timetables. The actual users’ feedbacks are collected for references, and for improving the system in the future.
