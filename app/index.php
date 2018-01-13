@@ -21,7 +21,16 @@
 	<head>
 		<meta charset="utf-8">
 
-        <base href="/">
+        <?php
+        if($version['development'])
+        {
+            echo '<base href="https://139.59.255.146/dev.cmubus/app/">';
+        }
+        else
+        {
+            echo '<base href="https://139.59.255.146/cmubus/app/">';
+        }
+        ?>
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="application-name" content="CMUBUS">
@@ -37,17 +46,17 @@
             var language = "<?php echo get_language_id(); ?>";
             var variables = {};
             variables.version = <?php echo json_encode($version); ?>;
-            variables.gaUsing = !variables.version.development;
-
-            if(variables.gaUsing)
-            {
-              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-              ga('create', 'UA-91670758-1', 'auto');
-//              ga('send', 'pageview');
-            }
+//             variables.gaUsing = !variables.version.development;
+//
+//             if(variables.gaUsing)
+//             {
+//               (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+//               (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+//               m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+//               })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+//               ga('create', 'UA-91670758-1', 'auto');
+// //              ga('send', 'pageview');
+//             }
 		</script>
         <script src="assets/js/angular.min.js"></script>
         <script src="assets/js/angular-route.min.js"></script>
@@ -119,9 +128,6 @@
                         <h4>{{txt.about.index.title}}</h4>
                         <p>
                             {{txt.about.index.message}}
-                        </p>
-                        <p>
-                            <i class="fa fa-exclamation-circle"></i>{{txt.home.announcement.messages[0]}}
                         </p>
                         <div>
                             <a href="/about" class="btn btn-default" ng-click="closeSuggestion();">{{txt.about.index.readMore}}</a>
