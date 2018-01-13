@@ -1,11 +1,5 @@
 <h4><strong>{{txt.about.title}}</strong></h4>
 
-<div class="alert alert-danger">
-    <h4><i class="fa fa-bullhorn"></i> {{txt.home.announcement.title}}</h4>
-    <p>{{txt.home.announcement.messages[0]}}</p>
-    <a href="/" class="btn btn-default">{{txt.home.announcement.readMore}}</a>
-</div>
-
 <div class="panel panel-default" style="padding: 10px; text-indent: 15px; text-align: justify; text-justify: {{txt.about.textJustify}};">
     <p ng-repeat="message in txt.about.message">
         {{message}}

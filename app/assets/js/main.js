@@ -1522,9 +1522,9 @@ app.filter("busDataColor", function()
 
 function sendGA(path)
 {
-	if(variables.gaUsing) {
-        ga('send', 'pageview', {page: path});
-    }
+    // if(variables.gaUsing) {
+    //     ga('send', 'pageview', {page: path});
+    // }
 }
 
 function setCookie(name, value, expireTimeInMillisecond)
