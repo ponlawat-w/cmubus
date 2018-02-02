@@ -11,7 +11,7 @@
         if($_GET['error'] == 'cookie_disabled')
         {
             echo '<p>This website requires cookie, please enable it.<br>ขออภัย คุณต้องเปิดการใช้งานคุกกี้เพื่อเข้าถึงเว็บไซต์นี้</p>';
-            echo '<a href="/">Retry / ลองใหม่</a>';
+            echo '<a href="">Retry / ลองใหม่</a>';
             exit;
         }
     }
@@ -20,18 +20,7 @@
 <html ng-app="cmubus" ng-controller="localeController" lang="<?php echo get_language_id(); ?>">
 	<head>
 		<meta charset="utf-8">
-
-        <?php
-        if($version['development'])
-        {
-            echo '<base href="https://139.59.255.146/dev.cmubus/app/">';
-        }
-        else
-        {
-            echo '<base href="https://139.59.255.146/cmubus/app/">';
-        }
-        ?>
-
+        <base href="<?php echo $version['app_root']; ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="application-name" content="CMUBUS">
 		<meta name="description" content="Chiang Mai University Bus Information System | ระบบให้ข้อมูลรถ ขส.มช.">
@@ -68,11 +57,11 @@
 		<nav class="navbar navbar-fixed-top">
 			<div class="container-fluid col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-xl-2 col-xl-offset-5">
 				<div class="nav navbar-header pull-left">
-					<div class="navbar-brand"><a href="/" ng-bind="txt.header">cmubus.com</a><?php if($version['development']) { echo ' <small><sub>(DEVELOPER)</sub></small>'; } ?></div>
+					<div class="navbar-brand"><a href="" ng-bind="txt.header">cmubus.com</a><?php if($version['development']) { echo ' <small><sub>(DEVELOPER)</sub></small>'; } ?></div>
 				</div>
 				<ul class="nav navbar-nav navbar-right pull-right">
-					<li class="pull-left"><a href="/"><i class='fa fa-home'></i></a></li>
-					<li class="pull-right"><a href="/menu"><i class='fa fa-bars'></i></a></li>
+					<li class="pull-left"><a href=""><i class='fa fa-home'></i></a></li>
+					<li class="pull-right"><a href="menu"><i class='fa fa-bars'></i></a></li>
 				</ul>
 			</div>
 		</nav>
@@ -130,7 +119,7 @@
                             {{txt.about.index.message}}
                         </p>
                         <div>
-                            <a href="/about" class="btn btn-default" ng-click="closeSuggestion();">{{txt.about.index.readMore}}</a>
+                            <a href="about" class="btn btn-default" ng-click="closeSuggestion();">{{txt.about.index.readMore}}</a>
                         </div>
                     </p>
                 </div>
@@ -141,7 +130,7 @@
                             {{txt.home.evaluationSurvey.message}}
                         </p>
                         <p style="padding-bottom: 0.7em;">
-                            <a href="/evaluate" ng-click="closeSuggestion();" class="btn btn-lg btn-success">{{txt.home.evaluationSurvey.evaluationButton}}</a>　
+                            <a href="evaluate" ng-click="closeSuggestion();" class="btn btn-lg btn-success">{{txt.home.evaluationSurvey.evaluationButton}}</a>　
                             <a href="javascript:void(0)" class="btn btn-default" ng-click="closeSuggestion();"">{{txt.home.evaluationSurvey.laterButton}}</a>
                         </p>
                         <p>
