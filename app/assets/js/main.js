@@ -27,6 +27,10 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 			templateUrl: "pages/home.html" + versionQ,
 			controller: "homeController"
 		})
+		.when('/home', {
+			templateUrl: "pages/home.html" + versionQ,
+			controller: "homeController"
+		})
         .when('/menu', {
             templateUrl: "pages/menu.html" + versionQ,
             controller: "menuController"
@@ -104,7 +108,7 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
             controller: "errorController"
         })
         .otherwise({
-            redirectTo: "/error"
+            redirectTo: "error"
         });
 
     $locationProvider.html5Mode(true);
@@ -744,13 +748,13 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	{
 		if($scope.from_id != null && $scope.to_id != null && $scope.from_id != $scope.to_id)
 		{
-			$location.path("/search/" + $scope.from_id + "/" + $scope.to_id);
+			$location.path("search/" + $scope.from_id + "/" + $scope.to_id);
 		}
 	};
 	
 	$scope.goStop = function(id)
 	{
-		$location.path("/stop/" + id);
+		$location.path("stop/" + id);
 	};
 });
 
@@ -1433,7 +1437,7 @@ app.controller("languageSettingsController", function($scope, $http, $location, 
 		$http.get("data/set_language.php?id=" + newLanguageID).then(function(response)
 		{
 			setCookie("user_language", newLanguageID, 5184000000);
-			window.location = '/';
+			window.location = 'home';
 		}, function(reponse)
 		{
             $rootScope.showError();
