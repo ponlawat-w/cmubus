@@ -1,14 +1,3 @@
-*.DS_Store
-*.eot
-*.gif
-*.jpeg
-*.jpg
-*.otf
-*.png
-*.svg
-*.ttf
-*.woff
-*.woff2
 .idea/
 .idea/*.xml
 .idea/workspace.xml
