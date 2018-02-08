@@ -3,8 +3,8 @@
     {{txt.pleaseWait}}
 </center></div>
 <div ng-show="!loading">
-    <h3 class="text-center">{{data.stop.name}} <sub><a href="stop/{{data.stop.id}}" class="btn btn-default btn-xs"><i class="fa fa-info"></i></a></sub></h3>
-    <h4 class="text-center" style="color: {{data.route.color}}">{{data.route.name}} <sub><a href="route/{{data.route.id}}" class="btn btn-default btn-xs"><i class="fa fa-info"></i></a></sub></h4>
+    <h3 class="text-center">{{data.stop.name}} <sub><a href="/stop/{{data.stop.id}}" class="btn btn-default btn-xs"><i class="fa fa-info"></i></a></sub></h3>
+    <h4 class="text-center" style="color: {{data.route.color}}">{{data.route.name}} <sub><a href="/route/{{data.route.id}}" class="btn btn-default btn-xs"><i class="fa fa-info"></i></a></sub></h4>
     <p><small><strong>{{txt.stopStats.today}}:</strong> {{data.today.timestamp|dateFormat}} ({{txt.stopStats.dayType[data.today.type]}})</small></p>
     <div class="btn-group btn-group-justified" data-toggle="buttons">
         <label class="btn btn-default btn-sm" ng-class="{'active btn-primary':(view=='weekday')}">

@@ -5,7 +5,7 @@ var geolocationID;
 
 if(!navigator.cookieEnabled)
 {
-	window.location = 'index.php?error=cookie_disabled';
+	window.location = '/index.php?error=cookie_disabled';
 }
 else
 {
@@ -24,83 +24,83 @@ app.config(function($routeProvider, $locationProvider, $httpProvider)
 
 	$routeProvider
 		.when('/', {
-			templateUrl: "pages/home.html" + versionQ,
+			templateUrl: "/pages/home.html" + versionQ,
 			controller: "homeController"
 		})
         .when('/menu', {
-            templateUrl: "pages/menu.html" + versionQ,
+            templateUrl: "/pages/menu.html" + versionQ,
             controller: "menuController"
         })
 		.when('/search', {
-			templateUrl: "pages/search.html" + versionQ,
+			templateUrl: "/pages/search.html" + versionQ,
 			controller: "searchController"
 		})
 		.when('/searchfrom/:from_id/', {
-			templateUrl: "pages/search.html" + versionQ,
+			templateUrl: "/pages/search.html" + versionQ,
 			controller: "searchController"
 		})
 		.when('/searchto/:to_id', {
-			templateUrl: "pages/search.html" + versionQ,
+			templateUrl: "/pages/search.html" + versionQ,
 			controller: "searchController"
 		})
         .when('/editsearch/:from_id/:to_id', {
-            templateUrl: "pages/search.html" + versionQ,
+            templateUrl: "/pages/search.html" + versionQ,
             controller: "searchController"
         })
 		.when('/search/:from_id/:to_id', {
-			templateUrl: "pages/search_result.html" + versionQ,
+			templateUrl: "/pages/search_result.html" + versionQ,
 			controller: "searchResultController"
 		})
 		.when('/stop/:id', {
-			templateUrl: "pages/stop.html" + versionQ,
+			templateUrl: "/pages/stop.html" + versionQ,
 			controller: "stopController"
 		})
 		.when('/stop/:id/stats/:route', {
-			templateUrl: "pages/stop_stats.html" + versionQ,
+			templateUrl: "/pages/stop_stats.html" + versionQ,
 			controller: "stopStatsController"
         })
 		.when('/session/:id', {
-			templateUrl: "pages/session.html" + versionQ,
+			templateUrl: "/pages/session.html" + versionQ,
 			controller: "sessionController"
 		})
 		.when('/route/:id', {
-			templateUrl: "pages/route.html" + versionQ,
+			templateUrl: "/pages/route.html" + versionQ,
 			controller: "routeController"
 		})
 		.when('/route/:id/highlight/:from_id/:to_id', {
-			templateUrl: "pages/route.html" + versionQ,
+			templateUrl: "/pages/route.html" + versionQ,
 			controller: "routeController"
 		})
 		.when('/routes', {
-			templateUrl: "pages/routes.html" + versionQ,
+			templateUrl: "/pages/routes.html" + versionQ,
 			controller: "routesController"
 		})
         .when('/stops', {
-            templateUrl: "pages/stops.html" + versionQ,
+            templateUrl: "/pages/stops.html" + versionQ,
             controller: "stopsController"
         })
         .when('/buses', {
-            templateUrl: "pages/buses.html" + versionQ,
+            templateUrl: "/pages/buses.html" + versionQ,
             controller: "busesController"
         })
         .when('/evaluate', {
-            templateUrl: "pages/evaluate.html" + versionQ,
+            templateUrl: "/pages/evaluate.html" + versionQ,
             controller: "evaluateController"
         })
         .when('/report', {
-            templateUrl: "pages/report.html" + versionQ,
+            templateUrl: "/pages/report.html" + versionQ,
             controller: "reportController"
         })
 		.when('/language', {
-			templateUrl: "pages/language_settings.html" + versionQ,
+			templateUrl: "/pages/language_settings.html" + versionQ,
 			controller: "languageSettingsController"
 		})
         .when('/about', {
-            templateUrl: "pages/about.html" + versionQ,
+            templateUrl: "/pages/about.html" + versionQ,
             controller: "aboutController"
         })
         .when('/error', {
-            templateUrl: "pages/error.html" + versionQ,
+            templateUrl: "/pages/error.html" + versionQ,
             controller: "errorController"
         })
         .otherwise({
@@ -207,7 +207,7 @@ app.controller("mainController", function($scope, $location, $http, $timeout, $i
 	{
 		$scope.settingToThai = true;
 
-        $http.get("data/set_language.php?id=th").then(function(response)
+        $http.get("/data/set_language.php?id=th").then(function(response)
         {
         	setCookie("user_language", "th", 5184000000);
             window.location.reload();
@@ -277,7 +277,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
     $scope.recommendedPlaces = [];
     $scope.routes = [];
 
-    $http.get("data/recommended_places.php").then(function(response)
+    $http.get("/data/recommended_places.php").then(function(response)
     {
         $scope.recommendedPlaces = response.data;
 
@@ -286,7 +286,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
         $rootScope.showError();
     });
 
-    $http.get("data/routes.php").then(function(response)
+    $http.get("/data/routes.php").then(function(response)
 	{
 		$scope.routes = response.data;
 	}, function(response)
@@ -332,7 +332,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
         {
             $scope.requesting = true;
 
-            var url = "data/findnearstop.php?temp=" + Date.now() + "&lat=" + $scope.lat + "&lon=" + $scope.lon;
+            var url = "/data/findnearstop.php?temp=" + Date.now() + "&lat=" + $scope.lat + "&lon=" + $scope.lon;
 
             $http.get(url + "&stoponly=true&limit=3&timetable=true").then(function(response)
             {
@@ -368,23 +368,23 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 	{
 		if(session != null)
 		{
-			$location.path("session/" + session);
+			$location.path("/session/" + session);
 		}
 	};
 	
 	$scope.goStop = function(stopid)
 	{
-		$location.path("stop/" + stopid);
+		$location.path("/stop/" + stopid);
 	};
 
 	$scope.searchTo = function(stopid)
 	{
-		$location.path("searchto/" + stopid);
+		$location.path("/searchto/" + stopid);
 	};
 	
 	$scope.goRoute = function(routeid)
 	{
-		$location.path("route/" + routeid);
+		$location.path("/route/" + routeid);
 	};
 
 	appInterval = $interval(function() { $scope.loadNearStops(); }, 7000);
@@ -412,7 +412,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 		}
 		else
 		{
-			$http.get("data/search.php?keyword=" + $scope.keyword).then(function(response)
+			$http.get("/data/search.php?keyword=" + $scope.keyword).then(function(response)
 			{				
 				if($scope.clicked == true)
 				{
@@ -454,7 +454,7 @@ app.controller("homeController", function($scope, $http, $location, $anchorScrol
 	
 	$scope.searchSubmit = function()
 	{
-		$location.path("stop/" + $scope.search_id);
+		$location.path("/stop/" + $scope.search_id);
 	};
 	
 	// END SEARCH
@@ -519,7 +519,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	if($routeParams.from_id != null)
 	{
 		$scope.loading = true;
-		$http.get("data/stop.php?id=" + $routeParams.from_id).then(function(response)
+		$http.get("/data/stop.php?id=" + $routeParams.from_id).then(function(response)
 		{
 			$scope.clicked = true;
 			$scope.from_keyword = response.data.name;
@@ -535,7 +535,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	if($routeParams.to_id != null)
 	{
 		$scope.loading = true;
-		$http.get("data/stop.php?id=" + $routeParams.to_id).then(function(response)
+		$http.get("/data/stop.php?id=" + $routeParams.to_id).then(function(response)
 		{
 			$scope.clicked = true;
 			$scope.to_keyword = response.data.name;
@@ -572,7 +572,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 		}
 		else
 		{
-			$http.get("data/search.php?keyword=" + $scope.from_keyword).then(function(response)
+			$http.get("/data/search.php?keyword=" + $scope.from_keyword).then(function(response)
 			{				
 				if($scope.clicked == true)
 				{
@@ -624,7 +624,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	{
 		$scope.loading = true;
 
-        var url = "data/findnearstop.php?lat=" + $scope.currentLat + "&lon=" + $scope.currentLon + "&stoponly=false&limit=1";
+        var url = "/data/findnearstop.php?lat=" + $scope.currentLat + "&lon=" + $scope.currentLon + "&stoponly=false&limit=1";
 
         $http.get(url).then(function(response)
         {
@@ -657,7 +657,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 		}
 		else
 		{
-			$http.get("data/search.php?keyword=" + $scope.to_keyword).then(function(response)
+			$http.get("/data/search.php?keyword=" + $scope.to_keyword).then(function(response)
 			{
 				
 				if($scope.clicked == true)
@@ -716,7 +716,7 @@ app.controller("searchController", function($scope, $http, $location, $anchorScr
 	{
 		$scope.loading = true;
 
-        var url = "data/findnearstop.php?lat=" + $scope.currentLat + "&lon=" + $scope.currentLon + "&stoponly=false&limit=1";
+        var url = "/data/findnearstop.php?lat=" + $scope.currentLat + "&lon=" + $scope.currentLon + "&stoponly=false&limit=1";
 
         $http.get(url).then(function(response)
         {
@@ -808,7 +808,7 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
         $scope.timetable.pathIndex = pathIndex;
         $scope.timetable.sequenceIndex = sequenceIndex;
 
-        $http.get("data/route.php?id=" + routeID).then(function(response)
+        $http.get("/data/route.php?id=" + routeID).then(function(response)
 		{
 			if(response.data.path[0].stop == stopID)
 			{
@@ -819,7 +819,7 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 			}
 			else
 			{
-                $http.get("data/timetable.php?stopid=" + stopID + "&passed=false&temp=" + Date.now()).then(function (response) {
+                $http.get("/data/timetable.php?stopid=" + stopID + "&passed=false&temp=" + Date.now()).then(function (response) {
                     $scope.showLoading.pathIndex = null;
                     $scope.showLoading.sequenceIndex = null;
 
@@ -851,30 +851,30 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 	{
 		if(sessionID > 0)
 		{
-			$location.path("session/" + sessionID);
+			$location.path("/session/" + sessionID);
 		}
 	};
 
 	$scope.switchFromTo = function()
 	{
-		$location.path("search/" + $scope.to_id + "/" + $scope.from_id);
+		$location.path("/search/" + $scope.to_id + "/" + $scope.from_id);
 	};
 	
-	$http.get("data/stop.php?id=" + $scope.from_id).then(function(response)
+	$http.get("/data/stop.php?id=" + $scope.from_id).then(function(response)
 	{
 		$scope.info.fromName = response.data.name;
 	
-		$http.get("data/stop.php?id=" + $scope.to_id).then(function(response)
+		$http.get("/data/stop.php?id=" + $scope.to_id).then(function(response)
 		{
 			$scope.info.toName = response.data.name;
-			$http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=1&quick=false&record=true").then(function(response)
+			$http.get("/data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=1&quick=false&record=true").then(function(response)
 			{
 				$scope.finished = true;
 				$scope.paths = response.data;
 
 				$scope.searchingMore = true;
 
-                $http.get("data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=5&quick=false").then(function(response)
+                $http.get("/data/findpath.php?from=" + $scope.from_id + "&to=" + $scope.to_id + "&limit=5&quick=false").then(function(response)
 				{
 					$scope.searchingMore = false;
 
@@ -897,19 +897,19 @@ app.controller("searchResultController", function($scope, $routeParams, $http, $
 
 	$scope.goStop = function(id)
 	{
-		$location.path("stop/" + id);
+		$location.path("/stop/" + id);
 	};
 
 	$scope.editSearch = function()
 	{
-		$location.path("editsearch/" + $scope.from_id + "/" + $scope.to_id);
+		$location.path("/editsearch/" + $scope.from_id + "/" + $scope.to_id);
 	};
 	
 	$scope.goHow = function(route_id, from_id, to_id, from_location, to_location)
 	{
 		if(route_id != null)
 		{
-			$location.path("route/" + route_id + "/highlight/" + from_id + "/" + to_id);
+			$location.path("/route/" + route_id + "/highlight/" + from_id + "/" + to_id);
 		}
 		else if(from_location != null && to_location != null)
 		{
@@ -953,7 +953,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		{
 			$scope.requestingTimetable = true;
 
-			$http.get("data/timetable.php?stopid=" + $scope.id + "&passed=true&temp=" + Date.now()).then(function(response)
+			$http.get("/data/timetable.php?stopid=" + $scope.id + "&passed=true&temp=" + Date.now()).then(function(response)
 			{
 				$scope.requestingTimetable = false;
 				$scope.timetableLoading = false;
@@ -974,7 +974,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		{
 			$scope.infoLoading = true;
 					
-			$http.get("data/stop_info.php?id=" + $scope.id).then(function(response)
+			$http.get("/data/stop_info.php?id=" + $scope.id).then(function(response)
 			{
 				$scope.infoLoaded = true;
 				$scope.infoLoading = false;
@@ -988,25 +988,25 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 	
 	$scope.goStop = function(id)
 	{
-		$location.path("stop/" + id);
+		$location.path("/stop/" + id);
 	};
 	
 	$scope.goSession = function(id)
 	{
 		if(id != null)
 		{
-			$location.path("session/" + id);
+			$location.path("/session/" + id);
 		}
 	};
 	
 	$scope.goRoute = function(id)
 	{
-		$location.path("route/" + id);
+		$location.path("/route/" + id);
 	};
 	
 	$scope.goSearch = function(mode, id)
 	{
-		$location.path("search" + mode + "/" + id);
+		$location.path("/search" + mode + "/" + id);
 	};
 	
 	$scope.openMap = function()
@@ -1014,7 +1014,7 @@ app.controller("stopController", function($scope, $http, $routeParams, $location
 		window.location = "https://maps.apple.com/?q=" + $scope.stopInfo.location.lat + "," + $scope.stopInfo.location.lon;
 	};
 	
-	$http.get("data/stop.php?id=" + $scope.id).then(function(response)
+	$http.get("/data/stop.php?id=" + $scope.id).then(function(response)
 	{
 		$scope.stopInfo = response.data;
 
@@ -1107,7 +1107,7 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
 		{
 			$scope.requestingSessionInfo = true;
 
-			$http.get("data/session.php?id=" + $scope.sessionID + "&temp=" + Date.now()).then(function(response)
+			$http.get("/data/session.php?id=" + $scope.sessionID + "&temp=" + Date.now()).then(function(response)
 			{
 				$scope.sessionInfo = response.data;
 				$scope.loading = false;
@@ -1126,12 +1126,12 @@ app.controller("sessionController", function($scope, $http, $routeParams, $locat
 	
 	$scope.goStop = function(id)
 	{
-		$location.path("stop/" + id);
+		$location.path("/stop/" + id);
 	};
 	
 	$scope.goRoute = function(id)
 	{
-		$location.path("route/" + id);
+		$location.path("/route/" + id);
 	};
 
     $scope.loadSessionInfo();
@@ -1149,7 +1149,7 @@ app.controller("routesController", function($scope, $http, $location, $interval,
 	
 	$scope.loading = true;
 	
-	$http.get("data/routes.php").then(function(response)
+	$http.get("/data/routes.php").then(function(response)
 	{
 		$scope.routes = response.data;
 		$scope.loading = false;
@@ -1160,7 +1160,7 @@ app.controller("routesController", function($scope, $http, $location, $interval,
 	
 	$scope.goRoute = function(id)
 	{
-		$location.path("route/" + id);
+		$location.path("/route/" + id);
 	};
 });
 
@@ -1195,7 +1195,7 @@ app.controller("stopsController", function($scope, $http, $location, $anchorScro
         }
         else
         {
-            $http.get("data/search.php?keyword=" + $scope.keyword).then(function(response)
+            $http.get("/data/search.php?keyword=" + $scope.keyword).then(function(response)
             {
                 for(i = 0; i < $scope.allStops.length; i++)
                 {
@@ -1219,7 +1219,7 @@ app.controller("stopsController", function($scope, $http, $location, $anchorScro
         }
     });
 
-    $http.get("data/stops.php").then(function(response)
+    $http.get("/data/stops.php").then(function(response)
     {
         $scope.allStops = response.data;
 
@@ -1251,7 +1251,7 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 		to: -1
 	};
 	
-	$http.get("data/route.php?id=" + $routeParams.id).then(function(response)
+	$http.get("/data/route.php?id=" + $routeParams.id).then(function(response)
 	{
 		$scope.route = response.data;
 		
@@ -1285,12 +1285,12 @@ app.controller("routeController", function($scope, $http, $location, $routeParam
 	
 	$scope.goStop = function(id)
 	{
-		$location.path("stop/" + id);
+		$location.path("/stop/" + id);
 	};
 	
 	$scope.goRoute = function()
 	{
-		$location.path("route/" + $routeParams.id);
+		$location.path("/route/" + $routeParams.id);
 	};
 });
 
@@ -1312,7 +1312,7 @@ app.controller("busesController", function($scope, $http, $interval, $location, 
 		{
 			$scope.requestingBusesData = true;
 
-			$http.get("data/buses.php?temp=" + Date.now()).then(function(response)
+			$http.get("/data/buses.php?temp=" + Date.now()).then(function(response)
 			{
 				$scope.loading = false;
 				$scope.requestingBusesData = false;
@@ -1331,7 +1331,7 @@ app.controller("busesController", function($scope, $http, $interval, $location, 
 	{
 		if(sessionID > 0)
 		{
-			$location.path("session/" + sessionID);
+			$location.path("/session/" + sessionID);
 		}
 	};
 
@@ -1366,7 +1366,7 @@ app.controller("evaluateController", function($scope, $http, $interval, $rootSco
 	{
         $scope.surveySendStatus = 1;
 
-        $http.post("data/send_survey.php", $scope.surveyFormData).then(function(response)
+        $http.post("/data/send_survey.php", $scope.surveyFormData).then(function(response)
         {
             $scope.surveySendStatus = 2;
         }, function(response)
@@ -1398,7 +1398,7 @@ app.controller("reportController", function($scope, $http, $interval, $rootScope
     {
         $scope.reportSendStatus = 1;
 
-        $http.post("data/send_report.php", $scope.report).then(function(response)
+        $http.post("/data/send_report.php", $scope.report).then(function(response)
         {
             $scope.reportSendStatus = 2;
         }, function(response)
@@ -1430,17 +1430,17 @@ app.controller("languageSettingsController", function($scope, $http, $location, 
 	
 	$scope.changeLanguage = function(newLanguageID)
 	{
-		$http.get("data/set_language.php?id=" + newLanguageID).then(function(response)
+		$http.get("/data/set_language.php?id=" + newLanguageID).then(function(response)
 		{
 			setCookie("user_language", newLanguageID, 5184000000);
-			window.location = '/';
+			window.location = '';
 		}, function(reponse)
 		{
             $rootScope.showError();
 		});
 	};
 	
-	$http.get("data/languages_list.php").then(function(response)
+	$http.get("/data/languages_list.php").then(function(response)
 	{
 		$scope.languages = response.data;
 	}, function(response)
