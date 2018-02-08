@@ -1,6 +1,6 @@
 <?php
-	include_once("html/cmubus/mysql_connection.inc.php");
-	include_once("html/cmubus/lib/cron.inc.php");
+	include_once("../lib/lib.inc.php");
+	include_once("../lib/cron.inc.php");
 	
 	$now = mktime();
 	$sql = "UPDATE `data_buses` SET `session` = 0, `last_update` = $now";
@@ -40,4 +40,3 @@
 	}
 	
 	mysqli_close($connection);
-?>

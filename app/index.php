@@ -1,5 +1,5 @@
 <?php session_start(); ob_start();
-    include_once("../mysql_connection.inc.php");
+    include_once("../lib/lib.inc.php");
     include_once("../version.php");
     include_once("../lib/app.inc.php");
     get_language_id();
@@ -20,7 +20,7 @@
 <html ng-app="cmubus" ng-controller="localeController" lang="<?php echo get_language_id(); ?>">
 	<head>
 		<meta charset="utf-8">
-        <base href="<?php echo $version['app_root']; ?>">
+        <base href="<?php echo $APP_ROOT; ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="application-name" content="CMUBUS">
 		<meta name="description" content="Chiang Mai University Bus Information System | ระบบให้ข้อมูลรถ ขส.มช.">

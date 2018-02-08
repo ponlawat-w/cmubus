@@ -1,6 +1,6 @@
 <?php session_start(); ob_start();
 
-include_once("../../mysql_connection.inc.php");
+include_once("../../lib/lib.inc.php");
 include_once("../library.inc.php");
 
 check_authentication();
