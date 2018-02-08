@@ -1,5 +1,5 @@
 <?php ob_start(); session_start();
-include_once("../../mysql_connection.inc.php");
+include_once("../../lib/lib.inc.php");
 include_once("../../lib/app.inc.php");
 
 $id = str_replace("'", "", $_GET['id']);

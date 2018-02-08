@@ -6,7 +6,7 @@
     <title>ข้อมูลสถิติ→ความแม่นยำการประมาณเวลา</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <?php
-    include_once("../mysql_connection.inc.php");
+    include_once("../lib/lib.inc.php");
     include_once("../lib/app.inc.php");
     include_once("library.php");
     ?>

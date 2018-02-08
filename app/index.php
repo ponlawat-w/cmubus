@@ -1,5 +1,5 @@
 <?php session_start(); ob_start();
-    include_once("../mysql_connection.inc.php");
+    include_once("../lib/lib.inc.php");
     include_once("../version.php");
     include_once("../lib/app.inc.php");
     get_language_id();
@@ -11,7 +11,7 @@
         if($_GET['error'] == 'cookie_disabled')
         {
             echo '<p>This website requires cookie, please enable it.<br>ขออภัย คุณต้องเปิดการใช้งานคุกกี้เพื่อเข้าถึงเว็บไซต์นี้</p>';
-            echo '<a href="">Retry / ลองใหม่</a>';
+            echo "<a href='{$APP_ROOT}'>Retry / ลองใหม่</a>";
             exit;
         }
     }
@@ -20,7 +20,7 @@
 <html ng-app="cmubus" ng-controller="localeController" lang="<?php echo get_language_id(); ?>">
 	<head>
 		<meta charset="utf-8">
-        <base href="<?php echo $version['app_root']; ?>">
+        <base href="<?php echo $APP_ROOT; ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="application-name" content="CMUBUS">
 		<meta name="description" content="Chiang Mai University Bus Information System | ระบบให้ข้อมูลรถ ขส.มช.">
@@ -57,10 +57,10 @@
 		<nav class="navbar navbar-fixed-top">
 			<div class="container-fluid col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-xl-2 col-xl-offset-5">
 				<div class="nav navbar-header pull-left">
-					<div class="navbar-brand"><a href="" ng-bind="txt.header">cmubus.com</a><?php if($version['development']) { echo ' <small><sub>(DEVELOPER)</sub></small>'; } ?></div>
+					<div class="navbar-brand"><a href="home" ng-bind="txt.header">cmubus.com</a><?php if($version['development']) { echo ' <small><sub>(DEVELOPER)</sub></small>'; } ?></div>
 				</div>
 				<ul class="nav navbar-nav navbar-right pull-right">
-					<li class="pull-left"><a href=""><i class='fa fa-home'></i></a></li>
+					<li class="pull-left"><a href="home"><i class='fa fa-home'></i></a></li>
 					<li class="pull-right"><a href="menu"><i class='fa fa-bars'></i></a></li>
 				</ul>
 			</div>
@@ -91,8 +91,8 @@
                     </div>
                     <div class="btn-group-sm btn-group-vertical" style="width: 100%;">
                         <a href='javascript:void(0);' onclick="window.location.reload(true);" class="btn btn-default" style="text-align: left;"><span class="text-success"><i class="fa fa-refresh"></i> {{txt.error.retry}}</span></a>
-                        <a ng-click="closeError(); $location.path('/');" href='javascript:void(0);' class="btn btn-default" style="text-align: left;"><i class="fa fa-home"></i> {{txt.menu.home}}</a>
-                        <a ng-click="closeError(); $location.path('/report');" href='javascript:void(0);' class="btn btn-default" style="text-align: left;"><span class="text-warning"><i class="fa fa-flag"></i> {{txt.menu.problemReport}}</span></a>
+                        <a ng-click="closeError(); $location.path('home');" href='javascript:void(0);' class="btn btn-default" style="text-align: left;"><i class="fa fa-home"></i> {{txt.menu.home}}</a>
+                        <a ng-click="closeError(); $location.path('report');" href='javascript:void(0);' class="btn btn-default" style="text-align: left;"><span class="text-warning"><i class="fa fa-flag"></i> {{txt.menu.problemReport}}</span></a>
                     </div>
                 </div>
             </div>

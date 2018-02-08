@@ -1,0 +1,9 @@
+<?php
+$MYSQL_SERVER = '';
+$MYSQL_USERNAME = '';
+$MYSQL_PASSWORD = '';
+$MYSQL_DATABASE = '';
+
+$APP_ROOT = '';
+
+$DEVELOPMENT = false;

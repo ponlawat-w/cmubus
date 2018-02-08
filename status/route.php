@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<?php
-			include_once("../mysql_connection.inc.php");
+			include_once("../lib/lib.inc.php");
 			include_once("../lib/cron.inc.php");
 			include_once("../lib/app.inc.php");
 		?>

@@ -1,6 +1,5 @@
 <?php
-include_once("html/cmubus/mysql_connection.inc.php");
-include_once("html/cmubus/lib/app.inc.php");
+include_once("../lib/lib.inc.php");
+include_once("../lib/app.inc.php");
 
 estimate();
-?>

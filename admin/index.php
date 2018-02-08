@@ -8,7 +8,7 @@
     <meta name="author" content="Dashboard">
 	
 	<?php
-	include_once("../mysql_connection.inc.php");
+	include_once("../lib/lib.inc.php");
 	include_once("library.inc.php");
 	
 	if(isset($_SESSION['authentication']))

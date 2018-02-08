@@ -1,5 +1,5 @@
 <?php
-include_once("html/cmubus/mysql_connection.inc.php");
+include_once("../lib/lib.inc.php");
 
 $now = mktime();
 $sql = "SELECT `id`, `route`, `set_available_to` FROM `route_available_switchers` WHERE `date` <= $now ORDER BY `date` ASC, `id` ASC";
@@ -14,5 +14,3 @@ while($switcherdata = mysqli_fetch_array($results))
 }
 
 mysqli_close($connection);
-?>
-

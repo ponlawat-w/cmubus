@@ -1,5 +1,5 @@
 <?php session_start(); session_write_close();
-include_once('../mysql_connection.inc.php');
+include_once('../lib/lib.inc.php');
 include_once('../lib/app.inc.php');
 include_once('library.inc.php');
 

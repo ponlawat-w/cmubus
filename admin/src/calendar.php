@@ -1,7 +1,5 @@
-<?php if(!isset($_SESSION['authentication'])) exit(); ?>
-<?php
-	include_once("../lib/app.inc.php");
-	
+<?php if(!isset($_SESSION['authentication'])) exit();
+
 	$today = mktime(0, 0, 0);
 	
 	if(isset($_GET['day']))
