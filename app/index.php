@@ -11,7 +11,7 @@
         if($_GET['error'] == 'cookie_disabled')
         {
             echo '<p>This website requires cookie, please enable it.<br>ขออภัย คุณต้องเปิดการใช้งานคุกกี้เพื่อเข้าถึงเว็บไซต์นี้</p>';
-            echo '<a href="/">Retry / ลองใหม่</a>';
+            echo '<a href="">Retry / ลองใหม่</a>';
             exit;
         }
     }
@@ -25,11 +25,11 @@
 		<meta name="application-name" content="CMUBUS">
 		<meta name="description" content="Chiang Mai University Bus Information System | ระบบให้ข้อมูลรถ ขส.มช.">
 		<meta name="keywords" content="CMU,มช,ม.ช.,รถม่วง,ขสมช,ขส.มช.,Chiang Mai University">
-        <link rel="icon" href="/favicon.ico?v=<?php echo $version['updated']; ?>">
-		<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="/assets/css/map-icons.min.css">
-		<link rel="stylesheet" type="text/css" href="/assets/css/styles.css?v=<?php echo $version['updated']; ?>">
+        <link rel="icon" href="favicon.ico?v=<?php echo $version['updated']; ?>">
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/map-icons.min.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/styles.css?v=<?php echo $version['updated']; ?>">
 		<title>CMU BUS</title>
         <script>
             var language = "<?php echo get_language_id(); ?>";
@@ -57,11 +57,11 @@
 		<nav class="navbar navbar-fixed-top">
 			<div class="container-fluid col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-xl-2 col-xl-offset-5">
 				<div class="nav navbar-header pull-left">
-					<div class="navbar-brand"><a href="/" ng-bind="txt.header">cmubus.com</a><?php if($version['development']) { echo ' <small><sub>(DEVELOPER)</sub></small>'; } ?></div>
+					<div class="navbar-brand"><a href="" ng-bind="txt.header">cmubus.com</a><?php if($version['development']) { echo ' <small><sub>(DEVELOPER)</sub></small>'; } ?></div>
 				</div>
 				<ul class="nav navbar-nav navbar-right pull-right">
-					<li class="pull-left"><a href="/"><i class='fa fa-home'></i></a></li>
-					<li class="pull-right"><a href="/menu"><i class='fa fa-bars'></i></a></li>
+					<li class="pull-left"><a href=""><i class='fa fa-home'></i></a></li>
+					<li class="pull-right"><a href="menu"><i class='fa fa-bars'></i></a></li>
 				</ul>
 			</div>
 		</nav>
@@ -119,7 +119,7 @@
                             {{txt.about.index.message}}
                         </p>
                         <div>
-                            <a href="/about" class="btn btn-default" ng-click="closeSuggestion();">{{txt.about.index.readMore}}</a>
+                            <a href="about" class="btn btn-default" ng-click="closeSuggestion();">{{txt.about.index.readMore}}</a>
                         </div>
                     </p>
                 </div>
@@ -130,7 +130,7 @@
                             {{txt.home.evaluationSurvey.message}}
                         </p>
                         <p style="padding-bottom: 0.7em;">
-                            <a href="/evaluate" ng-click="closeSuggestion();" class="btn btn-lg btn-success">{{txt.home.evaluationSurvey.evaluationButton}}</a>　
+                            <a href="evaluate" ng-click="closeSuggestion();" class="btn btn-lg btn-success">{{txt.home.evaluationSurvey.evaluationButton}}</a>　
                             <a href="javascript:void(0)" class="btn btn-default" ng-click="closeSuggestion();"">{{txt.home.evaluationSurvey.laterButton}}</a>
                         </p>
                         <p>

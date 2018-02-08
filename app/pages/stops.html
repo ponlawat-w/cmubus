@@ -5,7 +5,7 @@
         <input id="keyword" type="text" class="form-control" ng-model="keyword" ng-focus="scrollTo('keyword')" autocomplete="off" jp-input>
     </div>
     <div class="list-group" style="width: 100%;">
-        <a class="list-group-item" ng-repeat="stopData in allStops" ng-if="stopData.show" ng-href="/stop/{{stopData.id}}">
+        <a class="list-group-item" ng-repeat="stopData in allStops" ng-if="stopData.show" ng-href="stop/{{stopData.id}}">
             <p><strong><i class="fa fa-bus"></i> {{stopData.name}}</strong></p>
             <p>
                 <span ng-repeat="routeData in stopData.passing_routes"

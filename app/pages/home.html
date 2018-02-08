@@ -1,6 +1,6 @@
 <div class="btn-group-vertical" style="width: 100%; border-color: #140c27; margin-bottom: 20px;">
-	<a href="/search" class="btn btn-lg btn-default" style="width: 100%; color: #28184e; font-weight: bold; background-color: #e0d8f3;">{{txt.home.search}}</a>
-	<a href="/routes" class="btn btn-default" style="width: 100%; background-color: #f0ecf9;">{{txt.home.viewTimeTable}}</a>
+	<a href="search" class="btn btn-lg btn-default" style="width: 100%; color: #28184e; font-weight: bold; background-color: #e0d8f3;">{{txt.home.search}}</a>
+	<a href="routes" class="btn btn-default" style="width: 100%; background-color: #f0ecf9;">{{txt.home.viewTimeTable}}</a>
 </div>
 
 <div class="input-group">
@@ -49,7 +49,7 @@
 
 <h3>{{txt.home.viewTimeTable}}</h3>
 	<div class="list-group">
-		<a ng-repeat="route in routes" href="/route/{{route.id}}" ng-if="route.available" class="list-group-item" style="color:{{route.color}};">
+		<a ng-repeat="route in routes" href="route/{{route.id}}" ng-if="route.available" class="list-group-item" style="color:{{route.color}};">
 			<i class="fa fa-bus"></i> {{route.name}}
 		</a>
 	</div>
